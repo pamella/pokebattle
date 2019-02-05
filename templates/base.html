@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Webpack rendered CSS -->
-    {% render_bundle 'main' 'css' %}
+    {% comment %} {% render_bundle 'main' 'css' %} {% endcomment %}
   </head>
 
   <body>
@@ -22,7 +22,7 @@
     <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
 
     <!-- Webpack rendered Javascript -->
-    {% render_bundle 'main' 'js' %}
+    {% comment %} {% render_bundle 'main' 'js' %} {% endcomment %}
 
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXXX"
