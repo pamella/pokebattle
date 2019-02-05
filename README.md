@@ -2,6 +2,9 @@
 
 # PokeBattle
 
+## Deploy
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/pamella/pokebattle/)
+
 ## About
 A [Django](https://www.djangoproject.com/) project boilerplate/template with lots of state of the art libraries and tools like:
 - [React](https://facebook.github.io/react/), for building interactive UIs
