@@ -4,7 +4,7 @@ from dj_database_url import parse as db_url
 from .base import *  # noqa
 
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = config('SECRET_KEY')
 
