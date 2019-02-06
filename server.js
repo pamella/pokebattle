@@ -1,7 +1,7 @@
 // Webpack dev server
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
-import config from './webpack.local.config';
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const config = require('./webpack.local.config');
 
 new WebpackDevServer(webpack(config), {
   publicPath: config[1].output.publicPath,
