@@ -70,11 +70,11 @@ jobs:
       - run:
           command: pipenv run python manage.py has_missing_migrations --ignore authtools
           environment:
-            DJANGO_SETTINGS_MODULE: '{{project_name}}.settings.local_base'
+            DJANGO_SETTINGS_MODULE: 'pokebattle.settings.local_base'
       - run:
           command: pipenv run python manage.py check --deploy
           environment:
-            DJANGO_SETTINGS_MODULE: '{{project_name}}.settings.production'
+            DJANGO_SETTINGS_MODULE: 'pokebattle.settings.production'
             SECRET_KEY: "$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)')"
             DATABASE_URL: 'sqlite:///'
             ALLOWED_HOSTS: '.example.org'
