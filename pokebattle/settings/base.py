@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'common',
     'users',
     'pokemons',
-    
+    'battles',
+
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_DIRS = (
+    base_dir_join('static/'),
     base_dir_join('assets'),
 )
 
