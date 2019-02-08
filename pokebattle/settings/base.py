@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'common',
     'users',
+    'pokemons',
+    
 ]
 
 MIDDLEWARE = [
