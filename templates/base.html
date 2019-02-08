@@ -1,3 +1,4 @@
+{% load static %}
 {% load render_bundle from webpack_loader %}
 
 <!doctype html>
@@ -9,11 +10,21 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Font content -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700" rel="stylesheet">
+
+    <!-- Css Content -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block css %}{% endblock %}
+
     <!-- Webpack rendered CSS -->
-    {% render_bundle 'main' 'css' %}
+    <!-- {% render_bundle 'main' 'css' %} -->
   </head>
 
   <body>
+    <!-- Navbar Include -->
+    {% include "includes/navbar.html" %}
+  
     <!-- Body Content -->
     {% block body %}{% endblock %}
 
