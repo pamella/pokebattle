@@ -15,8 +15,18 @@ class Battle(models.Model):
         related_name="battle_opponent"
     )
     status = models.CharField(max_length=56, default=1)
+    trainer_winner = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="battle_winner",
+        null=True
+    )
 
 
 class TrainerTeam(models.Model):
     trainer = models.ForeignKey(User, on_delete=models.CASCADE)
     pokemons = models.ManyToManyField(Pokemon)
+    battle_related = models.ForeignKey(
+        Battle, on_delete=models.CASCADE,
+        related_name="battle",
+        null=True
+    )
