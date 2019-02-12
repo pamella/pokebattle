@@ -17,6 +17,7 @@ pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
 safety = "*"
+ipdb = "*"
 
 [packages]
 django = "*"
@@ -35,6 +36,7 @@ whitenoise = "*"
 psutil = "*"
 ipython = "*"
 psycopg2-binary = "*"
+django-widget-tweaks = "*"
 
 [requires]
 python_version = "3.6"

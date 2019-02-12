@@ -3,5 +3,9 @@
 </div>
 
 <nav class="menu">
-    <a href="{% url 'battles:create_battle' %}">Create Battle!</a>
+    <a href="{% url 'battles:create_battle' %}">Create a Battle!</a>
+    
+    {% if request.user.is_authenticated %}
+        <span>Olá, {{ user }}!</span>
+    {% endif %}
 </nav>

@@ -24,7 +24,21 @@ class Battle(models.Model):
 
 class TrainerTeam(models.Model):
     trainer = models.ForeignKey(User, on_delete=models.CASCADE)
-    pokemons = models.ManyToManyField(Pokemon)
+    pokemon_1 = models.ForeignKey(
+        Pokemon, on_delete=models.CASCADE,
+        related_name="pokemon_1",
+        null = True
+    )
+    pokemon_2 = models.ForeignKey(
+        Pokemon, on_delete=models.CASCADE,
+        related_name="pokemon_2",
+        null=True
+    )
+    pokemon_3 = models.ForeignKey(
+        Pokemon, on_delete=models.CASCADE,
+        related_name="pokemon_3",
+        null=True
+    )
     battle_related = models.ForeignKey(
         Battle, on_delete=models.CASCADE,
         related_name="battle",

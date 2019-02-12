@@ -1,2 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block body %}
+
+<section>
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <input type="submit" value="Challenge now!">
+    </form>
+</section>
+
+{% endblock %}
