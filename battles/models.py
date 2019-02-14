@@ -27,7 +27,7 @@ class TrainerTeam(models.Model):
     pokemon_1 = models.ForeignKey(
         Pokemon, on_delete=models.CASCADE,
         related_name="pokemon_1",
-        null = True
+        null=True
     )
     pokemon_2 = models.ForeignKey(
         Pokemon, on_delete=models.CASCADE,
