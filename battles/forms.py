@@ -1,7 +1,7 @@
 from django import forms
 
-from battles.helpers import get_pokemon_stats
 from battles.models import Battle, TrainerTeam
+from pokemons.helpers import get_pokemon_stats, is_pokemons_sum_valid
 from pokemons.models import Pokemon
 
 
@@ -22,28 +22,45 @@ class CreateBattleForm(forms.ModelForm):
         self.fields['pkm2'] = pkm2
         self.fields['pkm3'] = pkm3
 
+    def clean(self):
+        cleaned_data = super().clean()
+        pokemons = [
+            self.cleaned_data['pkm1'].lower().strip(),
+            self.cleaned_data['pkm2'].lower().strip(),
+            self.cleaned_data['pkm3'].lower().strip()
+        ]
+
+        print(pokemons)
+
+        if not is_pokemons_sum_valid(pokemons):
+            raise forms.ValidationError(
+                'Trainer, your pokemon team stats can not sum more than 600 points.'
+            )
+
+        return cleaned_data
+
     def save(self, commit=True):
-        pokemons = {
-            'pkm1': self.cleaned_data['pkm1'].strip(),
-            'pkm2': self.cleaned_data['pkm2'].strip(),
-            'pkm3': self.cleaned_data['pkm3'].strip()
-        }
+        pokemons = [
+            self.cleaned_data['pkm1'].lower().strip(),
+            self.cleaned_data['pkm2'].lower().strip(),
+            self.cleaned_data['pkm3'].lower().strip()
+        ]
         self.instance.save()
 
-        for key in pokemons:
-            if Pokemon.objects.filter(name=pokemons[key]).count() == 0:
+        for pokemon in pokemons:
+            if Pokemon.objects.filter(name=pokemon).count() == 0:
                 Pokemon.objects.create(
-                    name=pokemons[key],
-                    attack=get_pokemon_stats(pokemons[key])['attack'],
-                    defense=get_pokemon_stats(pokemons[key])['defense'],
-                    hitpoints=get_pokemon_stats(pokemons[key])['hitpoints'],
+                    name=pokemon,
+                    attack=get_pokemon_stats(pokemon)['attack'],
+                    defense=get_pokemon_stats(pokemon)['defense'],
+                    hitpoints=get_pokemon_stats(pokemon)['hitpoints'],
                 )
 
         TrainerTeam.objects.create(
             trainer=self.initial['user'],
-            pokemon_1=Pokemon.objects.get(name=pokemons['pkm1']),
-            pokemon_2=Pokemon.objects.get(name=pokemons['pkm2']),
-            pokemon_3=Pokemon.objects.get(name=pokemons['pkm2']),
+            pokemon_1=Pokemon.objects.get(name=pokemons[0]),
+            pokemon_2=Pokemon.objects.get(name=pokemons[1]),
+            pokemon_3=Pokemon.objects.get(name=pokemons[2]),
             battle_related=self.instance,
         )
 

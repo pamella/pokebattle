@@ -14,3 +14,11 @@ def get_pokemon_stats(name):
     }
 
     return stats
+
+
+def is_pokemons_sum_valid(pokemons):
+    limit = 600
+    aux = [get_pokemon_stats(pokemon) for pokemon in pokemons]
+    pokemons_sum = sum([sum(aux[i].values()) for i in range(len(aux))])
+
+    return pokemons_sum <= limit

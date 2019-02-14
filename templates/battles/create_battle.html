@@ -7,6 +7,10 @@
     <form method="POST">
         {% csrf_token %}
 
+        {% if form.subject.errors %}
+            <p>{{ form.errors }}</p>
+        {% endif %}
+
         {{ form.as_p }}
         <input type="submit" value="Challenge now!">
     </form>
