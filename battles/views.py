@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
 
 from battles.forms import CreateBattleForm
-from battles.models import Battle, TrainerTeam
+from battles.models import Battle
 
 
-class CreateBattleView(LoginRequiredMixin, CreateView):
+class CreateBattleView(LoginRequiredMixin, CreateView):     # pylint: disable=too-many-ancestors
     template_name = "battles/create_battle.html"
     success_url = "/"
     model = Battle
@@ -16,7 +16,3 @@ class CreateBattleView(LoginRequiredMixin, CreateView):
         return {
             'user': self.request.user
         }
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context

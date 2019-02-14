@@ -9,13 +9,13 @@ body {
 
 /* Navbar */
 .header__container, .menu {
-    display: flex;
-    justify-content: center;
+    display: flex;    
     align-items: center;
     width: 100%;
 }
 
 .header__container {
+    justify-content: center;
     height: 60px;
     background-color: #1271bf;
 }
@@ -27,6 +27,7 @@ body {
 }
 
 .menu {
+    justify-content: space-around;
     height: 50px;
     background-color: white;
     box-shadow: 1px 1px 1px lightgray;
