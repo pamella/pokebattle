@@ -37,6 +37,7 @@ psutil = "*"
 ipython = "*"
 psycopg2-binary = "*"
 django-widget-tweaks = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"

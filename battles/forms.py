@@ -30,8 +30,6 @@ class CreateBattleForm(forms.ModelForm):
             self.cleaned_data['pkm3'].lower().strip()
         ]
 
-        print(pokemons)
-
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
                 'Trainer, your pokemon team stats can not sum more than 600 points.'

@@ -1,3 +1,17 @@
+.create__form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 70%;
+    margin: auto;
+}
+
+.create__call {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #1271bf;
+}
+
 .errorlist {
     font-size: 0.9rem;
     color: #fd6c6c;

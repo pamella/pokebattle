@@ -2,14 +2,18 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/create_battle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_battle.css' %}">
 {% endblock %}
 
 {% block body %}
 
 <section>
-    <form method="POST">
+    <form method="POST" class="create__form">
         {% csrf_token %}
+
+        <p class="create__call">
+            <span>{{ user }}</span>, select your opponent and your time to battle!
+        </p>
 
         {% if form.subject.errors %}
             <p class="error">{{ form.errors }}</p>
