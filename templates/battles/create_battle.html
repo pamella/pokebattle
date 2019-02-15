@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/create_battle.css' %}">
+{% endblock %}
+
 {% block body %}
 
 <section>
@@ -8,7 +12,7 @@
         {% csrf_token %}
 
         {% if form.subject.errors %}
-            <p>{{ form.errors }}</p>
+            <p class="error">{{ form.errors }}</p>
         {% endif %}
 
         {{ form.as_p }}

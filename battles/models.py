@@ -21,6 +21,15 @@ class Battle(models.Model):
         null=True
     )
 
+    def __str__(self):
+        trainer_creator = str(self.trainer_creator).split("@")[0]
+        trainer_opponent = str(self.trainer_opponent).split("@")[0]
+        return "Battle {} vs {}, AT {}".format(
+            trainer_creator,
+            trainer_opponent,
+            self.datetime_created
+        )
+
 
 class TrainerTeam(models.Model):
     trainer = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,3 +53,7 @@ class TrainerTeam(models.Model):
         related_name="battle",
         null=True
     )
+
+    def __str__(self):
+        trainer = str(self.trainer).split("@")[0]
+        return "TrainerTeam: {} FROM {}".format(trainer, self.battle_related)
