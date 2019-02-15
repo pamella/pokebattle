@@ -38,6 +38,7 @@ ipython = "*"
 psycopg2-binary = "*"
 django-widget-tweaks = "*"
 requests = "*"
+ipdb = "*"
 
 [requires]
 python_version = "3.6"
