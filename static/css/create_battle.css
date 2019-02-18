@@ -16,3 +16,14 @@
     font-size: 0.9rem;
     color: #fd6c6c;
 }
+
+.create__success {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 30px;
+    box-sizing: border-box;
+    color: black;
+    font-weight: 500;
+}

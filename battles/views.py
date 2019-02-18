@@ -14,7 +14,7 @@ class CreateBattleView(
     template_name = "battles/create_battle.html"
     model = Battle
     form_class = CreateBattleForm
-    success_url = "/"
+    success_url = '/success/'
     success_message = '%(trainer)s, your challenge was successfully submitted!'
 
     def get_initial(self):
