@@ -4,6 +4,7 @@
 
 <nav class="menu">
     <a href="{% url 'battles:create_battle' %}">Create a Battle!</a>
+    <a href="{% url 'battles:list_battle' %}">My Battles</a>
     
     {% if request.user.is_authenticated %}
         <span>Hi, {{ user }}!</span>

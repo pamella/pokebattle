@@ -24,7 +24,8 @@ class Battle(models.Model):
     def __str__(self):
         trainer_creator = str(self.trainer_creator).split("@")[0]
         trainer_opponent = str(self.trainer_opponent).split("@")[0]
-        return "Battle {} vs {}, AT {}".format(
+        return "Battle {}: {} vs {}, AT {}".format(
+            self.id,
             trainer_creator,
             trainer_opponent,
             self.datetime_created
@@ -56,4 +57,4 @@ class TrainerTeam(models.Model):
 
     def __str__(self):
         trainer = str(self.trainer).split("@")[0]
-        return "TrainerTeam: {} FROM {}".format(trainer, self.battle_related)
+        return "Battle {} | TrainerTeam: {}".format(self.battle_related.id, trainer)
