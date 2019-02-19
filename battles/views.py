@@ -58,5 +58,12 @@ class BattlesListView(ListView):  # pylint: disable=too-many-ancestors
     template_name = 'battles/list_battle.html'
     model = Battle
 
-    def get_queryset(self):
-        return Battle.objects.filter(trainer_opponent=self.request.user.id)
+    def get_context_data(self, **kwargs):   # pylint: disable=arguments-differ
+        context = super().get_context_data(**kwargs)
+        context['on_going'] = Battle.objects.filter(
+            trainer_opponent=self.request.user.id,
+            status='ON_GOING'
+        )
+        context['settled'] = Battle.objects.filter(status='SETTLED')
+
+        return context

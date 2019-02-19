@@ -12,5 +12,7 @@
     margin-bottom: 20px;
     padding: 20px;
     box-sizing: border-box;
+    border-radius: 5px;
     border: 1px solid lightgray;
+    box-shadow: 1px 1px 4px lightgray;
 }

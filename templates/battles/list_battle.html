@@ -9,11 +9,24 @@
 {% block body %}
 
 <section class="list__battle">
-    {% for battle in object_list %}
+
+    {% if on_going %}
+    <h2>On Going Battles</h2>
+    {% for battle in on_going %}
     <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
         <div class="battle">Battle: {{ battle.id }}</div>
     </a>
     {% endfor %}
+    {% endif %}
+    
+    {% if settled %}
+    <h2>Settled Battles</h2>
+    {% for battle in settled %}
+    <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
+        <div class="battle">Battle: {{ battle.id }}</div>
+    <!-- </a> -->
+    {% endfor %}
+    {% endif %}
 </section>
 
 {% endblock %}

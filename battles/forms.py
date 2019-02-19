@@ -8,12 +8,14 @@ from pokemons.models import Pokemon
 class CreateBattleForm(forms.ModelForm):
     class Meta:
         model = Battle
-        fields = ('trainer_opponent', 'trainer_creator')
+        fields = ('trainer_opponent', 'trainer_creator', 'status')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['trainer_creator'].initial = self.initial['user'].id
         self.fields['trainer_creator'].widget = forms.HiddenInput()
+        self.fields['status'].initial = 'ON_GOING'
+        self.fields['status'].widget = forms.HiddenInput()
 
         pkm1 = forms.CharField()
         pkm2 = forms.CharField()
@@ -100,6 +102,8 @@ class SelectTrainerTeamForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
+        Battle.objects.filter(id=self.initial['battle']).update(status='SETTLED')
+
         pokemons = [
             self.cleaned_data['pokemon_1'].lower().strip(),
             self.cleaned_data['pokemon_2'].lower().strip(),
