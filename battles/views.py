@@ -60,10 +60,7 @@ class BattlesListView(ListView):
 
     def get_context_data(self, **kwargs):   # pylint: disable=arguments-differ
         context = super().get_context_data(**kwargs)
-        context['on_going'] = Battle.objects.filter(
-            trainer_opponent=self.request.user.id,
-            status='ON_GOING'
-        )
+        context['on_going'] = Battle.objects.filter(status='ON_GOING')
         context['settled'] = Battle.objects.filter(status='SETTLED')
 
         return context

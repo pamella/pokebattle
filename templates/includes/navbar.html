@@ -1,15 +1,21 @@
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+{% endblock %}
+
 <div class="header__container">
+    <img class="header__logo" src="{% static 'img/logo.svg' %}" alt="pokebattle's logo">
     <span class="header__title">PokeBattle</span>
 </div>
 
 <nav class="menu">
     
     {% if not request.user.is_authenticated %}
-        <a href="{% url 'users:login' %}">Login</a>
+        <a class="menu__link" href="{% url 'users:login' %}">Login</a>
     {% else %}
-        <a href="{% url 'battles:create_battle' %}">Create a Battle!</a>
-        <a href="{% url 'battles:list_battle' %}">My Battles</a>
-        <span>Hi, {{ user }}!</span>
-        <a href="{% url 'users:logout' %}">Logout</a>
+        <a class="menu__link" href="{% url 'battles:create_battle' %}">Create a Battle!</a>
+        <a class="menu__link" href="{% url 'battles:list_battle' %}">My Battles</a>
+        <a class="menu__user">Hi, <span>{{ user }}</span>!</a>  <!-- FUTURE PROFILE DETAIL, CHANGE CLASS NAME -->
+        <a class="menu__link" href="{% url 'users:logout' %}">Logout</a>
     {% endif %}
 </nav>

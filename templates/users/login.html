@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Login | PokeBattle{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block body %}
 
     <div class="login">
-        <div class="login__title">Login</div>
-        <form class="login-form" method="POST">
+        <h2 class="title">Login</h2>
+        <form class="login__form" method="POST">
             {% csrf_token %}
             
             {{ form.as_p }}
-            <input type="submit" value="Login">
+            <input class="button" type="submit" value="Login">
         </form>
     </div>
 

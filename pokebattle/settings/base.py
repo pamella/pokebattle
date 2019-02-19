@@ -91,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL =  '/'
+LOGIN_REDIRECT_URL =  '/create_battle/'
 
 LANGUAGE_CODE = 'en-us'
 

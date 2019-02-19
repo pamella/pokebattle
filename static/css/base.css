@@ -7,29 +7,19 @@ body {
     font-family: 'Ubuntu', sans-serif;
 }
 
-/* Navbar */
-.header__container, .menu {
-    display: flex;    
-    align-items: center;
-    width: 100%;
-}
-
-.header__container {
-    justify-content: center;
-    height: 60px;
-    background-color: #1271bf;
-}
-
-.header__title {
+.button {
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #004d99;
     color: white;
-    font-size: 1.5rem;
-    font-weight: 500;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 150ms;
 }
 
-.menu {
-    justify-content: space-around;
-    height: 50px;
+.button:hover {
     background-color: white;
-    box-shadow: 1px 1px 1px lightgray;
+    color: #004d99;
+    border-color: #004d99;
 }
-

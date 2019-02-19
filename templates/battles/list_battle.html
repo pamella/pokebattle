@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}My Battles | PokeBatlle{% endblock %}
+
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/list_battle.css' %}">
 {% endblock %}
@@ -8,25 +10,34 @@
 
 {% block body %}
 
-<section class="list__battle">
-
-    {% if on_going %}
-    <h2>On Going Battles</h2>
-    {% for battle in on_going %}
-    <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
-        <div class="battle">Battle: {{ battle.id }}</div>
-    </a>
-    {% endfor %}
-    {% endif %}
+<section class="list">
+    <div class="list__content">
     
-    {% if settled %}
-    <h2>Settled Battles</h2>
-    {% for battle in settled %}
-    <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
-        <div class="battle">Battle: {{ battle.id }}</div>
-    <!-- </a> -->
-    {% endfor %}
-    {% endif %}
+        {% if on_going %}
+        <h2>On Going Battles</h2>
+            {% for battle in on_going %}
+
+                {% if battle.trainer_opponent == user %}    <!-- TRAINER OPPONENT -->
+                <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
+                    <div class="battle">Battle: {{ battle.id }} (Challenge back)</div>
+                </a>
+                {% else %}  <!-- TRAINER CREATOR -->
+                <div class="battle">Battle: {{ battle.id }} (Waiting {{ battle.trainer_opponent }} to challenge back)</div>
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
+        
+        {% if settled %}
+        <h2>Settled Battles</h2>
+        {% for battle in settled %}
+        <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
+            <div class="battle">Battle: {{ battle.id }}</div>
+        <!-- </a> -->
+        {% endfor %}
+        {% endif %}
+        
+    </div>
 </section>
 
 {% endblock %}
