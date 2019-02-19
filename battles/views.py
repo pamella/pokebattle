@@ -11,7 +11,7 @@ class CreateBattleView(
     LoginRequiredMixin,
     SuccessMessageMixin,
     CreateView
-):  # pylint: disable=too-many-ancestors
+):
     template_name = 'battles/create_battle.html'
     model = Battle
     form_class = CreateBattleForm
@@ -34,7 +34,7 @@ class SelectTrainerTeam(
     LoginRequiredMixin,
     SuccessMessageMixin,
     CreateView
-):  # pylint: disable=too-many-ancestors
+):
     template_name = 'battles/select_team.html'
     model = TrainerTeam
     form_class = SelectTrainerTeamForm
@@ -54,7 +54,7 @@ class SelectTrainerTeam(
         )
 
 
-class BattlesListView(ListView):  # pylint: disable=too-many-ancestors
+class BattlesListView(ListView):
     template_name = 'battles/list_battle.html'
     model = Battle
 
