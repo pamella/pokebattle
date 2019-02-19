@@ -36,7 +36,11 @@
         <!-- </a> -->
         {% endfor %}
         {% endif %}
-        
+
+        {% if not on_going and not settled %}
+        <h2>You don't have any battle yet.</h2>
+        <a href="{% url 'battles:create_battle' %}">Challenge another trainer!</a>
+        {% endif %}
     </div>
 </section>
 
