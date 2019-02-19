@@ -12,6 +12,7 @@ urlpatterns = [
 
     url(r'^$', TemplateView.as_view(template_name='base.html'), name='home'),
     url(r'', include('battles.urls')),
+    url(r'', include('users.urls')),
 ]
 
 if settings.DEBUG:
