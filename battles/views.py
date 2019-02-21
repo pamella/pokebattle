@@ -8,10 +8,7 @@ from battles.models import Battle, TrainerTeam
 
 
 class CreateBattleView(
-    LoginRequiredMixin,
-    SuccessMessageMixin,
-    CreateView
-):
+        LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'battles/create_battle.html'
     model = Battle
     form_class = CreateBattleForm
@@ -31,10 +28,7 @@ class CreateBattleView(
 
 
 class SelectTrainerTeam(
-    LoginRequiredMixin,
-    SuccessMessageMixin,
-    CreateView
-):
+        LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'battles/select_team.html'
     model = TrainerTeam
     form_class = SelectTrainerTeamForm
