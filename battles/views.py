@@ -56,5 +56,6 @@ class BattlesListView(ListView):
         context = super().get_context_data(**kwargs)
         context['on_going'] = Battle.objects.filter(status='ON_GOING')
         context['settled'] = Battle.objects.filter(status='SETTLED')
+        context['trainer_team'] = TrainerTeam.objects.filter(trainer=self.request.user)
 
         return context

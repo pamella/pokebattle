@@ -10,13 +10,43 @@
     width: 70%;
 }
 
+.list__wrap {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 .list .battle {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 250px;
+    margin-bottom: 30px;
     padding: 20px;
     box-sizing: border-box;
     border-radius: 5px;
     border: 1px solid lightgray;
     box-shadow: 1px 1px 4px lightgray;
+}
+
+.list .battle.center {
+    align-items: center;
+}
+
+.battle hr {
+    width: 100%;
+}
+
+.waiting {
+    font-weight: 500;
+    color:  #ff6600;
+}
+
+.bold {
+    font-weight: 500;
+}
+
+.team__list {
+    list-style: none;
 }

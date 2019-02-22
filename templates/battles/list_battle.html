@@ -14,33 +14,71 @@
     <div class="list__content">
     
         {% if on_going %}
-        <h2>On Going Battles</h2>
-            {% for battle in on_going %}
+            <h2>On Going Battles</h2>
+            <div class="list__wrap">
+                {% for battle in on_going %}
+    
+                    {% if battle.trainer_opponent == user %}    <!-- TRAINER OPPONENT -->
+                        <div class="battle center">
+                            <p>Trainer {{ battle.trainer_creator.get_short_name }} challenge you.</p>
+                            <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
+                                <p>Select your team to challenge back!</p>
+                            </a>
+                        </div>                        
+                    {% elif battle.trainer_creator == user %}  <!-- TRAINER CREATOR -->
+                    {% for team in trainer_team %}
+                        <div class="battle"> 
+                            <p class="waiting">Waiting trainer to challenge back.</p>
+                            <hr>
+                            <p class="battle__opponent">
+                                <span class="bold">Opponent: </span>{{ battle.trainer_opponent.get_short_name }}
+                            </p>
+                            <div>
+                                <p class="bold">Your team:</p>
+                                <ul class="team__list">
+                                    <li>{{ team.pokemon_1 }}</li>
+                                    <li>{{ team.pokemon_2 }}</li>
+                                    <li>{{ team.pokemon_3 }}</li>
+                                </ul> 
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
 
-                {% if battle.trainer_opponent == user %}    <!-- TRAINER OPPONENT -->
-                <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
-                    <div class="battle">Battle: {{ battle.id }} (Challenge back)</div>
-                </a>
-                {% else %}  <!-- TRAINER CREATOR -->
-                <div class="battle">Battle: {{ battle.id }} (Waiting {{ battle.trainer_opponent }} to challenge back)</div>
-                {% endif %}
-
-            {% endfor %}
+                {% endfor %}
+            </div>
         {% endif %}
         
+
         {% if settled %}
-        <h2>Settled Battles</h2>
-        {% for battle in settled %}
-        <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
-            <div class="battle">Battle: {{ battle.id }}</div>
-        <!-- </a> -->
-        {% endfor %}
+            <h2>Settled Battles</h2>
+            <div class="list__wrap">
+                {% for team in trainer_team %}
+                <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
+                    <div class="battle">
+                        <p class="battle__opponent">
+                            <span class="bold">Opponent: </span>{{ team.battle_related.trainer_opponent.get_short_name }}
+                        </p>
+                        <div>
+                            <p class="bold">Your team:</p>
+                            <ul class="team__list">
+                                <li>{{ team.pokemon_1 }}</li>
+                                <li>{{ team.pokemon_2 }}</li>
+                                <li>{{ team.pokemon_3 }}</li>
+                            </ul> 
+                        </div>
+                    </div>
+                <!-- </a> -->
+                {% endfor %}
+            </div>  
         {% endif %}
 
+
         {% if not on_going and not settled %}
-        <h2>You don't have any battle yet.</h2>
-        <a href="{% url 'battles:create_battle' %}">Challenge another trainer!</a>
+            <h2>You don't have any battle yet.</h2>
+            <a href="{% url 'battles:create_battle' %}">Challenge another trainer!</a>
         {% endif %}
+
     </div>
 </section>
 
