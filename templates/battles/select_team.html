@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Select your team | PokeBattle{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/select_battle.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<section class="select">
+    <h2 class="title">Select your team to challenge back!</h2>
+
+    <form method="POST" class="select__form">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <input class="button" type="submit" value="Challenge back!">
+    </form>
+</section>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Battle | PokeBattle{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/create_battle.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<section class="create">
+    <h2 class="title">Select your opponent and your team to battle!</h2>
+    
+    <form method="POST" class="create__form">
+        {% csrf_token %}
+
+        {% if form.subject.errors %}
+            <p class="error">{{ form.errors }}</p>
+        {% endif %}
+
+        {{ form.as_p }}
+        <input class="button" type="submit" value="Challenge now!">
+    </form>
+</section>
+
+{% endblock %}

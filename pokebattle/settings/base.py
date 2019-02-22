@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     'common',
     'users',
+    'pokemons',
+    'battles',
+
 ]
 
 MIDDLEWARE = [
@@ -88,6 +91,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL =  '/create_battle/'
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -99,6 +104,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATICFILES_DIRS = (
+    base_dir_join('static'),
     base_dir_join('assets'),
 )
 

@@ -50,7 +50,7 @@ CELERY_RESULT_BACKEND = config('REDIS_URL')
 CELERY_SEND_TASK_ERROR_EMAILS = True
 
 # Whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 MIDDLEWARE.insert(  # insert WhiteNoiseMiddleware right after SecurityMiddleware
     MIDDLEWARE.index('django.middleware.security.SecurityMiddleware') + 1,
     'whitenoise.middleware.WhiteNoiseMiddleware')

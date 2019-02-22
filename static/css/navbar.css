@@ -1,0 +1,43 @@
+/* Navbar */
+.header__container, .menu {
+    display: flex;    
+    align-items: center;
+    width: 100%;
+}
+
+.header__container {
+    justify-content: center;
+    height: 60px;
+    background-color: #004d99;
+}
+
+.header__title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.header__logo {
+    width: 2.5rem;
+    margin-right: 5px;
+}
+
+.menu {
+    justify-content: space-around;
+    height: 50px;
+    background-color: white;
+    box-shadow: 1px 1px 1px lightgray;
+}
+
+.menu__link, .menu__user {
+    text-decoration: none;
+    color:  #004d99;
+}
+
+.menu__link:hover {
+    color: #479cf1;
+}
+
+.menu__link span {
+    font-weight: 500;
+}

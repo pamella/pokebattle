@@ -13,10 +13,13 @@ isort = "*"
 model-mommy = "*"
 pre-commit = "*"
 prospector = {extras = ["with-vulture"]}
-pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
 safety = "*"
+requests = "*"
+ipdb = "*"
+pylint = "*"
+astroid = "*"
 
 [packages]
 django = "*"
@@ -35,6 +38,7 @@ whitenoise = "*"
 psutil = "*"
 ipython = "*"
 psycopg2-binary = "*"
+django-widget-tweaks = "*"
 
 [requires]
 python_version = "3.6"
