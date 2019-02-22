@@ -22,3 +22,10 @@ def is_pokemons_sum_valid(pokemons):
     pokemons_sum = sum([sum(aux[i].values()) for i in range(len(aux))])
 
     return pokemons_sum <= limit
+
+
+def exists(name):
+    url = f'{POKEAPI_ROOT}/{name}'
+    if requests.get(url).status_code == 404:
+        return False
+    return True

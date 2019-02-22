@@ -1,7 +1,7 @@
 from django import forms
 
 from battles.models import Battle, TrainerTeam
-from pokemons.helpers import get_pokemon_stats, is_pokemons_sum_valid
+from pokemons.helpers import exists, get_pokemon_stats, is_pokemons_sum_valid
 from pokemons.models import Pokemon
 
 
@@ -33,6 +33,12 @@ class CreateBattleForm(forms.ModelForm):
             self.cleaned_data['pokemon_2'].lower().strip(),
             self.cleaned_data['pokemon_3'].lower().strip()
         ]
+
+        for pokemon in pokemons:
+            if not exists(pokemon):
+                raise forms.ValidationError(
+                    'We couldnt find "{}". Please, check if you wrote it correctly.'.format(pokemon)
+                )
 
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
@@ -97,6 +103,12 @@ class SelectTrainerTeamForm(forms.ModelForm):
             self.cleaned_data['pokemon_2'].lower().strip(),
             self.cleaned_data['pokemon_3'].lower().strip()
         ]
+
+        for pokemon in pokemons:
+            if not exists(pokemon):
+                raise forms.ValidationError(
+                    'We couldnt find "{}". Please, check if you wrote it correctly.'.format(pokemon)
+                )
 
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
