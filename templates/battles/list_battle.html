@@ -22,7 +22,7 @@
                         <div class="battle center">
                             <p>Trainer <span class="bold">{{ battle.trainer_creator.get_short_name }}</span> challenged you.</p>
                             <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
-                                <p>Select your team to challenge back!</p>
+                                <p>Select My team to challenge back!</p>
                             </a>
                         </div>                        
                     {% elif battle.trainer_creator == user %}  <!-- TRAINER CREATOR = AUTH USER -->
@@ -35,7 +35,7 @@
                                         <span class="bold">Opponent: </span>{{ battle.trainer_opponent.get_short_name }}
                                     </p>
                                     <div>
-                                        <p class="bold">Your team:</p>
+                                        <p class="bold">My team:</p>
                                         <ul class="team__list">
                                             <li>{{ team.pokemon_1 }}</li>
                                             <li>{{ team.pokemon_2 }}</li>
@@ -57,21 +57,32 @@
             <div class="list__wrap">
                 {% for battle in settled %}
                     {% for team in trainer_team %}
-                    <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
-                        <div class="battle">
-                            <p class="battle__opponent">
-                                <span class="bold">Opponent: {{ team.battle_related.id }} </span>{{ team.battle_related.trainer_opponent.get_short_name }}
-                            </p>
-                            <div>
-                                <p class="bold">Your team:</p>
-                                <ul class="team__list">
-                                    <li>{{ team.pokemon_1 }}</li>
-                                    <li>{{ team.pokemon_2 }}</li>
-                                    <li>{{ team.pokemon_3 }}</li>
-                                </ul> 
+                        {% if battle.id == team.battle_related.id %}
+                        <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
+                            <div class="battle">
+                                <p class="blue">
+                                    <span class="bold">Winner: </span>{{ team.battle_related.trainer_winner.get_short_name }}    
+                                </p>
+                                <hr>
+                                <p class="battle__opponent">                                    
+                                    <span class="bold">Opponent: </span>
+                                    {% if battle.trainer_opponent == user %}    <!-- TRAINER OPPONENT = AUTH USER -->
+                                        {{ team.battle_related.trainer_creator.get_short_name }}
+                                    {% else %} <!-- TRAINER CREATOR = AUTH USER -->
+                                        {{ team.battle_related.trainer_opponent.get_short_name }}
+                                    {% endif %}
+                                </p>
+                                <div>
+                                    <p class="bold">My team:</p>
+                                    <ul class="team__list">
+                                        <li>{{ team.pokemon_1 }}</li>
+                                        <li>{{ team.pokemon_2 }}</li>
+                                        <li>{{ team.pokemon_3 }}</li>
+                                    </ul> 
+                                </div>
                             </div>
-                        </div>
-                    <!-- </a> -->
+                        <!-- </a> -->
+                        {% endif %}
                     {% endfor %}
                 {% endfor %}
             </div>  

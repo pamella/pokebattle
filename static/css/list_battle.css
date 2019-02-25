@@ -47,6 +47,10 @@
     font-weight: 500;
 }
 
+.blue {
+    color: #3399ff;
+}
+
 .team__list {
     list-style: none;
 }

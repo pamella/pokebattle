@@ -1,5 +1,7 @@
 from django import forms
+from django.db.models import Q
 
+from battles.helpers import battle
 from battles.models import Battle, TrainerTeam
 from pokemons.helpers import exists, get_pokemon_stats, is_pokemons_sum_valid
 from pokemons.models import Pokemon
@@ -124,6 +126,17 @@ class SelectTrainerTeamForm(forms.ModelForm):
             self.cleaned_data['pokemon_3'].lower().strip()
         ]
 
+        trainer_creator = Battle.objects.get(id=self.initial['battle']).trainer_creator
+        trainer_team_creator = TrainerTeam.objects.get(
+            Q(battle_related=self.initial['battle_related']), Q(trainer=trainer_creator)
+        )
+        pokemons_creator = [
+            trainer_team_creator.pokemon_1,
+            trainer_team_creator.pokemon_2,
+            trainer_team_creator.pokemon_3
+        ]
+
+        pokemons_opponent = []
         for pokemon in pokemons:
             if Pokemon.objects.filter(name=pokemon).count() == 0:
                 Pokemon.objects.create(
@@ -132,6 +145,13 @@ class SelectTrainerTeamForm(forms.ModelForm):
                     defense=get_pokemon_stats(pokemon)['defense'],
                     hitpoints=get_pokemon_stats(pokemon)['hitpoints'],
                 )
+            pokemons_opponent.append(Pokemon.objects.get(name=pokemon))
+
+        if battle(pokemons_creator, pokemons_opponent) == 'creator':
+            Battle.objects.filter(id=self.initial['battle']).update(trainer_winner=trainer_creator)
+        else:
+            Battle.objects.filter(id=self.initial['battle']).update(
+                trainer_winner=self.initial['user'])
 
         Battle.objects.filter(id=self.initial['battle']).update(status='SETTLED')
         self.instance.trainer = self.initial['user']
