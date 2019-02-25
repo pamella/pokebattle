@@ -13,25 +13,54 @@
 <section class="list">
     <div class="list__content">
     
-        {% if on_going %}
+        {% if on_going and trainer_team %}
             <h2>On Going Battles</h2>
             <div class="list__wrap">
                 {% for battle in on_going %}
     
-                    {% if battle.trainer_opponent == user %}    <!-- TRAINER OPPONENT -->
+                    {% if battle.trainer_opponent == user %}    <!-- TRAINER OPPONENT = AUTH USER -->
                         <div class="battle center">
-                            <p>Trainer {{ battle.trainer_creator.get_short_name }} challenge you.</p>
+                            <p>Trainer <span class="bold">{{ battle.trainer_creator.get_short_name }}</span> challenged you.</p>
                             <a href="{% url 'battles:select_team' %}?id={{ battle.id }}">
                                 <p>Select your team to challenge back!</p>
                             </a>
                         </div>                        
-                    {% elif battle.trainer_creator == user %}  <!-- TRAINER CREATOR -->
+                    {% elif battle.trainer_creator == user %}  <!-- TRAINER CREATOR = AUTH USER -->
+                        {% for team in trainer_team %}
+                            {% if battle.id == team.battle_related.id %}
+                                <div class="battle"> 
+                                    <p class="waiting">Waiting trainer to challenge back.</p>
+                                    <hr>
+                                    <p class="battle__opponent">
+                                        <span class="bold">Opponent: </span>{{ battle.trainer_opponent.get_short_name }}
+                                    </p>
+                                    <div>
+                                        <p class="bold">Your team:</p>
+                                        <ul class="team__list">
+                                            <li>{{ team.pokemon_1 }}</li>
+                                            <li>{{ team.pokemon_2 }}</li>
+                                            <li>{{ team.pokemon_3 }}</li>
+                                        </ul> 
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+
+        {% if settled and trainer_team %}
+            <h2>Settled Battles</h2>
+            <div class="list__wrap">
+                {% for battle in settled %}
                     {% for team in trainer_team %}
-                        <div class="battle"> 
-                            <p class="waiting">Waiting trainer to challenge back.</p>
-                            <hr>
+                    <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
+                        <div class="battle">
                             <p class="battle__opponent">
-                                <span class="bold">Opponent: </span>{{ battle.trainer_opponent.get_short_name }}
+                                <span class="bold">Opponent: {{ team.battle_related.id }} </span>{{ team.battle_related.trainer_opponent.get_short_name }}
                             </p>
                             <div>
                                 <p class="bold">Your team:</p>
@@ -42,39 +71,14 @@
                                 </ul> 
                             </div>
                         </div>
-                        {% endfor %}
-                    {% endif %}
-
-                {% endfor %}
-            </div>
-        {% endif %}
-        
-
-        {% if settled %}
-            <h2>Settled Battles</h2>
-            <div class="list__wrap">
-                {% for team in trainer_team %}
-                <!-- <a href="{% url 'battles:select_team' %}?id={{ battle.id }}"> THIS IS GONNA BE BATTLE DETAIL --> 
-                    <div class="battle">
-                        <p class="battle__opponent">
-                            <span class="bold">Opponent: </span>{{ team.battle_related.trainer_opponent.get_short_name }}
-                        </p>
-                        <div>
-                            <p class="bold">Your team:</p>
-                            <ul class="team__list">
-                                <li>{{ team.pokemon_1 }}</li>
-                                <li>{{ team.pokemon_2 }}</li>
-                                <li>{{ team.pokemon_3 }}</li>
-                            </ul> 
-                        </div>
-                    </div>
-                <!-- </a> -->
+                    <!-- </a> -->
+                    {% endfor %}
                 {% endfor %}
             </div>  
         {% endif %}
 
 
-        {% if not on_going and not settled %}
+        {% if not trainer_team %}
             <h2>You don't have any battle yet.</h2>
             <a href="{% url 'battles:create_battle' %}">Challenge another trainer!</a>
         {% endif %}
