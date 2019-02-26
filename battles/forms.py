@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import Q
 
-from battles.helpers import battle
+from battles.helpers import get_battle_winner, send_battle_result_email
 from battles.models import Battle, TrainerTeam
 from pokemons.helpers import exists, get_pokemon_stats, is_pokemons_sum_valid
 from pokemons.models import Pokemon
@@ -147,7 +147,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
                 )
             pokemons_opponent.append(Pokemon.objects.get(name=pokemon))
 
-        if battle(pokemons_creator, pokemons_opponent) == 'creator':
+        if get_battle_winner(pokemons_creator, pokemons_opponent) == 'creator':
             Battle.objects.filter(id=self.initial['battle']).update(trainer_winner=trainer_creator)
         else:
             Battle.objects.filter(id=self.initial['battle']).update(
@@ -160,4 +160,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
         self.instance.pokemon_3 = Pokemon.objects.get(name=pokemons[2])
         self.instance.battle_related = Battle.objects.get(id=self.initial['battle_related'])
         self.instance.save()
+        # send both trainers the battle result email
+        send_battle_result_email(self.instance.battle_related)
+
         return super().save()

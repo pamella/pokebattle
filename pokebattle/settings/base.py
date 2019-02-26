@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django_js_reverse',
     'webpack_loader',
     'import_export',
+    'templated_email',
 
     'common',
     'users',
@@ -126,3 +127,6 @@ WEBPACK_LOADER = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Email
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'
