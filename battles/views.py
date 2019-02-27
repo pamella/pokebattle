@@ -48,7 +48,7 @@ class SelectTrainerTeam(
         )
 
 
-class BattlesListView(ListView):
+class BattlesListView(LoginRequiredMixin, ListView):
     template_name = 'battles/list_battle.html'
     model = Battle
 
