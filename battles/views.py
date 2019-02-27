@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 
@@ -56,6 +57,9 @@ class BattlesListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['on_going'] = Battle.objects.filter(status='ON_GOING')
         context['settled'] = Battle.objects.filter(status='SETTLED')
+        context['has_battle_before'] = Battle.objects.filter(
+            Q(trainer_creator=self.request.user) | Q(trainer_opponent=self.request.user)
+        ).exists()
         context['trainer_team'] = TrainerTeam.objects.filter(trainer=self.request.user)
 
         return context

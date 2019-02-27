@@ -13,7 +13,7 @@
 <section class="list">
     <div class="list__content">
     
-        {% if on_going and trainer_team %}
+        {% if on_going %}
             <h2>On Going Battles</h2>
             <div class="list__wrap">
                 {% for battle in on_going %}
@@ -89,7 +89,7 @@
         {% endif %}
 
 
-        {% if not trainer_team %}
+        {% if not has_battle_before %}
             <h2>You don't have any battle yet.</h2>
             <a href="{% url 'battles:create_battle' %}">Challenge another trainer!</a>
         {% endif %}
