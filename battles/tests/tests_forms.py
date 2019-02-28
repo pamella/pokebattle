@@ -13,6 +13,7 @@ class CreateBattleFormTest(TestCase):
         self.user.save()
         self.auth_client = Client()
         self.auth_client.login(email=self.user.email, password=self._user_password)
+        self.battle = mommy.make('battles.Battle')
 
     def test_not_found_pokemon_error(self):
         attr = {
@@ -27,20 +28,29 @@ class CreateBattleFormTest(TestCase):
         }
         form = CreateBattleForm(**attr)
         self.assertFalse(form.is_valid())
+        with self.assertRaisesMessage(
+                Exception,
+                '[\'We couldnt find "dittossss". Please, check if you wrote it correctly.\']'):
+            form.clean()
 
     def test_pokemon_team_sum_invalid(self):
         attr = {
             'initial': {
-                'trainer_creator': self.user.id
+                'trainer_creator': self.user,
             },
             'data': {
-                'pokemon_1': 'pidgeotto',
-                'pokemon_2': 'slowbro',
+                'trainer_opponent': mommy.make('users.User'),
+                'pokemon_1': 'slowbro',
+                'pokemon_2': 'golem',
                 'pokemon_3': 'doduo'
             }
         }
         form = CreateBattleForm(**attr)
         self.assertFalse(form.is_valid())
+        with self.assertRaisesMessage(
+                Exception,
+                'Trainer, your pokemon team stats can not sum more than 600 points.'):
+            form.clean()
 
 
 class SelectTrainerTeamFormTest(TestCase):
@@ -65,6 +75,10 @@ class SelectTrainerTeamFormTest(TestCase):
         }
         form = SelectTrainerTeamForm(**attr)
         self.assertFalse(form.is_valid())
+        with self.assertRaisesMessage(
+                Exception,
+                '[\'We couldnt find "dittossss". Please, check if you wrote it correctly.\']'):
+            form.clean()
 
     def test_pokemon_team_sum_invalid(self):
         attr = {
@@ -72,10 +86,15 @@ class SelectTrainerTeamFormTest(TestCase):
                 'trainer_creator': self.user.id
             },
             'data': {
-                'pokemon_1': 'pidgeotto',
-                'pokemon_2': 'slowbro',
+                'trainer_opponent': mommy.make('users.User'),
+                'pokemon_1': 'slowbro',
+                'pokemon_2': 'golem',
                 'pokemon_3': 'doduo'
             }
         }
         form = SelectTrainerTeamForm(**attr)
         self.assertFalse(form.is_valid())
+        with self.assertRaisesMessage(
+                Exception,
+                'Trainer, your pokemon team stats can not sum more than 600 points.'):
+            form.clean()
