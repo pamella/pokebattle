@@ -1,20 +1,15 @@
-from django.test import Client, TestCase
 from django.urls import reverse
 
 from model_mommy import mommy
 
 from battles.models import Battle
+from battles.tests.tests_helpers import PokeBattleTestCase
 
 
-class CreateBattleViewTest(TestCase):
+class CreateBattleViewTest(PokeBattleTestCase):
 
     def setUp(self):
-        self._user_password = '123456'
-        self.user = mommy.prepare('users.User', email='user@email.com')
-        self.user.set_password(self._user_password)
-        self.user.save()
-        self.auth_client = Client()
-        self.auth_client.login(email=self.user.email, password=self._user_password)
+        super().setUp()
         self.view_url = reverse('battles:create_battle')
         self.battle = mommy.make('battles.Battle')
         self.battle_attr = {
@@ -40,14 +35,10 @@ class CreateBattleViewTest(TestCase):
         self.assertTrue(battle)
 
 
-class SelectTrainerTeamTest(TestCase):
+class SelectTrainerTeamTest(PokeBattleTestCase):
+
     def setUp(self):
-        self._user_password = '123456'
-        self.user = mommy.prepare('users.User', email='user@email.com')
-        self.user.set_password(self._user_password)
-        self.user.save()
-        self.auth_client = Client()
-        self.auth_client.login(email=self.user.email, password=self._user_password)
+        super().setUp()
         self.view_url = reverse('battles:select_team')
 
     def test_auth_get_success(self):
@@ -61,14 +52,10 @@ class SelectTrainerTeamTest(TestCase):
             response, expected_url='/login/?next=/select_team/')
 
 
-class BattlesListViewTest(TestCase):
+class BattlesListViewTest(PokeBattleTestCase):
+
     def setUp(self):
-        self._user_password = '123456'
-        self.user = mommy.prepare('users.User', email='user@email.com')
-        self.user.set_password(self._user_password)
-        self.user.save()
-        self.auth_client = Client()
-        self.auth_client.login(email=self.user.email, password=self._user_password)
+        super().setUp()
         self.view_url = reverse('battles:list_battle')
 
     def test_auth_get_success(self):

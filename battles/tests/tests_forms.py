@@ -1,18 +1,13 @@
-from django.test import Client, TestCase
-
 from model_mommy import mommy
 
 from battles.forms import CreateBattleForm, SelectTrainerTeamForm
+from battles.tests.tests_helpers import PokeBattleTestCase
 
 
-class CreateBattleFormTest(TestCase):
+class CreateBattleFormTest(PokeBattleTestCase):
+
     def setUp(self):
-        self._user_password = '123456'
-        self.user = mommy.prepare('users.User', email='user@email.com')
-        self.user.set_password(self._user_password)
-        self.user.save()
-        self.auth_client = Client()
-        self.auth_client.login(email=self.user.email, password=self._user_password)
+        super().setUp()
         self.battle = mommy.make('battles.Battle')
 
     def test_not_found_pokemon_error(self):
@@ -53,14 +48,7 @@ class CreateBattleFormTest(TestCase):
             form.clean()
 
 
-class SelectTrainerTeamFormTest(TestCase):
-    def setUp(self):
-        self._user_password = '123456'
-        self.user = mommy.prepare('users.User', email='user@email.com')
-        self.user.set_password(self._user_password)
-        self.user.save()
-        self.auth_client = Client()
-        self.auth_client.login(email=self.user.email, password=self._user_password)
+class SelectTrainerTeamFormTest(PokeBattleTestCase):
 
     def test_not_found_pokemon_error(self):
         attr = {
