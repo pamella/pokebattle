@@ -39,7 +39,7 @@ class CreateBattleForm(forms.ModelForm):
         for pokemon in pokemons:
             if not exists(pokemon):
                 raise forms.ValidationError(
-                    'We couldnt find "{}". Please, check if you wrote it correctly.'.format(pokemon)
+                    f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
                 )
 
         if not is_pokemons_sum_valid(pokemons):
@@ -109,7 +109,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
         for pokemon in pokemons:
             if not exists(pokemon):
                 raise forms.ValidationError(
-                    'We couldnt find "{}". Please, check if you wrote it correctly.'.format(pokemon)
+                    f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
                 )
 
         if not is_pokemons_sum_valid(pokemons):

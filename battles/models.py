@@ -27,12 +27,7 @@ class Battle(models.Model):
         trainer_creator = str(self.trainer_creator).split("@")[0]
         trainer_opponent = str(self.trainer_opponent).split("@")[0]
         date = datetime.datetime.strftime(self.datetime_created, "%m-%d-%Y")
-        return "Battle {}: {} vs {}, AT {}".format(
-            self.id,
-            trainer_creator,
-            trainer_opponent,
-            date
-        )
+        return f"Battle {self.id}: {trainer_creator} vs {trainer_opponent}, AT {date}"
 
 
 class TrainerTeam(models.Model):
@@ -60,4 +55,4 @@ class TrainerTeam(models.Model):
 
     def __str__(self):
         trainer = str(self.trainer).split("@")[0]
-        return "Battle {} | TrainerTeam: {}".format(self.battle_related.id, trainer)
+        return f"Battle {self.battle_related.id} | TrainerTeam: {trainer}"
