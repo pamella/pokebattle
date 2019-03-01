@@ -43,16 +43,11 @@ def send_battle_result_email(battle):
     trainers = [battle.trainer_creator, battle.trainer_opponent]
     for trainer in trainers:
         trainer_opponent = trainers[1] if trainer == trainers[0] else trainers[0]
-        trainer_team = [
-            TrainerTeam.objects.get(battle_related=battle, trainer=trainer).pokemon_1,
-            TrainerTeam.objects.get(battle_related=battle, trainer=trainer).pokemon_2,
-            TrainerTeam.objects.get(battle_related=battle, trainer=trainer).pokemon_3
-        ]
-        trainer_opponent_team = [
-            TrainerTeam.objects.get(battle_related=battle, trainer=trainer_opponent).pokemon_1,
-            TrainerTeam.objects.get(battle_related=battle, trainer=trainer_opponent).pokemon_2,
-            TrainerTeam.objects.get(battle_related=battle, trainer=trainer_opponent).pokemon_3
-        ]
+        trainer_team = TrainerTeam.objects.get(battle_related=battle, trainer=trainer)
+        trainer_opponent_team = TrainerTeam.objects.get(
+            battle_related=battle,
+            trainer=trainer_opponent
+        )
         send_templated_mail(
             template_name='battle_result',
             from_email=settings.SERVER_EMAIL,
