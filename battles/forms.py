@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from battles.helpers import get_battle_winner, send_battle_result_email
 from battles.models import Battle, TrainerTeam
-from pokemons.helpers import exists, get_pokemon_stats, is_pokemons_sum_valid
+from pokemons.helpers import get_pokemon_stats, is_pokemons_sum_valid, pokemon_exists
 from pokemons.models import Pokemon
 
 
@@ -37,7 +37,7 @@ class CreateBattleForm(forms.ModelForm):
         ]
 
         for pokemon in pokemons:
-            if not exists(pokemon):
+            if not pokemon_exists(pokemon):
                 raise forms.ValidationError(
                     f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
                 )
@@ -107,7 +107,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
         ]
 
         for pokemon in pokemons:
-            if not exists(pokemon):
+            if not pokemon_exists(pokemon):
                 raise forms.ValidationError(
                     f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
                 )

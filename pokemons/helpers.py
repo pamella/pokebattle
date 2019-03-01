@@ -24,7 +24,7 @@ def is_pokemons_sum_valid(pokemons):
     return pokemons_sum <= limit
 
 
-def exists(name):
+def pokemon_exists(name):
     url = f'{POKEAPI_ROOT}/{name}'
     if requests.get(url).status_code == 404:
         return False
