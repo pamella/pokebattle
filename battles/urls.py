@@ -1,8 +1,9 @@
 # URLs de battles
 from django.conf.urls import url  # noqa
+from django.urls import path
 from django.views.generic.base import TemplateView
 
-from battles.views import BattlesListView, CreateBattleView, SelectTrainerTeam
+from battles.views import BattlesListView, CreateBattleView, DetailBattleView, SelectTrainerTeam
 
 
 app_name = 'battles'
@@ -12,4 +13,5 @@ urlpatterns = [
     url(r'^create_battle/', CreateBattleView.as_view(), name='create_battle'),
     url(r'^select_team/', SelectTrainerTeam.as_view(), name='select_team'),
     url(r'^success/$', TemplateView.as_view(template_name='battles/success.html'), name='success'),
+    path('detail/<int:pk>/', DetailBattleView.as_view(), name='detail_battle'),
 ]

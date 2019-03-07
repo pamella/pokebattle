@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 
@@ -63,3 +64,13 @@ class BattlesListView(LoginRequiredMixin, ListView):
         context['trainer_team'] = TrainerTeam.objects.filter(trainer=self.request.user)
 
         return context
+
+
+class DetailBattleView(LoginRequiredMixin, DetailView):
+    model = Battle
+    template_name = 'battles/detail_battle.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+
+    #     return context
