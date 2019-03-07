@@ -7,6 +7,22 @@
     text-align: center;
 }
 
+.button.social {
+    display: flex;
+    margin: 20px auto;
+    width: fit-content;
+    height: fit-content;
+    background-color: #e13b28;
+    color: white;
+    text-decoration: none;
+}
+
+.button.social:hover {
+    background-color: white;
+    border-color: #e13b28;
+    color: #e13b28;
+}
+
 .signup__form {
     display: flex;
     align-items: center;

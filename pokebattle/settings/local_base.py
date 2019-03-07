@@ -25,6 +25,10 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 
+# Social auth
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '949796501816-vsiis7tlji3ii6q4qosvvef0cjaccfl5.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'juEWYLquIcQ1Ki1eNE0BR5dZ'
+
 # Celery
 CELERY_TASK_ALWAYS_EAGER = True
 
