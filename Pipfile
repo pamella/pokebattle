@@ -39,6 +39,7 @@ psutil = "*"
 ipython = "*"
 psycopg2-binary = "*"
 django-widget-tweaks = "*"
+django-templated-email = "*"
 
 [requires]
 python_version = "3.6"

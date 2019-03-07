@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django_js_reverse',
     'webpack_loader',
     'import_export',
+    'templated_email',
 
     'common',
     'users',
@@ -91,7 +92,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL =  '/create_battle/'
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL =  'battles:create_battle'
+LOGOUT_REDIRECT_URL = 'home'
 
 LANGUAGE_CODE = 'en-us'
 
@@ -126,3 +129,6 @@ WEBPACK_LOADER = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Email
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'

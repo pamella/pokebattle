@@ -1,7 +1,9 @@
 from django import forms
+from django.db.models import Q
 
+from battles.helpers import get_battle_winner, send_battle_result_email
 from battles.models import Battle, TrainerTeam
-from pokemons.helpers import get_pokemon_stats, is_pokemons_sum_valid
+from pokemons.helpers import get_pokemon_stats, is_pokemons_sum_valid, pokemon_exists
 from pokemons.models import Pokemon
 
 
@@ -33,6 +35,12 @@ class CreateBattleForm(forms.ModelForm):
             self.cleaned_data['pokemon_2'].lower().strip(),
             self.cleaned_data['pokemon_3'].lower().strip()
         ]
+
+        for pokemon in pokemons:
+            if not pokemon_exists(pokemon):
+                raise forms.ValidationError(
+                    f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
+                )
 
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
@@ -98,6 +106,12 @@ class SelectTrainerTeamForm(forms.ModelForm):
             self.cleaned_data['pokemon_3'].lower().strip()
         ]
 
+        for pokemon in pokemons:
+            if not pokemon_exists(pokemon):
+                raise forms.ValidationError(
+                    f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
+                )
+
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
                 'Trainer, your pokemon team stats can not sum more than 600 points.'
@@ -112,6 +126,17 @@ class SelectTrainerTeamForm(forms.ModelForm):
             self.cleaned_data['pokemon_3'].lower().strip()
         ]
 
+        trainer_creator = Battle.objects.get(id=self.initial['battle']).trainer_creator
+        trainer_team_creator = TrainerTeam.objects.get(
+            Q(battle_related=self.initial['battle_related']), Q(trainer=trainer_creator)
+        )
+        pokemons_creator = [
+            trainer_team_creator.pokemon_1,
+            trainer_team_creator.pokemon_2,
+            trainer_team_creator.pokemon_3
+        ]
+
+        pokemons_opponent = []
         for pokemon in pokemons:
             if Pokemon.objects.filter(name=pokemon).count() == 0:
                 Pokemon.objects.create(
@@ -120,6 +145,13 @@ class SelectTrainerTeamForm(forms.ModelForm):
                     defense=get_pokemon_stats(pokemon)['defense'],
                     hitpoints=get_pokemon_stats(pokemon)['hitpoints'],
                 )
+            pokemons_opponent.append(Pokemon.objects.get(name=pokemon))
+
+        if get_battle_winner(pokemons_creator, pokemons_opponent) == 'creator':
+            Battle.objects.filter(id=self.initial['battle']).update(trainer_winner=trainer_creator)
+        else:
+            Battle.objects.filter(id=self.initial['battle']).update(
+                trainer_winner=self.initial['user'])
 
         Battle.objects.filter(id=self.initial['battle']).update(status='SETTLED')
         self.instance.trainer = self.initial['user']
@@ -128,4 +160,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
         self.instance.pokemon_3 = Pokemon.objects.get(name=pokemons[2])
         self.instance.battle_related = Battle.objects.get(id=self.initial['battle_related'])
         self.instance.save()
+        # send both trainers the battle result email
+        send_battle_result_email(self.instance.battle_related)
+
         return super().save()

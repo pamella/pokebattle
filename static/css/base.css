@@ -23,3 +23,7 @@ body {
     color: #004d99;
     border-color: #004d99;
 }
+
+.errorlist, .errorlist li {
+    color: #fd6c6c;
+}

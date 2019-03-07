@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from pokemons.models import Pokemon
@@ -24,12 +26,8 @@ class Battle(models.Model):
     def __str__(self):
         trainer_creator = str(self.trainer_creator).split("@")[0]
         trainer_opponent = str(self.trainer_opponent).split("@")[0]
-        return "Battle {}: {} vs {}, AT {}".format(
-            self.id,
-            trainer_creator,
-            trainer_opponent,
-            self.datetime_created
-        )
+        date = datetime.datetime.strftime(self.datetime_created, "%m-%d-%Y")
+        return f"Battle {self.id}: {trainer_creator} vs {trainer_opponent}, AT {date}"
 
 
 class TrainerTeam(models.Model):
@@ -57,4 +55,4 @@ class TrainerTeam(models.Model):
 
     def __str__(self):
         trainer = str(self.trainer).split("@")[0]
-        return "Battle {} | TrainerTeam: {}".format(self.battle_related.id, trainer)
+        return f"Battle {self.battle_related.id} | TrainerTeam: {trainer}"

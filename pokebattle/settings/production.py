@@ -21,7 +21,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = base_dir_join('mediafiles')
 MEDIA_URL = '/media/'
 
-SERVER_EMAIL = 'pokebattlesender@gmail.com'
+SERVER_EMAIL = config('SERVER_EMAIL', default='')
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = config('SENDGRID_USERNAME')

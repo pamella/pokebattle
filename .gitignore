@@ -6,6 +6,7 @@
 /staticfiles/*
 /mediafiles/*
 __pycache__/
+requirements.txt
 
 # vscode
 .vscode

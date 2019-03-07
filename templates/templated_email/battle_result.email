@@ -1,0 +1,26 @@
+{% block subject %}[PokeBattle] Battle result {% endblock %}
+{% block plain %}
+
+    Hi, trainer! Here there is a follow up about your previous battle.
+
+
+    You: {{ trainer }}
+    Your team:
+        - {{ trainer_team.pokemon_1.name }}
+        - {{ trainer_team.pokemon_2.name }}
+        - {{ trainer_team.pokemon_3.name }}
+
+    Opponent trainer: {{ trainer_opponent }}
+    Opponent trainer team:
+        - {{ trainer_opponent_team.pokemon_1.name }}
+        - {{ trainer_opponent_team.pokemon_2.name }}
+        - {{ trainer_opponent_team.pokemon_3.name }}
+
+
+    And the main result you both have been waiting for... This Battle Winner was... {{ winner }}!!!
+
+
+    Best Regards,
+    PokeBattle@2019.
+
+{% endblock %}
