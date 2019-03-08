@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from battles.helpers import get_battle_winner, send_battle_result_email
 from battles.models import Battle, TrainerTeam
-from pokemons.helpers import get_pokemon_stats, is_pokemons_sum_valid, pokemon_exists
+from pokemons.helpers import get_pokemon_args, is_pokemons_sum_valid, pokemon_exists
 from pokemons.models import Pokemon
 
 
@@ -59,11 +59,14 @@ class CreateBattleForm(forms.ModelForm):
 
         for pokemon in pokemons:
             if Pokemon.objects.filter(name=pokemon).count() == 0:
+                pokemon_args = get_pokemon_args(pokemon)
                 Pokemon.objects.create(
-                    name=pokemon,
-                    attack=get_pokemon_stats(pokemon)['attack'],
-                    defense=get_pokemon_stats(pokemon)['defense'],
-                    hitpoints=get_pokemon_stats(pokemon)['hitpoints'],
+                    api_id=pokemon_args['api_id'],
+                    name=pokemon_args['name'],
+                    sprite=pokemon_args['sprite'],
+                    attack=pokemon_args['attack'],
+                    defense=pokemon_args['defense'],
+                    hitpoints=pokemon_args['hitpoints'],
                 )
 
         TrainerTeam.objects.create(
@@ -139,11 +142,14 @@ class SelectTrainerTeamForm(forms.ModelForm):
         pokemons_opponent = []
         for pokemon in pokemons:
             if Pokemon.objects.filter(name=pokemon).count() == 0:
+                pokemon_args = get_pokemon_args(pokemon)
                 Pokemon.objects.create(
-                    name=pokemon,
-                    attack=get_pokemon_stats(pokemon)['attack'],
-                    defense=get_pokemon_stats(pokemon)['defense'],
-                    hitpoints=get_pokemon_stats(pokemon)['hitpoints'],
+                    api_id=pokemon_args['api_id'],
+                    name=pokemon_args['name'],
+                    sprite=pokemon_args['sprite'],
+                    attack=pokemon_args['attack'],
+                    defense=pokemon_args['defense'],
+                    hitpoints=pokemon_args['hitpoints'],
                 )
             pokemons_opponent.append(Pokemon.objects.get(name=pokemon))
 
