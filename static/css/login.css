@@ -3,10 +3,6 @@
     box-sizing: border-box;
 }
 
-.login .title {
-    text-align: center;
-}
-
 .login__form {
     display: flex;
     align-items: center;

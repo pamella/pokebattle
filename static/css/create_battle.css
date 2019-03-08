@@ -3,10 +3,6 @@
     box-sizing: border-box;
 }
 
-.create .title {
-    text-align: center;
-}
-
 .create__form {
     display: flex;
     align-items: center;

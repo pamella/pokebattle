@@ -11,7 +11,35 @@
 {% block body %}
 
 <section class="detail">
-    
+
+    <div class="container">
+        <div class="item">
+            <h3 class="subtitle">Battle Status</h3>
+            <div class="trainers">
+                {{ battle.status }}
+            </div>
+        </div>
+        
+        <div class="item">
+            <h3 class="subtitle">Battle Trainers</h3>
+            <div class="trainers">
+                {{ battle.trainer_creator }}(creator) <span>VS</span>{{ battle.trainer_opponent }}(trainer_opponent)
+            </div>
+        </div>
+
+        <div class="item">
+            <h3>Rounds</h3>
+            <div class="round">
+                <h4>Round 1</h4>
+                <div class="pokemon">
+                    <img src="{{ pokemons_creator.0.sprite }}" alt="">
+                    <span>{{ pokemons_creator.0 }}</span>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 {% endblock %}

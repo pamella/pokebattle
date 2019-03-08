@@ -3,10 +3,6 @@
     box-sizing: border-box;
 }
 
-.signup .title {
-    text-align: center;
-}
-
 .signup__form {
     display: flex;
     align-items: center;

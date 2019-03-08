@@ -1,5 +1,7 @@
 import requests
 
+from pokemons.models import Pokemon
+
 
 POKEAPI_ROOT = 'https://pokeapi.co/api/v2/pokemon'
 
@@ -38,3 +40,11 @@ def pokemon_exists(name):
     if requests.get(url).status_code == 404:
         return False
     return True
+
+
+def get_pokemons_from_trainerteam(trainerteam):
+    return {
+        '0': Pokemon.objects.get(name=trainerteam.pokemon_1),
+        '1': Pokemon.objects.get(name=trainerteam.pokemon_2),
+        '2': Pokemon.objects.get(name=trainerteam.pokemon_3),
+    }

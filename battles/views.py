@@ -7,6 +7,7 @@ from django.views.generic.list import ListView
 
 from battles.forms import CreateBattleForm, SelectTrainerTeamForm
 from battles.models import Battle, TrainerTeam
+from pokemons.helpers import get_pokemons_from_trainerteam
 
 
 class CreateBattleView(
@@ -70,7 +71,18 @@ class DetailBattleView(LoginRequiredMixin, DetailView):
     model = Battle
     template_name = 'battles/detail_battle.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pokemons_creator'] = get_pokemons_from_trainerteam(
+            TrainerTeam.objects.get(
+                battle_related=self.object.id,
+                trainer=self.object.trainer_creator
+            )
+        )
+        context['pokemons_opponent'] = get_pokemons_from_trainerteam(
+            TrainerTeam.objects.get(
+                battle_related=self.object.id,
+                trainer=self.object.trainer_opponent
+            )
+        )
+        return context

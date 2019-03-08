@@ -7,6 +7,10 @@ body {
     font-family: 'Ubuntu', sans-serif;
 }
 
+.title {
+    text-align: center;
+}
+
 .button {
     padding: 10px;
     box-sizing: border-box;

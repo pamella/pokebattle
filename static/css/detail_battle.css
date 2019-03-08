@@ -1,0 +1,23 @@
+.detail {
+    padding: 30px 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 70%;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.item {
+    margin: 50px auto;
+}
+
+.pokemon {
+    display: flex;
+    flex-direction: column;
+}
+
+.pokemon img {
+    width: min-content;
+}
