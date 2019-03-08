@@ -23,6 +23,10 @@
     color: #e13b28;
 }
 
+.button.social span {
+    font-weight: 500;
+}
+
 .signup__form {
     display: flex;
     align-items: center;
