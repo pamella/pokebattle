@@ -11,6 +11,11 @@
 
     <div class="login">
         <h2 class="title">Login</h2>
+
+        <a class="button social" href="{% url 'social:begin' 'google-oauth2' %}">
+            Login with &nbsp;<span>Google</span>
+        </a>
+
         <form class="login__form" method="POST">
             {% csrf_token %}
             
