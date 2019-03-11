@@ -1,5 +1,6 @@
 import requests
 
+from battles.models import TrainerTeam
 from pokemons.models import Pokemon
 
 
@@ -42,9 +43,13 @@ def pokemon_exists(name):
     return True
 
 
-def get_pokemons_from_trainerteam(trainerteam):
+def get_pokemons_from_trainerteam(battle, trainer):
+    trainerteam = TrainerTeam.objects.get(
+        battle_related=battle,
+        trainer=trainer
+    )
     return {
-        '0': Pokemon.objects.get(name=trainerteam.pokemon_1),
-        '1': Pokemon.objects.get(name=trainerteam.pokemon_2),
-        '2': Pokemon.objects.get(name=trainerteam.pokemon_3),
+        Pokemon.objects.get(name=trainerteam.pokemon_1),
+        Pokemon.objects.get(name=trainerteam.pokemon_2),
+        Pokemon.objects.get(name=trainerteam.pokemon_3),
     }

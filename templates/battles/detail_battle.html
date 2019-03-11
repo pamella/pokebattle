@@ -14,28 +14,63 @@
 
     <div class="container">
         <div class="item">
-            <h3 class="subtitle">Battle Status</h3>
-            <div class="trainers">
-                {{ battle.status }}
+            <h2 class="subtitle">
+                <img src="{% static 'img/fist.png' %}" alt="">
+                Battle Winner
+            </h2>
+            {% if battle.trainer_winner == battle.trainer_creator %}
+            <div class="creator">
+                <b>{{ battle.trainer_winner }}</b>
             </div>
+            {% else %}
+            <div class="opponent">
+                <b>{{ battle.trainer_winner }}</b>
+            </div>
+            {% endif %}
         </div>
         
         <div class="item">
-            <h3 class="subtitle">Battle Trainers</h3>
+            <h2 class="subtitle">
+                <img src="{% static 'img/player.png' %}" alt="">
+                Battle Trainers
+            </h2>
             <div class="trainers">
-                {{ battle.trainer_creator }}(creator) <span>VS</span>{{ battle.trainer_opponent }}(trainer_opponent)
+                <span class="creator">{{ battle.trainer_creator }}</span> VS <span class="opponent">{{ battle.trainer_opponent }}</span>
             </div>
         </div>
 
         <div class="item">
-            <h3>Rounds</h3>
+            <h2>
+                <img src="{% static 'img/fight.png' %}" alt="">
+                Rounds
+            </h2>
             <div class="round">
-                <h4>Round 1</h4>
-                <div class="pokemon">
-                    <img src="{{ pokemons_creator.0.sprite }}" alt="">
-                    <span>{{ pokemons_creator.0 }}</span>
-                    
+                {% for pokemon_creator, pokemon_opponent in pokemons %}
+                <div>
+                    <h3>Round {{forloop.counter}}</h3>
+                    <div class="round_item">
+                        <div class="pokemon">
+                            <img src="{{ pokemon_creator.sprite }}" alt="">
+                            <ul class="stats">
+                                <li class="creator">{{ pokemon_creator.name|title }}</li>
+                                <li>A: {{ pokemon_creator.attack }}</li>
+                                <li>D: {{ pokemon_creator.defense }}</li>
+                                <li>HP: {{ pokemon_creator.hitpoints }}</li>
+                            </ul>
+                        </div>
+    
+                        <div class="pokemon">
+                            <img src="{{ pokemon_opponent.sprite }}" alt="">
+                            <ul class="stats">
+                                <li class="opponent">{{ pokemon_opponent.name|title }}</li>
+                                <li>A: {{ pokemon_opponent.attack }}</li>
+                                <li>D: {{ pokemon_opponent.defense }}</li>
+                                <li>HP: {{ pokemon_opponent.hitpoints }}</li>
+                            </ul>
+                        </div>                    
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

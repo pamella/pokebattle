@@ -73,16 +73,9 @@ class DetailBattleView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['pokemons_creator'] = get_pokemons_from_trainerteam(
-            TrainerTeam.objects.get(
-                battle_related=self.object.id,
-                trainer=self.object.trainer_creator
-            )
-        )
-        context['pokemons_opponent'] = get_pokemons_from_trainerteam(
-            TrainerTeam.objects.get(
-                battle_related=self.object.id,
-                trainer=self.object.trainer_opponent
-            )
-        )
+        pokemons_creator = get_pokemons_from_trainerteam(
+            self.object.id, self.object.trainer_creator)
+        pokemons_opponent = get_pokemons_from_trainerteam(
+            self.object.id, self.object.trainer_opponent)
+        context['pokemons'] = zip(pokemons_creator, pokemons_opponent)
         return context
