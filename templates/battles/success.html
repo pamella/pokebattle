@@ -4,7 +4,7 @@
 {% block title %}Success | PokeBattle{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/create_battle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -12,7 +12,7 @@
 <section>
     {% if messages %}
         {% for message in messages %}
-        <div class="create__success">{{ message }}</div>
+        <div class="success">{{ message }}</div>
         {% endfor %}
     {% endif %}
 </section>

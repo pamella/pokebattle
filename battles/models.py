@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 
+from common.models import IndexedTimeStampedModel
 from pokemons.models import Pokemon
 from users.models import User
 
@@ -56,3 +57,12 @@ class TrainerTeam(models.Model):
     def __str__(self):
         trainer = str(self.trainer).split("@")[0]
         return f"Battle {self.battle_related.id} | TrainerTeam: {trainer}"
+
+
+class Invite(IndexedTimeStampedModel):
+    inviter = models.ForeignKey(User, on_delete=models.CASCADE)
+    invited = models.EmailField()
+    accepted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Invite from {self.inviter.get_short_name()} to {self.invited}'

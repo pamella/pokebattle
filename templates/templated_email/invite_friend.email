@@ -1,0 +1,17 @@
+{% block subject %}[PokeBattle] {{ inviter|title }} invited you to join PokeBattle!{% endblock %}
+{% block html %}
+
+    <p>What's up, {{ invited}}?</p>
+
+    <p>You've been invited to join PokeBattle's team by trainer <b>{{ inviter|title }}</b>.</p>
+
+    <p>
+        In order to accept the invite and pick up your pokemon team to challenge your friend back, 
+        <a href="{{ signup_url }}">sign up here!</a>
+    </p>
+
+
+    Best Regards,
+    PokeBattle@2019.
+
+{% endblock %}

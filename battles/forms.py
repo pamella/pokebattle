@@ -1,10 +1,13 @@
 from django import forms
 from django.db.models import Q
 
-from battles.helpers import get_battle_winner, send_battle_match_invite, send_battle_result_email
-from battles.models import Battle, TrainerTeam
+from battles.helpers import (
+    get_battle_winner, send_battle_match_invite_email, send_battle_result_email
+)
+from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemon_args, is_pokemons_sum_valid, pokemon_exists
 from pokemons.models import Pokemon
+from users.models import User
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -77,7 +80,7 @@ class CreateBattleForm(forms.ModelForm):
             battle_related=self.instance,
         )
         # send battle match invite email to opponent
-        send_battle_match_invite(self.instance)
+        send_battle_match_invite_email(self.instance)
 
         return super().save()
 
@@ -172,3 +175,24 @@ class SelectTrainerTeamForm(forms.ModelForm):
         send_battle_result_email(self.instance.battle_related)
 
         return super().save()
+
+
+class InviteFriendForm(forms.ModelForm):
+    class Meta:
+        model = Invite
+        fields = ('invited', )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        invited_email = self.cleaned_data['invited']
+        for user in User.objects.all():
+            if user.email == invited_email:
+                raise forms.ValidationError(
+                    "This user is already a member of Pokebattle team!"
+                )
+        for invite in Invite.objects.all():
+            if invite.invited == invited_email:
+                raise forms.ValidationError(
+                    "This user email has already been invited to PokeBattle!"
+                )
+        return cleaned_data

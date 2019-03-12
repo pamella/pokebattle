@@ -40,12 +40,6 @@ def get_battle_winner(pokemons_creator, pokemons_opponent):
 
 
 # send email
-def generate_challenge_back_url(battle):
-    select_team_url = reverse_lazy('battles:select_team')
-    challenge_back_url = f'{settings.HOST}{select_team_url}?id={battle.pk}'
-    return challenge_back_url
-
-
 def send_battle_result_email(battle):
     trainers = [battle.trainer_creator, battle.trainer_opponent]
     for trainer in trainers:
@@ -69,7 +63,9 @@ def send_battle_result_email(battle):
         )
 
 
-def send_battle_match_invite(battle):
+def send_battle_match_invite_email(battle):
+    select_team_url = reverse_lazy('battles:select_team')
+    challenge_back_url = f'{settings.HOST}{select_team_url}?id={battle.pk}'
     send_templated_mail(
         template_name='battle_match_invite',
         from_email=settings.SERVER_EMAIL,
@@ -77,6 +73,21 @@ def send_battle_match_invite(battle):
         context={
             'trainer_creator': battle.trainer_creator.get_short_name(),
             'trainer_opponent': battle.trainer_opponent.get_short_name(),
-            'challenge_back_url': generate_challenge_back_url(battle)
+            'challenge_back_url': challenge_back_url,
+        }
+    )
+
+
+def send_invited_friend_email(invite):
+    middle_url = reverse_lazy('users:signup')
+    signup_url = f'{settings.HOST}{middle_url}'
+    send_templated_mail(
+        template_name='invite_friend',
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[invite.invited],
+        context={
+            'inviter': invite.inviter.get_short_name(),
+            'invited': invite.invited,
+            'signup_url': signup_url,
         }
     )

@@ -5,8 +5,9 @@ from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 
-from battles.forms import CreateBattleForm, SelectTrainerTeamForm
-from battles.models import Battle, TrainerTeam
+from battles.forms import CreateBattleForm, InviteFriendForm, SelectTrainerTeamForm
+from battles.helpers import send_invited_friend_email
+from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemons_from_trainerteam
 
 
@@ -26,7 +27,7 @@ class CreateBattleView(
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
             cleaned_data,
-            trainer=self.request.user,
+            trainer=self.request.user.get_short_name(),
         )
 
 
@@ -47,7 +48,7 @@ class SelectTrainerTeam(
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
             cleaned_data,
-            trainer=self.request.user,
+            trainer=self.request.user.get_short_name(),
         )
 
 
@@ -79,3 +80,26 @@ class DetailBattleView(LoginRequiredMixin, DetailView):
             self.object.id, self.object.trainer_opponent)
         context['pokemons'] = zip(pokemons_creator, pokemons_opponent)
         return context
+
+
+class InviteFriendView(
+        LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Invite
+    template_name = 'battles/invite_friend.html'
+    form_class = InviteFriendForm
+    success_url = '/success/'
+    success_message = '%(user)s, your friend was successfully invited!'
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+            user=self.request.user.get_short_name(),
+        )
+
+    def form_valid(self, form):
+        self.instance = form.save(commit=False)
+        self.instance.inviter = self.request.user
+        self.instance.save()
+        # send email to invited friend
+        send_invited_friend_email(self.instance)
+        return super().form_valid(form)
