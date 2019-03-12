@@ -41,6 +41,7 @@ psycopg2-binary = "*"
 django-widget-tweaks = "*"
 django-templated-email = "*"
 social-auth-app-django = "*"
+django-autocomplete-light = "*"
 
 [requires]
 python_version = "3.6"
