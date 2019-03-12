@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
 
@@ -39,6 +40,12 @@ def get_battle_winner(pokemons_creator, pokemons_opponent):
 
 
 # send email
+def generate_challenge_back_url(battle):
+    select_team_url = reverse_lazy('battles:select_team')
+    challenge_back_url = f'{settings.HOST}{select_team_url}?id={battle.pk}'
+    return challenge_back_url
+
+
 def send_battle_result_email(battle):
     trainers = [battle.trainer_creator, battle.trainer_opponent]
     for trainer in trainers:
@@ -60,3 +67,16 @@ def send_battle_result_email(battle):
                 'trainer_opponent_team': trainer_opponent_team,
             }
         )
+
+
+def send_battle_match_invite(battle):
+    send_templated_mail(
+        template_name='battle_match_invite',
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[battle.trainer_opponent.email],
+        context={
+            'trainer_creator': battle.trainer_creator.get_short_name(),
+            'trainer_opponent': battle.trainer_opponent.get_short_name(),
+            'challenge_back_url': generate_challenge_back_url(battle)
+        }
+    )

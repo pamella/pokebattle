@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import Q
 
-from battles.helpers import get_battle_winner, send_battle_result_email
+from battles.helpers import get_battle_winner, send_battle_match_invite, send_battle_result_email
 from battles.models import Battle, TrainerTeam
 from pokemons.helpers import get_pokemon_args, is_pokemons_sum_valid, pokemon_exists
 from pokemons.models import Pokemon
@@ -76,6 +76,8 @@ class CreateBattleForm(forms.ModelForm):
             pokemon_3=Pokemon.objects.get(name=pokemons[2]),
             battle_related=self.instance,
         )
+        # send battle match invite email to opponent
+        send_battle_match_invite(self.instance)
 
         return super().save()
 

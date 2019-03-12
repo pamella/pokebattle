@@ -1,0 +1,14 @@
+{% block subject %}[PokeBattle] Battle match invite from {{ trainer_creator|title }}!{% endblock %}
+{% block html %}
+
+    <p>Hi, trainer {{ trainer_opponent|title}},</p>
+
+    <p>You've been invited to a PokeBattle's match by trainer {{ trainer_creator|title }}.</p>
+
+    <p>In order to accept the challenge and pick your team up, <a href="{{ challenge_back_url }}">click here!</a></p>
+
+
+    Best Regards,
+    PokeBattle@2019.
+
+{% endblock %}
