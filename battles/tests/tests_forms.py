@@ -16,9 +16,12 @@ class CreateBattleFormTest(PokeBattleTestCase):
                 'trainer_creator': self.user.id
             },
             'data': {
-                'pokemon_1': 'dittossss',
-                'pokemon_2': 'ditto',
-                'pokemon_3': 'dito'
+                'pokemon_1': mommy.make(
+                    'pokemons.Pokemon', name='dittossss').id,
+                'pokemon_2': mommy.make(
+                    'pokemons.Pokemon', name='abra').id,
+                'pokemon_3': mommy.make(
+                    'pokemons.Pokemon', name='arbok').id,
             }
         }
         form = CreateBattleForm(**attr)
@@ -35,9 +38,12 @@ class CreateBattleFormTest(PokeBattleTestCase):
             },
             'data': {
                 'trainer_opponent': mommy.make('users.User'),
-                'pokemon_1': 'slowbro',
-                'pokemon_2': 'golem',
-                'pokemon_3': 'doduo'
+                'pokemon_1': mommy.make(
+                    'pokemons.Pokemon', name='slowbro').id,
+                'pokemon_2': mommy.make(
+                    'pokemons.Pokemon', name='golem').id,
+                'pokemon_3': mommy.make(
+                    'pokemons.Pokemon', name='doduo').id,
             }
         }
         form = CreateBattleForm(**attr)
@@ -56,9 +62,12 @@ class SelectTrainerTeamFormTest(PokeBattleTestCase):
                 'trainer_creator': self.user.id
             },
             'data': {
-                'pokemon_1': 'dittossss',
-                'pokemon_2': 'ditto',
-                'pokemon_3': 'dito'
+                'pokemon_1': mommy.make(
+                    'pokemons.Pokemon', name='dittossss').id,
+                'pokemon_2': mommy.make(
+                    'pokemons.Pokemon', name='abra').id,
+                'pokemon_3': mommy.make(
+                    'pokemons.Pokemon', name='arbok').id,
             }
         }
         form = SelectTrainerTeamForm(**attr)
@@ -75,9 +84,12 @@ class SelectTrainerTeamFormTest(PokeBattleTestCase):
             },
             'data': {
                 'trainer_opponent': mommy.make('users.User'),
-                'pokemon_1': 'slowbro',
-                'pokemon_2': 'golem',
-                'pokemon_3': 'doduo'
+                'pokemon_1': mommy.make(
+                    'pokemons.Pokemon', name='slowbro').id,
+                'pokemon_2': mommy.make(
+                    'pokemons.Pokemon', name='golem').id,
+                'pokemon_3': mommy.make(
+                    'pokemons.Pokemon', name='doduo').id,
             }
         }
         form = SelectTrainerTeamForm(**attr)
