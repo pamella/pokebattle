@@ -3,7 +3,8 @@ from django.urls import path
 from django.views.generic.base import TemplateView
 
 from battles.views import (
-    BattlesListView, CreateBattleView, DetailBattleView, InviteFriendView, SelectTrainerTeam
+    BattlesListView, CreateBattleView, DetailBattleView, InviteFriendView, PokemonAutocompleteView,
+    SelectTrainerTeam
 )
 
 
@@ -15,6 +16,7 @@ urlpatterns = [
     path('select_team/', SelectTrainerTeam.as_view(), name='select_team'),
     path('success/', TemplateView.as_view(template_name='battles/success.html'), name='success'),
     path('detail/<int:pk>/', DetailBattleView.as_view(), name='detail_battle'),
+    path('pokemon_autocomplete/', PokemonAutocompleteView.as_view(), name='pokemon_autocomplete'),
     path('invite_friend/', InviteFriendView.as_view(), name='invite_friend'),
 
 ]

@@ -1,14 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
+from django.utils.html import format_html
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 
+from dal import autocomplete
+
 from battles.forms import CreateBattleForm, InviteFriendForm, SelectTrainerTeamForm
 from battles.helpers import send_invited_friend_email
 from battles.models import Battle, Invite, TrainerTeam
-from pokemons.helpers import get_pokemons_from_trainerteam
+from pokemons.helpers import get_pokemon_args, get_pokemons_from_trainerteam
+from pokemons.models import Pokemon
 
 
 class CreateBattleView(
@@ -80,6 +84,34 @@ class DetailBattleView(LoginRequiredMixin, DetailView):
             self.object.id, self.object.trainer_opponent)
         context['pokemons'] = zip(pokemons_creator, pokemons_opponent)
         return context
+
+
+class PokemonAutocompleteView(
+        LoginRequiredMixin, autocomplete.Select2QuerySetView):
+    create_field = 'name'
+
+    def create_object(self, text):
+        pokemon_args = get_pokemon_args(text.lower().strip())
+        return Pokemon.objects.create(
+            api_id=pokemon_args['api_id'],
+            name=pokemon_args['name'],
+            sprite=pokemon_args['sprite'],
+            attack=pokemon_args['attack'],
+            defense=pokemon_args['defense'],
+            hitpoints=pokemon_args['hitpoints'],
+        )
+
+    def get_result_label(self, result):
+        return format_html('<img src="{}"> {}', result.sprite, result.name)
+
+    def get_selected_result_label(self, result):
+        return result.name
+
+    def get_queryset(self):
+        qs = Pokemon.objects.all()
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+        return qs
 
 
 class InviteFriendView(

@@ -1,6 +1,8 @@
 from django import forms
 from django.db.models import Q
 
+from dal import autocomplete
+
 from battles.helpers import (
     get_battle_winner, send_battle_match_invite_email, send_battle_result_email
 )
@@ -11,9 +13,39 @@ from users.models import User
 
 
 class CreateBattleForm(forms.ModelForm):
-    pokemon_1 = forms.CharField()
-    pokemon_2 = forms.CharField()
-    pokemon_3 = forms.CharField()
+    pokemon_1 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='battles:pokemon_autocomplete',
+            attrs={
+                'data-placeholder': 'Autocomplete pokemon name...',
+                'data-minimum-input-length': 3,
+                'data-html': True,
+            },
+        )
+    )
+    pokemon_2 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='battles:pokemon_autocomplete',
+            attrs={
+                'data-placeholder': 'Autocomplete pokemon name...',
+                'data-minimum-input-length': 3,
+                'data-html': True,
+            },
+        )
+    )
+    pokemon_3 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='battles:pokemon_autocomplete',
+            attrs={
+                'data-placeholder': 'Autocomplete pokemon name...',
+                'data-minimum-input-length': 3,
+                'data-html': True,
+            },
+        )
+    )
 
     class Meta:
         model = Battle
@@ -34,9 +66,9 @@ class CreateBattleForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         pokemons = [
-            self.cleaned_data['pokemon_1'].lower().strip(),
-            self.cleaned_data['pokemon_2'].lower().strip(),
-            self.cleaned_data['pokemon_3'].lower().strip()
+            self.cleaned_data['pokemon_1'].name,
+            self.cleaned_data['pokemon_2'].name,
+            self.cleaned_data['pokemon_3'].name,
         ]
 
         for pokemon in pokemons:
@@ -54,9 +86,9 @@ class CreateBattleForm(forms.ModelForm):
 
     def save(self, commit=True):
         pokemons = [
-            self.cleaned_data['pokemon_1'].lower().strip(),
-            self.cleaned_data['pokemon_2'].lower().strip(),
-            self.cleaned_data['pokemon_3'].lower().strip()
+            self.cleaned_data['pokemon_1'].name,
+            self.cleaned_data['pokemon_2'].name,
+            self.cleaned_data['pokemon_3'].name,
         ]
         self.instance.save()
 
@@ -86,9 +118,39 @@ class CreateBattleForm(forms.ModelForm):
 
 
 class SelectTrainerTeamForm(forms.ModelForm):
-    pokemon_1 = forms.CharField()
-    pokemon_2 = forms.CharField()
-    pokemon_3 = forms.CharField()
+    pokemon_1 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='battles:pokemon_autocomplete',
+            attrs={
+                'data-placeholder': 'Autocomplete pokemon name...',
+                'data-minimum-input-length': 3,
+                'data-html': True,
+            },
+        )
+    )
+    pokemon_2 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='battles:pokemon_autocomplete',
+            attrs={
+                'data-placeholder': 'Autocomplete pokemon name...',
+                'data-minimum-input-length': 3,
+                'data-html': True,
+            },
+        )
+    )
+    pokemon_3 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='battles:pokemon_autocomplete',
+            attrs={
+                'data-placeholder': 'Autocomplete pokemon name...',
+                'data-minimum-input-length': 3,
+                'data-html': True,
+            },
+        )
+    )
 
     class Meta:
         model = TrainerTeam
@@ -109,9 +171,9 @@ class SelectTrainerTeamForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         pokemons = [
-            self.cleaned_data['pokemon_1'].lower().strip(),
-            self.cleaned_data['pokemon_2'].lower().strip(),
-            self.cleaned_data['pokemon_3'].lower().strip()
+            self.cleaned_data['pokemon_1'].name,
+            self.cleaned_data['pokemon_2'].name,
+            self.cleaned_data['pokemon_3'].name
         ]
 
         for pokemon in pokemons:
@@ -129,9 +191,9 @@ class SelectTrainerTeamForm(forms.ModelForm):
 
     def save(self, commit=True):
         pokemons = [
-            self.cleaned_data['pokemon_1'].lower().strip(),
-            self.cleaned_data['pokemon_2'].lower().strip(),
-            self.cleaned_data['pokemon_3'].lower().strip()
+            self.cleaned_data['pokemon_1'].name,
+            self.cleaned_data['pokemon_2'].name,
+            self.cleaned_data['pokemon_3'].name
         ]
 
         trainer_creator = Battle.objects.get(id=self.initial['battle']).trainer_creator

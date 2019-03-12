@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 HOST = config('HOST', default='http://127.0.0.1:8000/')
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
