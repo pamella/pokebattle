@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5c5a729b8985510a679143f93bd389805fb20e45d277f669f787588a550e99f4"
+            "sha256": "e2efec345abf0315706249427a9c781dd7c85a41bfebe24b7d1ababd7704a178"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -180,6 +180,14 @@
             "index": "pypi",
             "version": "==3.3.2"
         },
+        "django-celery-beat": {
+            "hashes": [
+                "sha256:3c2c22647455be5503aca7450db64ea53acacee2d0aef3d7ac49aa3ef3845724",
+                "sha256:bfc22dad2884524697e1fcdfa63c0555a65151a97902c3045cd2cf7bf63970e4"
+            ],
+            "index": "pypi",
+            "version": "==1.4.0"
+        },
         "django-import-export": {
             "hashes": [
                 "sha256:830824f79aae39e4212bb03aabdd83dc57931420557b757981cf6add8d07e611",
@@ -223,6 +231,13 @@
             ],
             "index": "pypi",
             "version": "==2.3.0"
+        },
+        "django-timezone-field": {
+            "hashes": [
+                "sha256:7d7a37cfeacec5b1e81cd2f0aa334d46ebaa369cd516028579ed343cbc676c38",
+                "sha256:d9fdab77c443b78c362ffaeb50fe7d7b54692c89aaae8ca1cae67848139b82ac"
+            ],
+            "version": "==3.0"
         },
         "django-webpack-loader": {
             "hashes": [
@@ -459,6 +474,19 @@
                 "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"
             ],
             "version": "==1.7.1"
+        },
+        "python-crontab": {
+            "hashes": [
+                "sha256:91ce4b245ee5e5c117aa0b21b485bc43f2d80df854a36e922b707643f50d7923"
+            ],
+            "version": "==2.3.6"
+        },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb",
+                "sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"
+            ],
+            "version": "==2.8.0"
         },
         "python-decouple": {
             "hashes": [

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'import_export',
     'templated_email',
     'social_django',
+    'django_celery_beat', 
 
     'common',
     'users',

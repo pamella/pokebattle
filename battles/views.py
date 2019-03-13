@@ -11,7 +11,7 @@ from dal import autocomplete
 from battles.forms import CreateBattleForm, InviteFriendForm, SelectTrainerTeamForm
 from battles.helpers import send_invited_friend_email
 from battles.models import Battle, Invite, TrainerTeam
-from pokemons.helpers import get_pokemon_args, get_pokemons_from_trainerteam
+from pokemons.helpers import get_pokemons_from_trainerteam
 from pokemons.models import Pokemon
 
 
@@ -88,19 +88,6 @@ class DetailBattleView(LoginRequiredMixin, DetailView):
 
 class PokemonAutocompleteView(
         LoginRequiredMixin, autocomplete.Select2QuerySetView):
-    create_field = 'name'
-
-    def create_object(self, text):
-        pokemon_args = get_pokemon_args(text.lower().strip())
-        return Pokemon.objects.create(
-            api_id=pokemon_args['api_id'],
-            name=pokemon_args['name'],
-            sprite=pokemon_args['sprite'],
-            attack=pokemon_args['attack'],
-            defense=pokemon_args['defense'],
-            hitpoints=pokemon_args['hitpoints'],
-        )
-
     def get_result_label(self, result):
         return format_html('<img src="{}"> {}', result.sprite, result.name)
 
