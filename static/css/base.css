@@ -12,6 +12,7 @@ body {
 }
 
 .button {
+    margin-top: 20px;
     padding: 10px;
     box-sizing: border-box;
     background-color: #004d99;
