@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'templated_email',
     'social_django',
     'django_celery_beat', 
+    'widget_tweaks',
 
     'common',
     'users',

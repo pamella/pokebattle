@@ -39,6 +39,14 @@ def get_battle_winner(pokemons_creator, pokemons_opponent):
     return 'opponent'
 
 
+def order_battle_pokemons(cleaned_data):
+    pokemons = [0, 1, 2]
+    pokemons[int(cleaned_data['order_1'])] = cleaned_data['pokemon_1'].name
+    pokemons[int(cleaned_data['order_2'])] = cleaned_data['pokemon_2'].name
+    pokemons[int(cleaned_data['order_3'])] = cleaned_data['pokemon_3'].name
+    return pokemons
+
+
 # send email
 def send_battle_result_email(battle):
     trainers = [battle.trainer_creator, battle.trainer_opponent]

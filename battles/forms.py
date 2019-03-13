@@ -3,8 +3,10 @@ from django.db.models import Q
 
 from dal import autocomplete
 
+from battles.choices import POKEMON_ORDER_CHOICES
 from battles.helpers import (
-    get_battle_winner, send_battle_match_invite_email, send_battle_result_email
+    get_battle_winner, order_battle_pokemons, send_battle_match_invite_email,
+    send_battle_result_email
 )
 from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemon_args, is_pokemons_sum_valid, pokemon_exists
@@ -46,6 +48,9 @@ class CreateBattleForm(forms.ModelForm):
             },
         )
     )
+    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, required=True)
+    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, required=True)
+    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, required=True)
 
     class Meta:
         model = Battle
@@ -65,11 +70,7 @@ class CreateBattleForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        pokemons = [
-            self.cleaned_data['pokemon_1'].name,
-            self.cleaned_data['pokemon_2'].name,
-            self.cleaned_data['pokemon_3'].name,
-        ]
+        pokemons = order_battle_pokemons(self.cleaned_data)
 
         for pokemon in pokemons:
             if not pokemon_exists(pokemon):
@@ -85,11 +86,7 @@ class CreateBattleForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        pokemons = [
-            self.cleaned_data['pokemon_1'].name,
-            self.cleaned_data['pokemon_2'].name,
-            self.cleaned_data['pokemon_3'].name,
-        ]
+        pokemons = order_battle_pokemons(self.cleaned_data)
         self.instance.save()
 
         for pokemon in pokemons:
@@ -151,6 +148,9 @@ class SelectTrainerTeamForm(forms.ModelForm):
             },
         )
     )
+    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, required=True)
+    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, required=True)
+    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, required=True)
 
     class Meta:
         model = TrainerTeam
@@ -170,11 +170,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        pokemons = [
-            self.cleaned_data['pokemon_1'].name,
-            self.cleaned_data['pokemon_2'].name,
-            self.cleaned_data['pokemon_3'].name
-        ]
+        pokemons = order_battle_pokemons(self.cleaned_data)
 
         for pokemon in pokemons:
             if not pokemon_exists(pokemon):
@@ -190,11 +186,7 @@ class SelectTrainerTeamForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        pokemons = [
-            self.cleaned_data['pokemon_1'].name,
-            self.cleaned_data['pokemon_2'].name,
-            self.cleaned_data['pokemon_3'].name
-        ]
+        pokemons = order_battle_pokemons(self.cleaned_data)
 
         trainer_creator = Battle.objects.get(id=self.initial['battle']).trainer_creator
         trainer_team_creator = TrainerTeam.objects.get(

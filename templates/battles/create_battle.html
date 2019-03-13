@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Create Battle | PokeBattle{% endblock %}
 
@@ -19,7 +20,19 @@
             <p class="error">{{ form.errors }}</p>
         {% endif %}
 
-        {{ form.as_p }}
+        <p>
+            <span>Pokemon: </span>{% render_field form.pokemon_1 %}
+            <span>Round: </span>{% render_field form.order_1 %}
+        </p>
+        <p>
+            <span>Pokemon: </span>{% render_field form.pokemon_2 %}
+            <span>Round: </span>{% render_field form.order_2 %}
+        </p>
+        <p>
+            <span>Pokemon: </span>{% render_field form.pokemon_3 %}
+            <span>Round: </span>{% render_field form.order_3 %}
+        </p>
+
         <input class="button" type="submit" value="Challenge now!">
     </form>
 </section>
