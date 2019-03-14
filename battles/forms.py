@@ -1,3 +1,5 @@
+from collections import Counter
+
 from django import forms
 
 from dal import autocomplete
@@ -60,10 +62,19 @@ class CreateBattleForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         pokemons = order_battle_pokemons(self.cleaned_data)
+        rounds = [
+            int(self.cleaned_data['order_1']),
+            int(self.cleaned_data['order_2']),
+            int(self.cleaned_data['order_3']),
+        ]
 
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
                 'Trainer, your pokemon team stats can not sum more than 600 points.'
+            )
+        if len(Counter(rounds)) != 3:
+            raise forms.ValidationError(
+                'Trainer, select a different value for each round field.'
             )
         return cleaned_data
 
