@@ -16,7 +16,7 @@
     <form method="POST" class="select__form">
         {% csrf_token %}
 
-        {% if form.subject.errors %}
+        {% if form.errors %}
             <p class="error">{{ form.errors }}</p>
         {% endif %}
 

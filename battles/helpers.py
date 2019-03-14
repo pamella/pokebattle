@@ -1,9 +1,10 @@
 from django.conf import settings
+from django.db.models import Q
 from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
 
-from battles.models import TrainerTeam
+from battles.models import Battle, TrainerTeam
 
 
 # one-a-one figth
@@ -26,8 +27,23 @@ def get_one_a_one_fight_winner(pokemon_1, pokemon_2):
 
 
 # battle fight
-def get_battle_winner(pokemons_creator, pokemons_opponent):
+def get_battle_winner(self):
+    battle = Battle.objects.get(id=self.object.battle_related.id)
+    trainer_team_creator = TrainerTeam.objects.get(
+        Q(battle_related=self.object.battle_related), Q(trainer=battle.trainer_creator)
+    )
+    pokemons_creator = [
+        trainer_team_creator.pokemon_1,
+        trainer_team_creator.pokemon_2,
+        trainer_team_creator.pokemon_3
+    ]
+    pokemons_opponent = [
+        self.object.pokemon_1,
+        self.object.pokemon_2,
+        self.object.pokemon_3,
+    ]
     one_a_one_results = []
+
     for (pokemon_c, pokemon_o) in zip(pokemons_creator, pokemons_opponent):
         if get_one_a_one_fight_winner(pokemon_c, pokemon_o) == pokemon_c:
             one_a_one_results.append('creator')
@@ -35,8 +51,8 @@ def get_battle_winner(pokemons_creator, pokemons_opponent):
             one_a_one_results.append('opponent')
 
     if one_a_one_results.count('creator') > one_a_one_results.count('opponent'):
-        return 'creator'
-    return 'opponent'
+        return battle.trainer_creator
+    return battle.trainer_opponent
 
 
 def order_battle_pokemons(cleaned_data):
