@@ -42,6 +42,7 @@ class CreateBattleView(
         self.object.trainer_creator = self.request.user
         self.object.status = 'ON_GOING'
         pokemons = order_battle_pokemons(form.cleaned_data)
+        self.object.save()
         TrainerTeam.objects.create(
             trainer=self.request.user,
             pokemon_1=Pokemon.objects.get(name=pokemons[0]),
@@ -49,7 +50,6 @@ class CreateBattleView(
             pokemon_3=Pokemon.objects.get(name=pokemons[2]),
             battle_related=self.object,
         )
-        self.object.save()
         # send battle match invite email to opponent
         send_battle_match_invite_email(self.object)
         return super().form_valid(form)
