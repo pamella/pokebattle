@@ -16,10 +16,13 @@
     <form method="POST" class="create__form">
         {% csrf_token %}
 
-        {% if form.subject.errors %}
+        {% if form.errors %}
             <p class="error">{{ form.errors }}</p>
         {% endif %}
 
+        <p>
+            <span>Opponent: </span>{% render_field form.trainer_opponent %}
+        </p>
         <p>
             <span>Pokemon: </span>{% render_field form.pokemon_1 %}
             <span>Round: </span>{% render_field form.order_1 %}

@@ -4,10 +4,7 @@ from django.db.models import Q
 from dal import autocomplete
 
 from battles.choices import POKEMON_ORDER_CHOICES
-from battles.helpers import (
-    get_battle_winner, order_battle_pokemons, send_battle_match_invite_email,
-    send_battle_result_email
-)
+from battles.helpers import get_battle_winner, order_battle_pokemons, send_battle_result_email
 from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemon_args, is_pokemons_sum_valid, pokemon_exists
 from pokemons.models import Pokemon
@@ -48,70 +45,28 @@ class CreateBattleForm(forms.ModelForm):
             },
         )
     )
-    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, required=True)
-    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, required=True)
-    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, required=True)
+    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=0, required=True)
+    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, required=True)
+    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, required=True)
 
     class Meta:
         model = Battle
-        fields = ('trainer_opponent', 'trainer_creator', 'status')
-        widgets = {
-            'trainer_creator': forms.HiddenInput(),
-            'status': forms.HiddenInput(),
-        }
+        fields = ('trainer_opponent', )
 
     def __init__(self, *args, **kwargs):
-        initial = kwargs.get('initial', {})
-        initial_user_id = initial.get('user') and initial.get('user').id
-        initial['trainer_creator'] = initial.get('trainer_creator', initial_user_id)
-        initial['status'] = initial.get('status', 'ON_GOING')
-        kwargs['initial'] = initial
         super().__init__(*args, **kwargs)
+        users = User.objects.exclude(id=self.initial['trainer_creator'].id)
+        self.fields['trainer_opponent'].queryset = users
 
     def clean(self):
         cleaned_data = super().clean()
         pokemons = order_battle_pokemons(self.cleaned_data)
 
-        for pokemon in pokemons:
-            if not pokemon_exists(pokemon):
-                raise forms.ValidationError(
-                    f'We couldnt find "{pokemon}". Please, check if you wrote it correctly.'
-                )
-
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
                 'Trainer, your pokemon team stats can not sum more than 600 points.'
             )
-
         return cleaned_data
-
-    def save(self, commit=True):
-        pokemons = order_battle_pokemons(self.cleaned_data)
-        self.instance.save()
-
-        for pokemon in pokemons:
-            if Pokemon.objects.filter(name=pokemon).count() == 0:
-                pokemon_args = get_pokemon_args(pokemon)
-                Pokemon.objects.create(
-                    api_id=pokemon_args['api_id'],
-                    name=pokemon_args['name'],
-                    sprite=pokemon_args['sprite'],
-                    attack=pokemon_args['attack'],
-                    defense=pokemon_args['defense'],
-                    hitpoints=pokemon_args['hitpoints'],
-                )
-
-        TrainerTeam.objects.create(
-            trainer=self.initial['user'],
-            pokemon_1=Pokemon.objects.get(name=pokemons[0]),
-            pokemon_2=Pokemon.objects.get(name=pokemons[1]),
-            pokemon_3=Pokemon.objects.get(name=pokemons[2]),
-            battle_related=self.instance,
-        )
-        # send battle match invite email to opponent
-        send_battle_match_invite_email(self.instance)
-
-        return super().save()
 
 
 class SelectTrainerTeamForm(forms.ModelForm):
@@ -148,9 +103,9 @@ class SelectTrainerTeamForm(forms.ModelForm):
             },
         )
     )
-    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, required=True)
-    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, required=True)
-    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=3, required=True)
+    order_1 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=0, required=True)
+    order_2 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=1, required=True)
+    order_3 = forms.ChoiceField(choices=POKEMON_ORDER_CHOICES, initial=2, required=True)
 
     class Meta:
         model = TrainerTeam
@@ -182,7 +137,6 @@ class SelectTrainerTeamForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Trainer, your pokemon team stats can not sum more than 600 points.'
             )
-
         return cleaned_data
 
     def save(self, commit=True):

@@ -9,7 +9,9 @@ from django.views.generic.list import ListView
 from dal import autocomplete
 
 from battles.forms import CreateBattleForm, InviteFriendForm, SelectTrainerTeamForm
-from battles.helpers import send_invited_friend_email
+from battles.helpers import (
+    order_battle_pokemons, send_battle_match_invite_email, send_invited_friend_email
+)
 from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemons_from_trainerteam
 from pokemons.models import Pokemon
@@ -25,7 +27,7 @@ class CreateBattleView(
 
     def get_initial(self):
         return {
-            'user': self.request.user
+            'trainer_creator': self.request.user
         }
 
     def get_success_message(self, cleaned_data):
@@ -33,6 +35,23 @@ class CreateBattleView(
             cleaned_data,
             trainer=self.request.user.get_short_name(),
         )
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.trainer_creator = self.request.user
+        self.object.status = 'ON_GOING'
+        self.object.save()
+        pokemons = order_battle_pokemons(form.cleaned_data)
+        TrainerTeam.objects.create(
+            trainer=self.request.user,
+            pokemon_1=Pokemon.objects.get(name=pokemons[0]),
+            pokemon_2=Pokemon.objects.get(name=pokemons[1]),
+            pokemon_3=Pokemon.objects.get(name=pokemons[2]),
+            battle_related=self.object,
+        )
+        # send battle match invite email to opponent
+        send_battle_match_invite_email(self.object)
+        return super().form_valid(form)
 
 
 class SelectTrainerTeam(

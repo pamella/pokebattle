@@ -16,6 +16,10 @@
     <form method="POST" class="select__form">
         {% csrf_token %}
 
+        {% if form.subject.errors %}
+            <p class="error">{{ form.errors }}</p>
+        {% endif %}
+
         <p>
             <span>Pokemon: </span>{% render_field form.pokemon_1 %}
             <span>Round: </span>{% render_field form.order_1 %}
