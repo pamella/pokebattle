@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
 
-from battles.models import Battle, TrainerTeam
+from battles.models import TrainerTeam
 
 
 # one-a-one figth
@@ -27,10 +27,12 @@ def get_one_a_one_fight_winner(pokemon_1, pokemon_2):
 
 
 # battle fight
-def get_battle_winner(self):
-    battle = Battle.objects.get(id=self.object.battle_related.id)
+def get_battle_winner(battle):
     trainer_team_creator = TrainerTeam.objects.get(
-        Q(battle_related=self.object.battle_related), Q(trainer=battle.trainer_creator)
+        Q(battle_related=battle), Q(trainer=battle.trainer_creator)
+    )
+    trainer_team_opponent = TrainerTeam.objects.get(
+        Q(battle_related=battle), Q(trainer=battle.trainer_opponent)
     )
     pokemons_creator = [
         trainer_team_creator.pokemon_1,
@@ -38,9 +40,9 @@ def get_battle_winner(self):
         trainer_team_creator.pokemon_3
     ]
     pokemons_opponent = [
-        self.object.pokemon_1,
-        self.object.pokemon_2,
-        self.object.pokemon_3,
+        trainer_team_opponent.pokemon_1,
+        trainer_team_opponent.pokemon_2,
+        trainer_team_opponent.pokemon_3,
     ]
     one_a_one_results = []
 
@@ -55,6 +57,12 @@ def get_battle_winner(self):
     return battle.trainer_opponent
 
 
+def run_battle(battle):
+    battle.status = 'SETTLED'
+    battle.trainer_winner = get_battle_winner(battle)
+    return battle.save()
+
+
 def order_battle_pokemons(cleaned_data):
     pokemons = [0, 1, 2]
     pokemons[int(cleaned_data['order_1'])] = cleaned_data['pokemon_1'].name
@@ -65,6 +73,7 @@ def order_battle_pokemons(cleaned_data):
 
 # send email
 def send_battle_result_email(battle):
+    battle.refresh_from_db()
     trainers = [battle.trainer_creator, battle.trainer_opponent]
     for trainer in trainers:
         trainer_opponent = trainers[1] if trainer == trainers[0] else trainers[0]

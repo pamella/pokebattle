@@ -61,20 +61,20 @@ class CreateBattleForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        pokemons = order_battle_pokemons(self.cleaned_data)
         rounds = [
             int(self.cleaned_data['order_1']),
             int(self.cleaned_data['order_2']),
             int(self.cleaned_data['order_3']),
         ]
-
-        if not is_pokemons_sum_valid(pokemons):
-            raise forms.ValidationError(
-                'Trainer, your pokemon team stats can not sum more than 600 points.'
-            )
         if len(Counter(rounds)) != 3:
             raise forms.ValidationError(
                 'Trainer, select a different value for each round field.'
+            )
+
+        pokemons = order_battle_pokemons(self.cleaned_data)
+        if not is_pokemons_sum_valid(pokemons):
+            raise forms.ValidationError(
+                'Trainer, your pokemon team stats can not sum more than 600 points.'
             )
         return cleaned_data
 
@@ -123,8 +123,17 @@ class SelectTrainerTeamForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        pokemons = order_battle_pokemons(self.cleaned_data)
+        rounds = [
+            int(self.cleaned_data['order_1']),
+            int(self.cleaned_data['order_2']),
+            int(self.cleaned_data['order_3']),
+        ]
+        if len(Counter(rounds)) != 3:
+            raise forms.ValidationError(
+                'Trainer, select a different value for each round field.'
+            )
 
+        pokemons = order_battle_pokemons(self.cleaned_data)
         if not is_pokemons_sum_valid(pokemons):
             raise forms.ValidationError(
                 'Trainer, your pokemon team stats can not sum more than 600 points.'

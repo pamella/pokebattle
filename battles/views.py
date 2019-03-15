@@ -10,8 +10,8 @@ from dal import autocomplete
 
 from battles.forms import CreateBattleForm, InviteFriendForm, SelectTrainerTeamForm
 from battles.helpers import (
-    get_battle_winner, order_battle_pokemons, send_battle_match_invite_email,
-    send_battle_result_email, send_invited_friend_email
+    order_battle_pokemons, run_battle, send_battle_match_invite_email, send_battle_result_email,
+    send_invited_friend_email
 )
 from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemons_from_trainerteam
@@ -55,7 +55,7 @@ class CreateBattleView(
         return super().form_valid(form)
 
 
-class SelectTrainerTeam(
+class SelectTrainerTeamView(
         LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'battles/select_team.html'
     model = TrainerTeam
@@ -73,10 +73,9 @@ class SelectTrainerTeam(
         self.object = form.save(commit=False)
         self.object.trainer = self.request.user
         self.object.battle_related = Battle.objects.get(id=self.request.GET.get('id'))
-        Battle.objects.filter(id=self.object.battle_related.id).update(status='SETTLED')
-        Battle.objects.filter(id=self.object.battle_related.id).update(
-            trainer_winner=get_battle_winner(self))
         self.object.save()
+        battle = Battle.objects.get(id=self.object.battle_related.id)
+        run_battle(battle)
         # send both trainers the battle result email
         send_battle_result_email(self.object.battle_related)
         return super().form_valid(form)
