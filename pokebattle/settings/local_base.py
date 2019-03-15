@@ -3,7 +3,7 @@ from .base import *  # noqa
 
 DEBUG = True
 
-HOST = 'http://localhost:8000'
+HOST = 'http://127.0.0.1:8000'
 
 SECRET_KEY = 'secret'
 

@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
 from users.forms import UserSignupForm
+from users.mixins import UserHasAlreadSignup
 from users.models import User
 
 
@@ -15,7 +16,7 @@ class UserLogoutView(LogoutView):
     next_page = '/'
 
 
-class UserSignupView(CreateView):
+class UserSignupView(UserHasAlreadSignup, CreateView):
     model = User
     form_class = UserSignupForm
     template_name = 'users/signup.html'
