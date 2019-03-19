@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.db.models import Q
 from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
@@ -29,11 +28,9 @@ def get_one_a_one_fight_winner(pokemon_1, pokemon_2):
 # battle fight
 def get_battle_winner(battle):
     trainer_team_creator = TrainerTeam.objects.get(
-        Q(battle_related=battle), Q(trainer=battle.trainer_creator)
-    )
+        battle_related=battle, trainer=battle.trainer_creator)
     trainer_team_opponent = TrainerTeam.objects.get(
-        Q(battle_related=battle), Q(trainer=battle.trainer_opponent)
-    )
+        battle_related=battle, trainer=battle.trainer_opponent)
     pokemons_creator = [
         trainer_team_creator.pokemon_1,
         trainer_team_creator.pokemon_2,
