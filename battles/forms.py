@@ -149,11 +149,10 @@ class InviteFriendForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         invited_email = self.cleaned_data['invited']
-        for user in User.objects.all():
-            if user.email == invited_email:
-                raise forms.ValidationError(
-                    "This user is already a member of Pokebattle team!"
-                )
+        if User.objects.filter(email=invited_email):
+            raise forms.ValidationError(
+                "This user is already a member of Pokebattle team!"
+            )
         for invite in Invite.objects.all():
             if invite.invited == invited_email:
                 raise forms.ValidationError(

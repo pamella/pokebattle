@@ -16,8 +16,8 @@
     <form method="POST" class="invite__form">
         {% csrf_token %}
 
-        {% if form.subject.errors %}
-            <p class="error">{{ form.errors }}</p>
+        {% if form.errors %}
+            <p class="error">{{ form.non_field_errors }}</p>
         {% endif %}
 
         <p>Please, enter your friend's email below:</p>
