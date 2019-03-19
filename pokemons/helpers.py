@@ -49,9 +49,9 @@ def get_pokemons_from_trainerteam(battle, trainer):
         trainer=trainer
     )
     return {
-        Pokemon.objects.get(name=trainerteam.pokemon_1),
-        Pokemon.objects.get(name=trainerteam.pokemon_2),
-        Pokemon.objects.get(name=trainerteam.pokemon_3),
+        trainerteam.pokemon_1,
+        trainerteam.pokemon_2,
+        trainerteam.pokemon_3,
     }
 
 
