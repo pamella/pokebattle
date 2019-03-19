@@ -4,17 +4,19 @@
     Hi, trainer! Here there is a follow up about your previous battle.
 
 
-    You ({{ trainer }})   VS   {{ trainer_opponent }}
+    {{ trainer_creator }}   VS   {{ trainer_opponent }}
     
     Round 1:
-        - {{ trainer_team.pokemon_1.name }}   VS   {{ trainer_opponent_team.pokemon_1.name }}
+        - {{ trainer_creator_team.pokemon_1.name }}   VS   {{ trainer_opponent_team.pokemon_1.name }}
+    
     Round 2:
-        - {{ trainer_team.pokemon_2.name }}   VS   {{ trainer_opponent_team.pokemon_2.name }}
+        - {{ trainer_creator_team.pokemon_2.name }}   VS   {{ trainer_opponent_team.pokemon_2.name }}
+    
     Round 3:
-        - {{ trainer_team.pokemon_3.name }}   VS   {{ trainer_opponent_team.pokemon_3.name }}
+        - {{ trainer_creator_team.pokemon_3.name }}   VS   {{ trainer_opponent_team.pokemon_3.name }}
 
 
-    And the main result you both have been waiting for... This Battle Winner was... {{ winner }}!!!
+    And the main result you both have been waiting for... This Battle Winner was... {{ trainer_winner }}!!!
 
 
     Best Regards,
