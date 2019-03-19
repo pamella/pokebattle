@@ -28,9 +28,9 @@ def is_pokemons_sum_valid(pokemons):
     pokemons_args = [get_pokemon_args(pokemon) for pokemon in pokemons]
     stats = []
 
-    for i in range(0, 3):
+    for poke_arg in pokemons_args:
         for x in keys:
-            stats.append(pokemons_args[i][x])
+            stats.append(poke_arg[x])
 
     pokemons_sum = sum(stats)
     return pokemons_sum <= limit
