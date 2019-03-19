@@ -60,13 +60,15 @@ def save_pokeapi_pokemons():
     url = requests.get(f'{POKEAPI_ROOT}/?limit=802')
     poke_api = url.json()
     for pokemon in poke_api['results']:
-        if not Pokemon.objects.filter(name=pokemon['name']).exists():
-            pokemon_args = get_pokemon_args(pokemon['name'])
-            Pokemon.objects.create(
-                api_id=pokemon_args['api_id'],
-                name=pokemon_args['name'],
-                sprite=pokemon_args['sprite'],
-                attack=pokemon_args['attack'],
-                defense=pokemon_args['defense'],
-                hitpoints=pokemon_args['hitpoints'],
-            )
+        if Pokemon.objects.filter(name=pokemon['name']).exists():
+            continue
+
+        pokemon_args = get_pokemon_args(pokemon['name'])
+        Pokemon.objects.create(
+            api_id=pokemon_args['api_id'],
+            name=pokemon_args['name'],
+            sprite=pokemon_args['sprite'],
+            attack=pokemon_args['attack'],
+            defense=pokemon_args['defense'],
+            hitpoints=pokemon_args['hitpoints'],
+        )
