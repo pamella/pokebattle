@@ -19,7 +19,7 @@ def compare_attack_defense(pokemon_1, pokemon_2):
     return pokemon_2
 
 
-def get_one_a_one_fight_winner(pokemon_1, pokemon_2):
+def get_pokemon_round_winner(pokemon_1, pokemon_2):
     if compare_attack_defense(pokemon_1, pokemon_2) == compare_attack_defense(pokemon_2, pokemon_1):
         return compare_attack_defense(pokemon_1, pokemon_2)
     return compare_hitpoints(pokemon_1, pokemon_2)
@@ -41,15 +41,15 @@ def get_battle_winner(battle):
         trainer_team_opponent.pokemon_2,
         trainer_team_opponent.pokemon_3,
     ]
-    one_a_one_results = []
+    rounds_trainers_winners = []
 
     for (pokemon_c, pokemon_o) in zip(pokemons_creator, pokemons_opponent):
-        if get_one_a_one_fight_winner(pokemon_c, pokemon_o) == pokemon_c:
-            one_a_one_results.append('creator')
+        if get_pokemon_round_winner(pokemon_c, pokemon_o) == pokemon_c:
+            rounds_trainers_winners.append('creator')
         else:
-            one_a_one_results.append('opponent')
+            rounds_trainers_winners.append('opponent')
 
-    if one_a_one_results.count('creator') > one_a_one_results.count('opponent'):
+    if rounds_trainers_winners.count('creator') > rounds_trainers_winners.count('opponent'):
         return battle.trainer_creator
     return battle.trainer_opponent
 
