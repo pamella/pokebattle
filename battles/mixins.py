@@ -17,4 +17,4 @@ class TrainerIsNotOpponentMixin(UserPassesTestMixin):
         return True
 
     def handle_no_permission(self):
-        return redirect('battles:list_battle')
+        return redirect('users:logout')

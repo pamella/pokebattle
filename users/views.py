@@ -13,7 +13,7 @@ class UserLoginView(LoginView):
 
 
 class UserLogoutView(LogoutView):
-    next_page = '/'
+    pass
 
 
 class UserSignupView(UserHasAlreadSignup, CreateView):
