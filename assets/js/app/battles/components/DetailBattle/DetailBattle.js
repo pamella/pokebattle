@@ -1,12 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import fist from '../../../../../images/icons/fist.png';
+import player from '../../../../../images/icons/player.png';
+import fight from '../../../../../images/icons/fight.png';
 
+
+const StyledItem = styled.div`
+  margin-bottom: 80px;
+`;
 
 function Subtitle(props) {
-  const { name } = props;
+  const { name, img } = props;
   return (
     <div>
-      <h2 className="subtitle">
+      <h2>
+        <img src={img} alt="" />
         {name}
       </h2>
     </div>
@@ -15,25 +24,34 @@ function Subtitle(props) {
 
 Subtitle.propTypes = {
   name: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
 };
 
-class BattleDetail extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: 'Battle Winner',
-    };
-  }
+function BattleDetail() {
+  return (
+    <div>
+      <StyledItem>
+        <Subtitle
+          name="Battle Winner"
+          img={fist}
+        />
+      </StyledItem>
 
-  render() {
-    const { name } = this.state;
+      <StyledItem>
+        <Subtitle
+          name="Battle Trainers"
+          img={player}
+        />
+      </StyledItem>
 
-    return (
-      <div>
-        <Subtitle name={name} />
-      </div>
-    );
-  }
+      <StyledItem>
+        <Subtitle
+          name="Rounds"
+          img={fight}
+        />
+      </StyledItem>
+    </div>
+  );
 }
 
 export default BattleDetail;
