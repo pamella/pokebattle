@@ -9,12 +9,14 @@ class TrainerIsNotOpponentMixin(UserPassesTestMixin):
     redirect_field_name = None
 
     def test_func(self):
-        battle_id = self.request.GET.get('id')
-        trainer_creator = Battle.objects.get(id=battle_id).trainer_creator
         user = self.request.user
-        if trainer_creator == user:
+        battle_id = self.request.GET.get('id')
+        battle = Battle.objects.get(id=battle_id)
+        status = battle.status
+        trainer_opponent = battle.trainer_opponent
+        if ((trainer_opponent != user) or (status == 'SETTLED')):
             return False
         return True
 
     def handle_no_permission(self):
-        return redirect('battles:list_battle')
+        return redirect('users:logout')
