@@ -3,8 +3,6 @@ from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
 
-from battles.models import TrainerTeam
-
 
 # one-a-one figth
 def compare_hitpoints(pokemon_1, pokemon_2):
@@ -27,10 +25,8 @@ def get_pokemon_round_winner(pokemon_1, pokemon_2):
 
 # battle fight
 def get_battle_winner(battle):
-    trainer_team_creator = TrainerTeam.objects.get(
-        battle_related=battle, trainer=battle.trainer_creator)
-    trainer_team_opponent = TrainerTeam.objects.get(
-        battle_related=battle, trainer=battle.trainer_opponent)
+    trainer_team_creator = battle.trainer_creator.teams.filter(battle_related=battle).first()
+    trainer_team_opponent = battle.trainer_opponent.teams.filter(battle_related=battle).first()
     pokemons_creator = [
         trainer_team_creator.pokemon_1,
         trainer_team_creator.pokemon_2,
@@ -71,10 +67,8 @@ def order_battle_pokemons(cleaned_data):
 # send email
 def send_battle_result_email(battle):
     battle.refresh_from_db()
-    trainer_creator_team = TrainerTeam.objects.get(
-        battle_related=battle, trainer=battle.trainer_creator)
-    trainer_opponent_team = TrainerTeam.objects.get(
-        battle_related=battle, trainer=battle.trainer_opponent)
+    trainer_team_creator = battle.trainer_creator.teams.filter(battle_related=battle).first()
+    trainer_team_opponent = battle.trainer_opponent.teams.filter(battle_related=battle).first()
     send_templated_mail(
         template_name='battle_result',
         from_email=settings.SERVER_EMAIL,
@@ -84,8 +78,8 @@ def send_battle_result_email(battle):
             'trainer_creator': battle.trainer_creator.get_short_name(),
             'trainer_opponent': battle.trainer_opponent.get_short_name(),
             'trainer_winner': battle.trainer_winner.get_short_name(),
-            'trainer_creator_team': trainer_creator_team,
-            'trainer_opponent_team': trainer_opponent_team,
+            'trainer_team_creator': trainer_team_creator,
+            'trainer_team_opponent': trainer_team_opponent,
         }
     )
 
