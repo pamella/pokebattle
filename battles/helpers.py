@@ -71,25 +71,23 @@ def order_battle_pokemons(cleaned_data):
 # send email
 def send_battle_result_email(battle):
     battle.refresh_from_db()
-    trainers = [battle.trainer_creator, battle.trainer_opponent]
     trainer_creator_team = TrainerTeam.objects.get(
         battle_related=battle, trainer=battle.trainer_creator)
     trainer_opponent_team = TrainerTeam.objects.get(
         battle_related=battle, trainer=battle.trainer_opponent)
-
-    for trainer in trainers:
-        send_templated_mail(
-            template_name='battle_result',
-            from_email=settings.SERVER_EMAIL,
-            recipient_list=[trainer.email],
-            context={
-                'trainer_creator': trainers[0].get_short_name(),
-                'trainer_opponent': trainers[1].get_short_name(),
-                'trainer_winner': battle.trainer_winner.get_short_name(),
-                'trainer_creator_team': trainer_creator_team,
-                'trainer_opponent_team': trainer_opponent_team,
-            }
-        )
+    send_templated_mail(
+        template_name='battle_result',
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[battle.trainer_creator.email],
+        bcc=[battle.trainer_opponent.email],
+        context={
+            'trainer_creator': battle.trainer_creator.get_short_name(),
+            'trainer_opponent': battle.trainer_opponent.get_short_name(),
+            'trainer_winner': battle.trainer_winner.get_short_name(),
+            'trainer_creator_team': trainer_creator_team,
+            'trainer_opponent_team': trainer_opponent_team,
+        }
+    )
 
 
 def send_battle_match_invite_email(battle):

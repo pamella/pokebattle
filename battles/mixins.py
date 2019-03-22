@@ -12,9 +12,7 @@ class TrainerIsNotOpponentMixin(UserPassesTestMixin):
         user = self.request.user
         battle_id = self.request.GET.get('id')
         battle = Battle.objects.get(id=battle_id)
-        status = battle.status
-        trainer_opponent = battle.trainer_opponent
-        if ((trainer_opponent != user) or (status == 'SETTLED')):
+        if (battle.trainer_opponent != user or battle.status == 'SETTLED'):
             return False
         return True
 
