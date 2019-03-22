@@ -9,10 +9,10 @@ from django.views.generic.list import ListView
 from dal import autocomplete
 
 from battles.forms import CreateBattleForm, InviteFriendForm, SelectTrainerTeamForm
-from battles.helpers import (
-    order_battle_pokemons, run_battle, send_battle_match_invite_email, send_battle_result_email,
-    send_invited_friend_email
+from battles.helpers.email import (
+    send_battle_match_invite_email, send_battle_result_email, send_invited_friend_email
 )
+from battles.helpers.fight import order_battle_pokemons, run_battle
 from battles.mixins import TrainerIsNotOpponentMixin
 from battles.models import Battle, Invite, TrainerTeam
 from pokemons.helpers import get_pokemons_from_trainerteam
