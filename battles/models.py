@@ -38,17 +38,17 @@ class TrainerTeam(models.Model):
     )
     pokemon_1 = models.ForeignKey(
         Pokemon, on_delete=models.CASCADE,
-        related_name="pokemon_1",
+        related_name="+",
         null=True
     )
     pokemon_2 = models.ForeignKey(
         Pokemon, on_delete=models.CASCADE,
-        related_name="pokemon_2",
+        related_name="+",
         null=True
     )
     pokemon_3 = models.ForeignKey(
         Pokemon, on_delete=models.CASCADE,
-        related_name="pokemon_3",
+        related_name="+",
         null=True
     )
     battle_related = models.ForeignKey(

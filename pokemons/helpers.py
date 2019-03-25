@@ -45,14 +45,12 @@ def pokemon_exists(name):
 
 def get_pokemons_from_trainerteam(battle, trainer):
     trainerteam = TrainerTeam.objects.get(
-        battle_related=battle,
-        trainer=trainer
-    )
-    return {
+        battle_related=battle, trainer=trainer)
+    return [
         trainerteam.pokemon_1,
         trainerteam.pokemon_2,
         trainerteam.pokemon_3,
-    }
+    ]
 
 
 # task

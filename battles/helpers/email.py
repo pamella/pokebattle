@@ -12,8 +12,8 @@ def send_battle_result_email(battle):
     send_templated_mail(
         template_name='battle_result',
         from_email=settings.SERVER_EMAIL,
-        recipient_list=[battle.trainer_creator.email],
-        bcc=[battle.trainer_opponent.email],
+        recipient_list=[],
+        bcc=[battle.trainer_creator.email, battle.trainer_opponent.email],
         context={
             'trainer_creator': battle.trainer_creator.get_short_name(),
             'trainer_opponent': battle.trainer_opponent.get_short_name(),
