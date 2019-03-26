@@ -4,9 +4,7 @@ def get_pokemon_with_highest_hitpoints(pokemon_1, pokemon_2):
 
 
 def compare_attack_defense(pokemon_1, pokemon_2):
-    if pokemon_1.attack > pokemon_2.defense:
-        return pokemon_1
-    return pokemon_2
+    return pokemon_1 if pokemon_1.attack > pokemon_2.defense else pokemon_2
 
 
 def get_pokemon_round_winner(pokemon_1, pokemon_2):

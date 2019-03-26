@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 
@@ -17,4 +18,5 @@ class TrainerIsNotOpponentMixin(UserPassesTestMixin):
         return True
 
     def handle_no_permission(self):
-        return redirect('users:logout')
+        logout(self.request)
+        return redirect('battles:list_battle')
