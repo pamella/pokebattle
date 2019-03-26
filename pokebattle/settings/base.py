@@ -126,8 +126,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL =  'battles:create_battle'
-LOGOUT_REDIRECT_URL = 'users:login'
+LOGIN_REDIRECT_URL =  'battles:list_battle'
+LOGOUT_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
 
