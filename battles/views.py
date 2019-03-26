@@ -74,6 +74,10 @@ class SelectTrainerTeamView(
         self.object = form.save(commit=False)
         self.object.trainer = self.request.user
         self.object.battle_related = Battle.objects.get(id=self.request.GET.get('id'))
+        pokemons = order_battle_pokemons(form.cleaned_data)
+        self.object.pokemon_1 = Pokemon.objects.get(name=pokemons[0])
+        self.object.pokemon_2 = Pokemon.objects.get(name=pokemons[1])
+        self.object.pokemon_3 = Pokemon.objects.get(name=pokemons[2])
         self.object.save()
         # run battle async
         task_run_battles.delay(self.object.battle_related.id)
