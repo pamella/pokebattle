@@ -50,7 +50,7 @@
                     <h3>Round {{forloop.counter}}</h3>
                     <div class="round_item">
                         <div class="pokemon">
-                            <img src="{{ pokemon_creator.sprite }}" alt="">
+                            <img class="sprite" src="{{ pokemon_creator.sprite }}" alt="">
                             <ul class="stats">
                                 <li class="creator">{{ pokemon_creator.name|title }}</li>
                                 <li>A: {{ pokemon_creator.attack }}</li>
@@ -60,7 +60,7 @@
                         </div>
     
                         <div class="pokemon">
-                            <img src="{{ pokemon_opponent.sprite }}" alt="">
+                            <img class="sprite" src="{{ pokemon_opponent.sprite }}" alt="">
                             <ul class="stats">
                                 <li class="opponent">{{ pokemon_opponent.name|title }}</li>
                                 <li>A: {{ pokemon_opponent.attack }}</li>
