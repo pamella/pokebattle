@@ -1,9 +1,9 @@
-.login {
+.signup {
     padding: 30px 0;
     box-sizing: border-box;
 }
 
-.login__form {
+.signup__form {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -11,8 +11,12 @@
     margin: auto;
 }
 
-.login__form p {
+.signup__form p {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.signup .helptext {
+    display: none;
 }

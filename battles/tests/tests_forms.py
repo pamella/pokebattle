@@ -6,28 +6,6 @@ from battles.tests.tests_helpers import PokeBattleTestCase
 
 class CreateBattleFormTest(PokeBattleTestCase):
 
-    def setUp(self):
-        super().setUp()
-        self.battle = mommy.make('battles.Battle')
-
-    def test_not_found_pokemon_error(self):
-        attr = {
-            'initial': {
-                'trainer_creator': self.user.id
-            },
-            'data': {
-                'pokemon_1': 'dittossss',
-                'pokemon_2': 'ditto',
-                'pokemon_3': 'dito'
-            }
-        }
-        form = CreateBattleForm(**attr)
-        self.assertFalse(form.is_valid())
-        with self.assertRaisesMessage(
-                Exception,
-                '[\'We couldnt find "dittossss". Please, check if you wrote it correctly.\']'):
-            form.clean()
-
     def test_pokemon_team_sum_invalid(self):
         attr = {
             'initial': {
@@ -35,9 +13,15 @@ class CreateBattleFormTest(PokeBattleTestCase):
             },
             'data': {
                 'trainer_opponent': mommy.make('users.User'),
-                'pokemon_1': 'slowbro',
-                'pokemon_2': 'golem',
-                'pokemon_3': 'doduo'
+                'order_1': 0,
+                'order_2': 1,
+                'order_3': 2,
+                'pokemon_1': mommy.make(
+                    'pokemons.Pokemon', name='slowbro').id,
+                'pokemon_2': mommy.make(
+                    'pokemons.Pokemon', name='golem').id,
+                'pokemon_3': mommy.make(
+                    'pokemons.Pokemon', name='doduo').id,
             }
         }
         form = CreateBattleForm(**attr)
@@ -50,24 +34,6 @@ class CreateBattleFormTest(PokeBattleTestCase):
 
 class SelectTrainerTeamFormTest(PokeBattleTestCase):
 
-    def test_not_found_pokemon_error(self):
-        attr = {
-            'initial': {
-                'trainer_creator': self.user.id
-            },
-            'data': {
-                'pokemon_1': 'dittossss',
-                'pokemon_2': 'ditto',
-                'pokemon_3': 'dito'
-            }
-        }
-        form = SelectTrainerTeamForm(**attr)
-        self.assertFalse(form.is_valid())
-        with self.assertRaisesMessage(
-                Exception,
-                '[\'We couldnt find "dittossss". Please, check if you wrote it correctly.\']'):
-            form.clean()
-
     def test_pokemon_team_sum_invalid(self):
         attr = {
             'initial': {
@@ -75,9 +41,15 @@ class SelectTrainerTeamFormTest(PokeBattleTestCase):
             },
             'data': {
                 'trainer_opponent': mommy.make('users.User'),
-                'pokemon_1': 'slowbro',
-                'pokemon_2': 'golem',
-                'pokemon_3': 'doduo'
+                'order_1': 0,
+                'order_2': 1,
+                'order_3': 2,
+                'pokemon_1': mommy.make(
+                    'pokemons.Pokemon', name='slowbro').id,
+                'pokemon_2': mommy.make(
+                    'pokemons.Pokemon', name='golem').id,
+                'pokemon_3': mommy.make(
+                    'pokemons.Pokemon', name='doduo').id,
             }
         }
         form = SelectTrainerTeamForm(**attr)

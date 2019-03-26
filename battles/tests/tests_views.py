@@ -41,15 +41,9 @@ class SelectTrainerTeamTest(PokeBattleTestCase):
         super().setUp()
         self.view_url = reverse('battles:select_team')
 
-    def test_auth_get_success(self):
-        response = self.auth_client.get(self.view_url)
-        self.assertEqual(response.status_code, 200)
-
     def test_not_auth_login_redirect(self):
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(
-            response, expected_url='/login/?next=/select_team/')
 
 
 class BattlesListViewTest(PokeBattleTestCase):

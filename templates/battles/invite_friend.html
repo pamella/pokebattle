@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Invite a Friend | PokeBattle{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/invite_friend.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<section class="invite">
+    <h2 class="title">Invite a friend to join PokeBattle team!</h2>
+    
+    <form method="POST" class="invite__form">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <p class="error">{{ form.non_field_errors }}</p>
+        {% endif %}
+
+        <p>Please, enter your friend's email below:</p>
+        <p>{% render_field form.invited %}</p>
+
+        <input class="button" type="submit" value="Invite!">
+    </form>
+</section>
+
+{% endblock %}

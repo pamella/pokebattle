@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Signup | PokeBattle{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="signup">
+        <h2 class="title">Signup</h2>
+
+        <a class="button social" href="{% url 'social:begin' 'google-oauth2' %}">
+            Signup with &nbsp;<span>Google</span>
+        </a>
+
+        <form class="signup__form" method="POST">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+            <input class="button" type="submit" value="Signup">
+        </form>
+    </div>
+
+
+{% endblock body %}

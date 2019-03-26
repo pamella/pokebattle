@@ -16,12 +16,17 @@
     flex-wrap: wrap;
 }
 
+/* .list__wrap a {
+    text-decoration: none;
+    color: black;
+} */
+
 .list .battle {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 300px;
-    height: 250px;
+    height: 300px;
     margin-bottom: 30px;
     padding: 20px;
     box-sizing: border-box;

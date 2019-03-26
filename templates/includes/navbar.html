@@ -11,11 +11,15 @@
 <nav class="menu">
     
     {% if not request.user.is_authenticated %}
+        <a class="menu__link" href="{% url 'users:signup' %}">Signup</a>
         <a class="menu__link" href="{% url 'users:login' %}">Login</a>
     {% else %}
         <a class="menu__link" href="{% url 'battles:create_battle' %}">Create a Battle!</a>
         <a class="menu__link" href="{% url 'battles:list_battle' %}">My Battles</a>
-        <a class="menu__user">Hi, <span>{{ user }}</span>!</a>  <!-- FUTURE PROFILE DETAIL, CHANGE CLASS NAME -->
-        <a class="menu__link" href="{% url 'users:logout' %}">Logout</a>
+        <a class="menu__link" href="{% url 'battles:invite_friend' %}">Invite a Friend</a>
+        <div>
+            <a class="menu__user">Hi, <span>{{ user.get_short_name|title }}! |</span></a>  <!-- FUTURE PROFILE DETAIL, CHANGE CLASS NAME -->
+            <a class="menu__link" href="{% url 'users:logout' %}">Logout</a>
+        </div>
     {% endif %}
 </nav>

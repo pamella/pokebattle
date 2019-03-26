@@ -18,8 +18,8 @@ pylint-celery = "*"
 safety = "*"
 requests = "*"
 ipdb = "*"
-pylint = "*"
-astroid = "*"
+pylint = "==2.1.1"
+astroid = "==2.0.4"
 
 [packages]
 django = "*"
@@ -40,6 +40,9 @@ ipython = "*"
 psycopg2-binary = "*"
 django-widget-tweaks = "*"
 django-templated-email = "*"
+social-auth-app-django = "*"
+django-autocomplete-light = "*"
+django-celery-beat = "*"
 
 [requires]
 python_version = "3.6"
