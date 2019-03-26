@@ -13,7 +13,11 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='base.html'), name='home'),
     url(r'', include('battles.urls')),
     url(r'', include('users.urls')),
-    url(r'social/', include('social_django.urls', namespace='social'))
+
+    url(r'social/', include('social_django.urls', namespace='social')),
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'api/', include('battles.endpoints_urls')),
+
 ]
 
 if settings.DEBUG:

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_celery_beat', 
     'widget_tweaks',
+    'rest_framework',
 
     'common',
     'users',
@@ -128,6 +129,15 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL =  'battles:create_battle'
 LOGOUT_REDIRECT_URL = 'users:login'
+
+# Rest Framework
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 LANGUAGE_CODE = 'en-us'
 
