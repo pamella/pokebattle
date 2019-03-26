@@ -15,4 +15,4 @@ class UserHasAlreadSignup(UserPassesTestMixin):
         return True
 
     def handle_no_permission(self):
-        return redirect('users:login')
+        return redirect('battles:list_battle')
