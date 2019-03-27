@@ -14,8 +14,9 @@ class BattleReadSerializer(serializers.ModelSerializer):
         source='trainer_opponent.id', queryset=user_queryset)
     trainer_opponent_email = serializers.CharField(source='trainer_opponent.email')
     trainer_winner_id = serializers.PrimaryKeyRelatedField(
-        source='trainer_winner.id', queryset=user_queryset)
-    trainer_winner_email = serializers.CharField(source='trainer_winner.email')
+        source='trainer_winner.id', queryset=user_queryset, allow_null=True)
+    trainer_winner_email = serializers.CharField(
+        source='trainer_winner.email', allow_null=True)
 
     rounds = serializers.SerializerMethodField()
 
