@@ -53,7 +53,7 @@ class TrainerTeam(models.Model):
     )
     battle_related = models.ForeignKey(
         Battle, on_delete=models.CASCADE,
-        related_name="battle",
+        related_name="teams",
         null=True
     )
 

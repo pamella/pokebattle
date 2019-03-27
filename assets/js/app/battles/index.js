@@ -1,3 +1,3 @@
-import Popular from './components';
+import App from './components';
 
-export default Popular;
+export default App;
