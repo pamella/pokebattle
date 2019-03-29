@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -9,7 +10,8 @@ import fight from '../../../../../images/icons/fight.png';
 
 
 const StyledItem = styled.div`
-  margin-bottom: 80px;
+  padding: 30px 0 40px 0;
+  box-sizing: border-box;
 `;
 
 const StyledTrainerCreator = styled.span`
@@ -20,15 +22,41 @@ const StyledTrainerOpponent = styled.span`
   color: #da0000;
 `;
 
+const StyledRoundItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+const StyledRoundPokemonsItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  box-shadow: 1px 1px 4px lightgray;
+`;
+
+const StyledPokemonItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledPokemonImg = styled.img`
+  height: 96px;
+`;
+
 function Subtitle(props) {
   const { name, img } = props;
   return (
-    <div>
-      <h2>
-        <img src={img} alt="" />
-        {name}
-      </h2>
-    </div>
+    <h2>
+      <img src={img} alt="" />
+      {' '}
+      {name}
+    </h2>
   );
 }
 
@@ -38,8 +66,8 @@ function TrainerWinner(props) {
   return (
     <div>
       { isCreatorWinner
-        ? <StyledTrainerCreator><b>{creator}</b></StyledTrainerCreator>
-        : <StyledTrainerOpponent><b>{opponent}</b></StyledTrainerOpponent>
+        ? <StyledTrainerCreator>{creator}</StyledTrainerCreator>
+        : <StyledTrainerOpponent>{opponent}</StyledTrainerOpponent>
       }
     </div>
   );
@@ -58,16 +86,59 @@ function Trainers(props) {
   );
 }
 
+function RoundHeader(props) {
+  const { index } = props;
+  return (
+    <h4>
+    Round
+      {' '}
+      {index + 1}
+    </h4>
+  );
+}
+
+function Pokemon(props) {
+  const { trainerteam } = props;
+  return (
+    <StyledPokemonItem>
+      <StyledPokemonImg src={trainerteam.sprite} alt="" />
+      <ul>
+        <li>{trainerteam.name}</li>
+        <li>
+          A:
+          {' '}
+          {trainerteam.attack}
+        </li>
+        <li>
+          D:
+          {' '}
+          {trainerteam.defense}
+        </li>
+        <li>
+          HP:
+          {' '}
+          {trainerteam.hitpoints}
+        </li>
+      </ul>
+    </StyledPokemonItem>
+  );
+}
+
 function Round(props) {
-  const { round } = props;
-  if (isEmpty(round)) return null;
+  const { round, index } = props;
+  const { creator_pokemon, opponent_pokemon } = round;
   return (
     <div>
-      <h3>Round </h3>
-      <div>
-        {round[0].creator_pokemon.id}
-        {console.log('rr ', { round })}
-      </div>
+      <RoundHeader index={index} />
+
+      <StyledRoundPokemonsItem>
+        <StyledTrainerCreator>
+          <Pokemon trainerteam={creator_pokemon} />
+        </StyledTrainerCreator>
+        <StyledTrainerOpponent>
+          <Pokemon trainerteam={opponent_pokemon} />
+        </StyledTrainerOpponent>
+      </StyledRoundPokemonsItem>
     </div>
   );
 }
@@ -89,8 +160,17 @@ Trainers.propTypes = {
   opponent: PropTypes.string.isRequired,
 };
 
+RoundHeader.propTypes = {
+  index: PropTypes.number.isRequired,
+};
+
+Pokemon.propTypes = {
+  trainerteam: PropTypes.string.isRequired,
+};
+
 Round.propTypes = {
   round: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 class BattleDetail extends React.Component {
@@ -118,6 +198,9 @@ class BattleDetail extends React.Component {
   render() {
     const { data } = this.state;
     const { rounds } = data;
+
+    if (isEmpty(rounds)) return null;
+
     return (
       <div>
         <StyledItem>
@@ -151,7 +234,9 @@ class BattleDetail extends React.Component {
             img={fight}
           />
 
-          <Round round={rounds} />
+          <StyledRoundItem>
+            {rounds.map((round, index) => <Round round={round} index={index} />)}
+          </StyledRoundItem>
         </StyledItem>
       </div>
     );
