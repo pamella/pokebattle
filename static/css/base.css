@@ -1,10 +1,10 @@
 /* Common */
 html {
-    font-size: 16px !important;
+    font-size: 16px;
 }
 
 body {
-    font-family: 'Ubuntu', sans-serif !important;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .title {
