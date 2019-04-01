@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from battles.models import Battle, TrainerTeam
+from battles.models import Battle
 from pokemons.serializers import PokemonSerializer
 from users.models import User
 
@@ -41,13 +41,3 @@ class BattleReadSerializer(serializers.ModelSerializer):
             rounds[2][role] = PokemonSerializer(team.pokemon_3).data
 
         return rounds
-
-
-class TrainerTeamSerializer(serializers.ModelSerializer):
-    pokemon_1 = PokemonSerializer()
-    pokemon_2 = PokemonSerializer()
-    pokemon_3 = PokemonSerializer()
-
-    class Meta:
-        model = TrainerTeam
-        fields = ('id', 'pokemon_1', 'pokemon_2', 'pokemon_3')
