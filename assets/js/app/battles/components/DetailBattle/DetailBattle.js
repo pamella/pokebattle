@@ -176,8 +176,12 @@ Round.propTypes = {
 class BattleDetail extends React.Component {
   constructor(props) {
     super(props);
+    // this is going to be replaced by router in next sprint card
+    const url = window.location.href;
+    const battleID = url.substring(url.lastIndexOf('detail/') + 7);
+
     this.state = {
-      endpoint: '/api/battle/61',
+      endpoint: '/api/battle/'.concat(battleID),
       data: [],
     };
   }
