@@ -6,4 +6,7 @@ from pokemons.models import Pokemon
 class PokemonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pokemon
-        fields = '__all__'
+        fields = (
+            'id', 'api_id', 'name', 'sprite',
+            'attack', 'defense', 'hitpoints',
+        )
