@@ -43,6 +43,7 @@ django-templated-email = "*"
 social-auth-app-django = "*"
 django-autocomplete-light = "*"
 django-celery-beat = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.6"

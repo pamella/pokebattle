@@ -102,6 +102,7 @@ class BattlesListView(LoginRequiredMixin, ListView):
 class DetailBattleView(LoginRequiredMixin, DetailView):
     model = Battle
     template_name = 'battles/detail_battle.html'
+    # template_name = 'battles/detail_battle_react.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
