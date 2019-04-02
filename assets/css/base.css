@@ -1,0 +1,72 @@
+/* Common */
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.container {
+    max-width: 80%;
+    margin: auto;
+    padding: 30px 0;
+    box-sizing: border-box;
+}
+
+.title {
+    text-align: center;
+}
+
+.button {
+    margin-top: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #004d99;
+    color: white;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 150ms;
+}
+
+.button:hover {
+    background-color: white;
+    color: #004d99;
+    border-color: #004d99;
+}
+
+.button.social {
+    display: flex;
+    margin: 20px auto;
+    width: fit-content;
+    height: fit-content;
+    background-color: #e13b28;
+    color: white;
+    text-decoration: none;
+}
+
+.button.social:hover {
+    background-color: white;
+    border-color: #e13b28;
+    color: #e13b28;
+}
+
+.button.social span {
+    font-weight: 500;
+}
+
+.errorlist, .errorlist li {
+    color: #fd6c6c;
+}
+
+.success {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 30px;
+    box-sizing: border-box;
+    color: black;
+    font-weight: 500;
+}
