@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
+import setDetailBattleAction from '../../../../actions';
 import fist from '../../../../../images/icons/fist.png';
 import player from '../../../../../images/icons/player.png';
 import fight from '../../../../../images/icons/fight.png';
@@ -182,28 +184,29 @@ class BattleDetail extends React.Component {
 
     this.state = {
       endpoint: '/api/battle/'.concat(battleID),
-      data: [],
     };
   }
 
   componentDidMount() {
     const { endpoint } = this.state;
+    const { setDetailBattle } = this.props;
+
     axios.get(endpoint)
       .then((response) => {
-      // handle success
-        this.setState(() => ({ data: response.data }));
+        setDetailBattle(response.data);
       })
       .catch((error) => {
-      // handle error
         console.log(error);
       });
   }
 
   render() {
-    const { data } = this.state;
-    const { rounds } = data;
+    const { battle } = this.props;
+    const aux = battle.battle;
 
-    if (isEmpty(rounds)) return null;
+    if (isEmpty(aux)) return null;
+
+    const { rounds } = aux;
 
     return (
       <div>
@@ -214,9 +217,9 @@ class BattleDetail extends React.Component {
           />
 
           <TrainerWinner
-            creator={data.trainer_creator_email}
-            opponent={data.trainer_opponent_email}
-            winner={data.trainer_winner_email}
+            creator={aux.trainer_creator_email}
+            opponent={aux.trainer_opponent_email}
+            winner={aux.trainer_winner_email}
           />
         </StyledItem>
 
@@ -227,8 +230,8 @@ class BattleDetail extends React.Component {
           />
 
           <Trainers
-            creator={data.trainer_creator_email}
-            opponent={data.trainer_opponent_email}
+            creator={aux.trainer_creator_email}
+            opponent={aux.trainer_opponent_email}
           />
         </StyledItem>
 
@@ -247,4 +250,22 @@ class BattleDetail extends React.Component {
   }
 }
 
-export default BattleDetail;
+BattleDetail.propTypes = {
+  setDetailBattle: PropTypes.func.isRequired,
+  battle: PropTypes.string,
+};
+
+BattleDetail.defaultProps = {
+  battle: '',
+};
+
+const mapStateToProps = state => ({
+  battle: state.battle,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setDetailBattle: battle => dispatch(setDetailBattleAction(battle)),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(BattleDetail);
