@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -176,20 +177,9 @@ Round.propTypes = {
 };
 
 class BattleDetail extends React.Component {
-  constructor(props) {
-    super(props);
-    // this is going to be replaced by router in next sprint card
-    const url = window.location.href;
-    const battleID = url.substring(url.lastIndexOf('detail/') + 7);
-
-    this.state = {
-      endpoint: '/api/battle/'.concat(battleID),
-    };
-  }
-
   componentDidMount() {
-    const { endpoint } = this.state;
-    const { setDetailBattle } = this.props;
+    const { setDetailBattle, match } = this.props;
+    const endpoint = `/api/battle/${match.params.pk}`;
 
     axios.get(endpoint)
       .then((response) => {
@@ -251,6 +241,11 @@ class BattleDetail extends React.Component {
 }
 
 BattleDetail.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      pk: PropTypes.string,
+    }),
+  }).isRequired,
   setDetailBattle: PropTypes.func.isRequired,
   battle: PropTypes.string,
 };
@@ -268,4 +263,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(BattleDetail);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BattleDetail));
