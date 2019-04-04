@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
-import setDetailBattleAction from '../../../../actions';
+import actions from '../../../../actions';
 import fist from '../../../../../images/icons/fist.png';
 import player from '../../../../../images/icons/player.png';
 import fight from '../../../../../images/icons/fight.png';
@@ -264,7 +264,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDetailBattle: battle => dispatch(setDetailBattleAction(battle)),
+  setDetailBattle: battle => dispatch(actions.setDetailBattle(battle)),
 });
 
 

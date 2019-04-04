@@ -5,4 +5,4 @@ const setDetailBattle = battle => ({
   battle,
 });
 
-export default setDetailBattle;
+export default { setDetailBattle };
