@@ -19,8 +19,8 @@
     align-items: center;
 }
 
-.pokemon img {
-    width: min-content;
+.pokemon .sprite {
+    width: 96px;
 }
 
 .round {
