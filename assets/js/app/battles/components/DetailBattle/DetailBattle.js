@@ -146,36 +146,6 @@ function Round(props) {
   );
 }
 
-
-Subtitle.propTypes = {
-  name: PropTypes.string.isRequired,
-  img: PropTypes.string.isRequired,
-};
-
-TrainerWinner.propTypes = {
-  creator: PropTypes.string.isRequired,
-  opponent: PropTypes.string.isRequired,
-  winner: PropTypes.string.isRequired,
-};
-
-Trainers.propTypes = {
-  creator: PropTypes.string.isRequired,
-  opponent: PropTypes.string.isRequired,
-};
-
-RoundHeader.propTypes = {
-  index: PropTypes.number.isRequired,
-};
-
-Pokemon.propTypes = {
-  trainerteam: PropTypes.string.isRequired,
-};
-
-Round.propTypes = {
-  round: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-};
-
 class BattleDetail extends React.Component {
   componentDidMount() {
     const { setDetailBattle, match } = this.props;
@@ -240,18 +210,56 @@ class BattleDetail extends React.Component {
   }
 }
 
+Subtitle.propTypes = {
+  name: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
+};
+
+TrainerWinner.propTypes = {
+  creator: PropTypes.string.isRequired,
+  opponent: PropTypes.string.isRequired,
+  winner: PropTypes.string.isRequired,
+};
+
+Trainers.propTypes = {
+  creator: PropTypes.string.isRequired,
+  opponent: PropTypes.string.isRequired,
+};
+
+RoundHeader.propTypes = {
+  index: PropTypes.number.isRequired,
+};
+
+Pokemon.propTypes = {
+  trainerteam: PropTypes.shape({
+    id: PropTypes.number,
+    api_id: PropTypes.number,
+    name: PropTypes.string,
+    sprite: PropTypes.string,
+    attack: PropTypes.number,
+    defense: PropTypes.number,
+    hitpoints: PropTypes.number,
+  }).isRequired,
+};
+
+Round.propTypes = {
+  round: PropTypes.oneOfType([
+    PropTypes.object,
+  ]).isRequired,
+  index: PropTypes.number.isRequired,
+};
+
 BattleDetail.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       pk: PropTypes.string,
-    }),
+    }).isRequired,
   }).isRequired,
   setDetailBattle: PropTypes.func.isRequired,
-  battle: PropTypes.string,
-};
-
-BattleDetail.defaultProps = {
-  battle: '',
+  battle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
 };
 
 const mapStateToProps = state => ({
