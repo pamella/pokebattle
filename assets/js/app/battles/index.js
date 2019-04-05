@@ -1,3 +1,6 @@
-import DetailBattle from './components';
+import { DetailBattle, ListBattle } from './components';
 
-export default DetailBattle;
+export {
+  DetailBattle,
+  ListBattle,
+};
