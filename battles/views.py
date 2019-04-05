@@ -84,7 +84,8 @@ class SelectTrainerTeamView(
 
 
 class BattlesListView(LoginRequiredMixin, ListView):
-    template_name = 'battles/list_battle.html'
+    # template_name = 'battles/list_battle.html'
+    template_name = 'battles/list_battle_react.html'
     model = Battle
 
     def get_context_data(self, **kwargs):   # pylint: disable=arguments-differ
