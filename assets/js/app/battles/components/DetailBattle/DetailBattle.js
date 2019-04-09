@@ -1,10 +1,12 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
+import actions from '../../../../actions';
 import fist from '../../../../../images/icons/fist.png';
 import player from '../../../../../images/icons/player.png';
 import fight from '../../../../../images/icons/fight.png';
@@ -144,6 +146,69 @@ function Round(props) {
   );
 }
 
+class BattleDetail extends React.Component {
+  componentDidMount() {
+    const { setDetailBattle, match } = this.props;
+    const endpoint = `/api/battle/${match.params.pk}`;
+
+    axios.get(endpoint)
+      .then((response) => {
+        setDetailBattle(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  render() {
+    const { battle } = this.props;
+    const aux = battle.battle;
+
+    if (isEmpty(aux)) return null;
+
+    const { rounds } = aux;
+
+    return (
+      <div>
+        <StyledItem>
+          <Subtitle
+            name="Battle Winner"
+            img={fist}
+          />
+
+          <TrainerWinner
+            creator={aux.trainer_creator_email}
+            opponent={aux.trainer_opponent_email}
+            winner={aux.trainer_winner_email}
+          />
+        </StyledItem>
+
+        <StyledItem>
+          <Subtitle
+            name="Battle Trainers"
+            img={player}
+          />
+
+          <Trainers
+            creator={aux.trainer_creator_email}
+            opponent={aux.trainer_opponent_email}
+          />
+        </StyledItem>
+
+        <StyledItem>
+          <Subtitle
+            name="Rounds"
+            img={fight}
+          />
+
+          <StyledRoundItem>
+            {rounds.map((round, index) => <Round round={round} index={index} />)}
+          </StyledRoundItem>
+        </StyledItem>
+      </div>
+    );
+  }
+}
 
 Subtitle.propTypes = {
   name: PropTypes.string.isRequired,
@@ -166,92 +231,44 @@ RoundHeader.propTypes = {
 };
 
 Pokemon.propTypes = {
-  trainerteam: PropTypes.string.isRequired,
+  trainerteam: PropTypes.shape({
+    id: PropTypes.number,
+    api_id: PropTypes.number,
+    name: PropTypes.string,
+    sprite: PropTypes.string,
+    attack: PropTypes.number,
+    defense: PropTypes.number,
+    hitpoints: PropTypes.number,
+  }).isRequired,
 };
 
 Round.propTypes = {
-  round: PropTypes.string.isRequired,
+  round: PropTypes.oneOfType([
+    PropTypes.object,
+  ]).isRequired,
   index: PropTypes.number.isRequired,
 };
-
-class BattleDetail extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data: [],
-    };
-  }
-
-  componentDidMount() {
-    const { match } = this.props;
-    const endpoint = `/api/battle/${match.params.pk}`;
-
-    axios.get(endpoint)
-      .then((response) => {
-      // handle success
-        this.setState(() => ({ data: response.data }));
-      })
-      .catch((error) => {
-      // handle error
-        console.log(error);
-      });
-  }
-
-  render() {
-    const { data } = this.state;
-    const { rounds } = data;
-
-    if (isEmpty(rounds)) return null;
-
-    return (
-      <div>
-        <StyledItem>
-          <Subtitle
-            name="Battle Winner"
-            img={fist}
-          />
-
-          <TrainerWinner
-            creator={data.trainer_creator_email}
-            opponent={data.trainer_opponent_email}
-            winner={data.trainer_winner_email}
-          />
-        </StyledItem>
-
-        <StyledItem>
-          <Subtitle
-            name="Battle Trainers"
-            img={player}
-          />
-
-          <Trainers
-            creator={data.trainer_creator_email}
-            opponent={data.trainer_opponent_email}
-          />
-        </StyledItem>
-
-        <StyledItem>
-          <Subtitle
-            name="Rounds"
-            img={fight}
-          />
-
-          <StyledRoundItem>
-            {rounds.map((round, index) => <Round round={round} index={index} />)}
-          </StyledRoundItem>
-        </StyledItem>
-      </div>
-    );
-  }
-}
 
 BattleDetail.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       pk: PropTypes.string,
-    }),
+    }).isRequired,
   }).isRequired,
+  setDetailBattle: PropTypes.func.isRequired,
+  battle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
 };
 
-export default withRouter(BattleDetail);
+const mapStateToProps = state => ({
+  battle: state.battle,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setDetailBattle: battle => dispatch(actions.setDetailBattle(battle)),
+});
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BattleDetail));

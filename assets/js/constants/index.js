@@ -1,0 +1,3 @@
+const SET_DETAIL_BATTLE = 'SET_DETAIL_BATTLE';
+
+export default SET_DETAIL_BATTLE;
