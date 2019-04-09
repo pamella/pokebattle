@@ -1,3 +1,3 @@
-import App from './components';
+import DetailBattle from './components';
 
-export default App;
+export default DetailBattle;

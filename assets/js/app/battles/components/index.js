@@ -1,3 +1,3 @@
-import App from './DetailBattle';
+import DetailBattle from './DetailBattle';
 
-export default App;
+export default DetailBattle;

@@ -2,7 +2,7 @@
 import React from 'react';
 import BattleDetail from './DetailBattle';
 
-class App extends React.Component {
+class DetailBattle extends React.Component {
   render() {
     return (
       <div className="container">
@@ -12,4 +12,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default DetailBattle;

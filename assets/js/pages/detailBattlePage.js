@@ -1,9 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from '../app/battles';
+import DetailBattle from '../app/battles';
 
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('react-app'),
-);
+export default DetailBattle;
