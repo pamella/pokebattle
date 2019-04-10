@@ -148,12 +148,12 @@ function Round(props) {
 
 class BattleDetail extends React.Component {
   componentDidMount() {
-    const { setDetailBattle, match } = this.props;
+    const { fetchDetailBattle, match } = this.props;
     const endpoint = `/api/battle/${match.params.pk}`;
 
     axios.get(endpoint)
       .then((response) => {
-        setDetailBattle(response.data);
+        fetchDetailBattle(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -255,7 +255,7 @@ BattleDetail.propTypes = {
       pk: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  setDetailBattle: PropTypes.func.isRequired,
+  fetchDetailBattle: PropTypes.func.isRequired,
   battle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
@@ -267,7 +267,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDetailBattle: battle => dispatch(actions.setDetailBattle(battle)),
+  fetchDetailBattle: battle => dispatch(actions.fetchDetailBattle(battle)),
 });
 
 

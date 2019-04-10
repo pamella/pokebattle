@@ -1,13 +1,13 @@
-import { SET_DETAIL_BATTLE, SET_LIST_BATTLE } from '../constants';
+import { FETCH_DETAIL_BATTLE, FETCH_LIST_BATTLE } from '../constants';
 
 const battle = (state = [], action) => {
   switch (action.type) {
-    case SET_DETAIL_BATTLE:
+    case FETCH_DETAIL_BATTLE:
       return {
         ...state,
         battle: action.battle,
       };
-    case SET_LIST_BATTLE:
+    case FETCH_LIST_BATTLE:
       return {
         ...state,
         listBattle: action.listBattle,

@@ -169,11 +169,11 @@ function SettledBattles(battles) {
 
 class BattleList extends React.Component {
   componentDidMount() {
-    const { setListBattle } = this.props;
+    const { fetchListBattle } = this.props;
 
     axios.get('api/my_battles')
       .then((response) => {
-        setListBattle(response.data);
+        fetchListBattle(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -200,11 +200,11 @@ BattleList.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]).isRequired,
-  setListBattle: PropTypes.func.isRequired,
+  fetchListBattle: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  setListBattle: battle => dispatch(actions.setListBattle(battle)),
+  fetchListBattle: battle => dispatch(actions.fetchListBattle(battle)),
 });
 
 const mapStateToProps = state => ({

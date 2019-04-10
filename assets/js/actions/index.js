@@ -1,16 +1,20 @@
-import { SET_DETAIL_BATTLE, SET_LIST_BATTLE } from '../constants';
+import {
+  FETCH_DETAIL_BATTLE,
+  FETCH_LIST_BATTLE,
+} from '../constants';
 
-const setDetailBattle = battle => ({
-  type: SET_DETAIL_BATTLE,
+
+const fetchDetailBattle = battle => ({
+  type: FETCH_DETAIL_BATTLE,
   battle,
 });
 
-const setListBattle = listBattle => ({
-  type: SET_LIST_BATTLE,
+const fetchListBattle = listBattle => ({
+  type: FETCH_LIST_BATTLE,
   listBattle,
 });
 
 export default {
-  setDetailBattle,
-  setListBattle,
+  fetchDetailBattle,
+  fetchListBattle,
 };

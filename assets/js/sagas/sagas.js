@@ -1,10 +1,18 @@
-import { put, take, all } from 'redux-saga/effects';
-import { SET_LIST_BATTLE } from '../constants';
+import {
+  call, put, takeLatest, all,
+} from 'redux-saga/effects';
+import axios from 'axios';
+import { FETCH_LIST_BATTLE } from '../constants';
 
 
 function* loadListBattle() {
   try {
-    yield take(SET_LIST_BATTLE);
+    const url = 'api/my_battles00';
+    const battles = yield call(axios.get, url);
+    yield put({
+      type: FETCH_LIST_BATTLE,
+      listBattle: battles,
+    });
   } catch (error) {
     yield put({
       type: 'FETCH_FAILED',
@@ -13,9 +21,15 @@ function* loadListBattle() {
   }
 }
 
+// function* loadDetailBattle(action) {
+//   console.log(action);
+// }
+
+// status, loading, done, error
+
 export default function* rootSaga() {
   yield console.log('testing saga');
   yield all([
-    loadListBattle(),
+    takeLatest(FETCH_LIST_BATTLE, loadListBattle),
   ]);
 }
