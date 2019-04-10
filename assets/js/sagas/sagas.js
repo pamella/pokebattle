@@ -13,11 +13,9 @@ function* loadListBattle() {
   }
 }
 
-function* rootSaga() {
+export default function* rootSaga() {
   yield console.log('testing saga');
   yield all([
     loadListBattle(),
   ]);
 }
-
-export default { rootSaga };
