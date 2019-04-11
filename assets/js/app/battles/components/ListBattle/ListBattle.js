@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
-import actions from '../../../../actions';
+import actions from 'actions';
 import Urls from '../../../../utils/urls';
 
 
