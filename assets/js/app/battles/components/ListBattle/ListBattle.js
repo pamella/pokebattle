@@ -38,6 +38,10 @@ const HrStyled = styled.hr`
   width: 100%;
 `;
 
+const PStyled = styled.p`
+  word-wrap: break-word;
+`;
+
 const OrangePStyled = styled.p`
   color: #ff6600;
 `;
@@ -66,31 +70,26 @@ function OngoingBattleBox(battle) {
           <div>
             <OrangePStyled>Waiting trainer to challenge back.</OrangePStyled>
             <HrStyled />
-            <p>
+            <PStyled>
               <b>Opponent:</b>
-              {' '}
+              &nbsp;
               {opponent}
-            </p>
+            </PStyled>
             <div>
               <b>My team:</b>
               <ul>
-                {is_trainer_creator
-                  ? rounds.map(pokemon => <li>{pokemon.creator_pokemon.name}</li>)
-                  : rounds.map(pokemon => <li>{pokemon.opponent_pokemon.name}</li>)
-                }
+                { rounds.map(pokemon => <li>{pokemon.creator_pokemon.name}</li>) }
               </ul>
             </div>
           </div>
         )
         : (
           <div>
-            <p>
-              Trainer
-              {' '}
+            <PStyled>
+              Trainer&nbsp;
               <b>{trainer_creator_email}</b>
-              {' '}
-              challenge you.
-            </p>
+              &nbsp;challenge you.
+            </PStyled>
             <DetailLinkStyled to={Urls['battles:select_team']().concat(`?id=${id}`)}>
               Select your team to challenge back!
             </DetailLinkStyled>
@@ -114,17 +113,17 @@ function SettledBattleBox(battle) {
     <BattleItemStyled>
       <WinnerBattleStyled>
         <b>Winner:</b>
-        {' '}
+        &nbsp;
         {trainer_winner_email}
       </WinnerBattleStyled>
 
       <HrStyled />
 
-      <p>
+      <PStyled>
         <b>Opponent:</b>
-        {' '}
+        &nbsp;
         {opponent}
-      </p>
+      </PStyled>
       <div>
         <b>My team:</b>
         <ul>
