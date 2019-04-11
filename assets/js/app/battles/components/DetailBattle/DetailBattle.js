@@ -3,7 +3,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import actions from '../../../../actions';
@@ -149,15 +148,8 @@ function Round(props) {
 class BattleDetail extends React.Component {
   componentDidMount() {
     const { fetchDetailBattle, match } = this.props;
-    const endpoint = `/api/battle/${match.params.pk}`;
-
-    axios.get(endpoint)
-      .then((response) => {
-        fetchDetailBattle(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const battleID = match.params.pk;
+    fetchDetailBattle(battleID);
   }
 
   render() {
@@ -267,7 +259,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDetailBattle: battle => dispatch(actions.fetchDetailBattle(battle)),
+  fetchDetailBattle: id => dispatch(actions.fetchDetailBattle(id)),
 });
 
 

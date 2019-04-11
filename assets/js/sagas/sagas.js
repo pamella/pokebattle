@@ -28,7 +28,12 @@ function* loadListBattle() {
 
 function* loadDetailBattle(action) {
   try {
-    yield console.log(action);
+    const url = `/api/battle/${action.id}`;
+    const battle = yield call(axios.get, url);
+    yield put({
+      type: FETCH_DETAIL_BATTLE_REQUEST,
+      battle: battle.data,
+    });
   } catch (error) {
     yield put({
       type: FETCH_DETAIL_BATTLE_ERROR,

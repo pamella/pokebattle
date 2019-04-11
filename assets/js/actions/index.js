@@ -4,8 +4,9 @@ import {
 } from '../constants';
 
 
-const fetchDetailBattle = battle => ({
+const fetchDetailBattle = (id, battle) => ({
   type: FETCH_DETAIL_BATTLE_REQUEST,
+  id,
   battle,
 });
 
