@@ -1,3 +1,7 @@
 import DetailBattle from './DetailBattle';
+import ListBattle from './ListBattle';
 
-export default DetailBattle;
+export {
+  DetailBattle,
+  ListBattle,
+};

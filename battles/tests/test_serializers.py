@@ -10,6 +10,7 @@ class BattleReadSerializerTest(PokeBattleTestCase):
         serializer = BattleReadSerializer(battle)
         expected_keys = [
             'id',
+            'status',
             'trainer_creator_id', 'trainer_creator_email',
             'trainer_opponent_id', 'trainer_opponent_email',
             'trainer_winner_id', 'trainer_winner_email',

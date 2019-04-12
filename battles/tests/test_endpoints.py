@@ -37,6 +37,7 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
             reverse('api_battles:detail_battle_endpoint', kwargs={'pk': battle.id}))
         expected_response = {
             "id": battle.id,
+            "status": str(battle.status),
             "trainer_creator_id": battle.trainer_creator.id,
             "trainer_creator_email": battle.trainer_creator.email,
             "trainer_opponent_id": battle.trainer_opponent.id,

@@ -85,5 +85,9 @@ module.exports = [{
       path.resolve(__dirname, 'assets/js/'),
     ],
     extensions: ['.js', '.jsx'],
+    alias: {
+      actions: path.resolve(__dirname, './assets/js/actions'),
+      utils: path.resolve(__dirname, './assets/js/utils'),
+    },
   },
 }];

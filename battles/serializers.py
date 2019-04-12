@@ -24,6 +24,7 @@ class BattleReadSerializer(serializers.ModelSerializer):
         model = Battle
         fields = (
             'id',
+            'status',
             'trainer_creator_id', 'trainer_creator_email',
             'trainer_opponent_id', 'trainer_opponent_email',
             'trainer_winner_id', 'trainer_winner_email',
@@ -41,3 +42,23 @@ class BattleReadSerializer(serializers.ModelSerializer):
             rounds[2][role] = PokemonSerializer(team.pokemon_3).data
 
         return rounds
+
+
+class ListBattleSerializer(BattleReadSerializer):
+    is_trainer_creator = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Battle
+        fields = (
+            'id',
+            'status',
+            'trainer_creator_id', 'trainer_creator_email',
+            'trainer_opponent_id', 'trainer_opponent_email',
+            'trainer_winner_id', 'trainer_winner_email',
+            'is_trainer_creator',
+            'rounds',
+        )
+
+    def get_is_trainer_creator(self, obj):
+        user = self.context['request'].user
+        return user == obj.trainer_creator

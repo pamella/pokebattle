@@ -1,3 +1,3 @@
-import DetailBattle from '../app/battles';
+import { DetailBattle } from '../app/battles';
 
 export default DetailBattle;

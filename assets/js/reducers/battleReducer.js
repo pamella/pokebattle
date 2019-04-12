@@ -1,4 +1,4 @@
-import SET_DETAIL_BATTLE from '../constants';
+import { SET_DETAIL_BATTLE, SET_LIST_BATTLE } from '../constants';
 
 const battle = (state = [], action) => {
   switch (action.type) {
@@ -6,6 +6,11 @@ const battle = (state = [], action) => {
       return {
         ...state,
         battle: action.battle,
+      };
+    case SET_LIST_BATTLE:
+      return {
+        ...state,
+        listBattle: action.listBattle,
       };
     default:
       return state;
