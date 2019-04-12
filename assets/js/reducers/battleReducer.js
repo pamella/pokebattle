@@ -1,31 +1,31 @@
 import {
-  FETCH_DETAIL_BATTLE_REQUEST,
+  FETCH_DETAIL_BATTLE_REQUEST_SUCCESS,
   FETCH_DETAIL_BATTLE_ERROR,
-  FETCH_LIST_BATTLE_REQUEST,
+  FETCH_LIST_BATTLE_REQUEST_SUCCESS,
   FETCH_LIST_BATTLE_ERROR,
 } from '../constants';
 
 const battle = (state = [], action) => {
   switch (action.type) {
-    case FETCH_DETAIL_BATTLE_REQUEST:
+    case FETCH_DETAIL_BATTLE_REQUEST_SUCCESS:
       return {
         ...state,
-        battle: action.battle,
+        payload: action.payload,
       };
     case FETCH_DETAIL_BATTLE_ERROR:
       return {
         ...state,
-        error: action.error,
+        payload: action.payload,
       };
-    case FETCH_LIST_BATTLE_REQUEST:
+    case FETCH_LIST_BATTLE_REQUEST_SUCCESS:
       return {
         ...state,
-        listBattle: action.listBattle,
+        payload: action.payload,
       };
     case FETCH_LIST_BATTLE_ERROR:
       return {
         ...state,
-        error: action.error,
+        payload: action.payload,
       };
     default:
       return state;

@@ -4,8 +4,10 @@ import {
 import axios from 'axios';
 import {
   FETCH_LIST_BATTLE_REQUEST,
+  FETCH_LIST_BATTLE_REQUEST_SUCCESS,
   FETCH_LIST_BATTLE_ERROR,
   FETCH_DETAIL_BATTLE_REQUEST,
+  FETCH_DETAIL_BATTLE_REQUEST_SUCCESS,
   FETCH_DETAIL_BATTLE_ERROR,
 } from '../constants';
 
@@ -13,31 +15,31 @@ import {
 function* loadListBattle() {
   try {
     const url = 'api/my_battles';
-    const battles = yield call(axios.get, url);
+    const listBattles = yield call(axios.get, url);
     yield put({
-      type: FETCH_LIST_BATTLE_REQUEST,
-      listBattle: battles.data,
+      type: FETCH_LIST_BATTLE_REQUEST_SUCCESS,
+      payload: listBattles.data,
     });
   } catch (error) {
     yield put({
       type: FETCH_LIST_BATTLE_ERROR,
-      error: error.message,
+      payload: error.message,
     });
   }
 }
 
 function* loadDetailBattle(action) {
   try {
-    const url = `/api/battle/${action.id}`;
+    const url = `/api/battle/${action.payload}`;
     const battle = yield call(axios.get, url);
     yield put({
-      type: FETCH_DETAIL_BATTLE_REQUEST,
-      battle: battle.data,
+      type: FETCH_DETAIL_BATTLE_REQUEST_SUCCESS,
+      payload: battle.data,
     });
   } catch (error) {
     yield put({
       type: FETCH_DETAIL_BATTLE_ERROR,
-      error: error.message,
+      payload: error.message,
     });
   }
 }

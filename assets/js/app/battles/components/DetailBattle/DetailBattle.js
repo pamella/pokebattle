@@ -154,11 +154,9 @@ class BattleDetail extends React.Component {
 
   render() {
     const { battle } = this.props;
-    const aux = battle.battle;
+    if (isEmpty(battle)) return null;
 
-    if (isEmpty(aux)) return null;
-
-    const { rounds } = aux;
+    const { rounds } = battle;
 
     return (
       <div>
@@ -169,9 +167,9 @@ class BattleDetail extends React.Component {
           />
 
           <TrainerWinner
-            creator={aux.trainer_creator_email}
-            opponent={aux.trainer_opponent_email}
-            winner={aux.trainer_winner_email}
+            creator={battle.trainer_creator_email}
+            opponent={battle.trainer_opponent_email}
+            winner={battle.trainer_winner_email}
           />
         </StyledItem>
 
@@ -182,8 +180,8 @@ class BattleDetail extends React.Component {
           />
 
           <Trainers
-            creator={aux.trainer_creator_email}
-            opponent={aux.trainer_opponent_email}
+            creator={battle.trainer_creator_email}
+            opponent={battle.trainer_opponent_email}
           />
         </StyledItem>
 
@@ -255,11 +253,11 @@ BattleDetail.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  battle: state.battle,
+  battle: state.battle.payload,
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDetailBattle: id => dispatch(actions.fetchDetailBattle(id)),
+  fetchDetailBattle: payload => dispatch(actions.fetchDetailBattle(payload)),
 });
 
 

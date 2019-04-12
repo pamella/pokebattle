@@ -4,15 +4,14 @@ import {
 } from '../constants';
 
 
-const fetchDetailBattle = (id, battle) => ({
+const fetchDetailBattle = payload => ({
   type: FETCH_DETAIL_BATTLE_REQUEST,
-  id,
-  battle,
+  payload,
 });
 
-const fetchListBattle = listBattle => ({
+const fetchListBattle = payload => ({
   type: FETCH_LIST_BATTLE_REQUEST,
-  listBattle,
+  payload,
 });
 
 export default {

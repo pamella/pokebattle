@@ -195,12 +195,13 @@ BattleList.propTypes = {
   fetchListBattle: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({
+  battles: state.battle.payload,
+});
+
 const mapDispatchToProps = dispatch => ({
   fetchListBattle: () => dispatch(actions.fetchListBattle()),
 });
 
-const mapStateToProps = state => ({
-  battles: state.battle.listBattle,
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleList);
