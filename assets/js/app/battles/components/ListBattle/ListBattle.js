@@ -7,7 +7,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import actions from 'actions';
-import Urls from '../../../../utils/urls';
+import Urls from 'utils/urls';
 
 
 const BattleWrapperStyled = styled.div`
