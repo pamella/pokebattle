@@ -1,3 +1,6 @@
+from battles.helpers.email import send_battle_result_email
+
+
 # rounds figth
 def get_pokemon_with_highest_hitpoints(pokemon_1, pokemon_2):
     return pokemon_1 if pokemon_1.hitpoints > pokemon_2.hitpoints else pokemon_2
@@ -43,7 +46,8 @@ def get_battle_winner(battle):
 def run_battle(battle):
     battle.status = 'SETTLED'
     battle.trainer_winner = get_battle_winner(battle)
-    return battle.save()
+    battle.save()
+    send_battle_result_email(battle)
 
 
 def order_battle_pokemons(cleaned_data):

@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import { denormalize } from 'normalizr';
-import schemas from '../../../../utils/schema';
-import actions from '../../../../actions';
-import Urls from '../../../../utils/urls';
+import schemas from 'utils/schema';
+import actions from 'actions';
+import Urls from 'utils/urls';
 
 
 const BattleWrapperStyled = styled.div`
@@ -39,6 +39,10 @@ const HrStyled = styled.hr`
   width: 100%;
 `;
 
+const PStyled = styled.p`
+  word-wrap: break-word;
+`;
+
 const OrangePStyled = styled.p`
   color: #ff6600;
 `;
@@ -67,11 +71,11 @@ function OngoingBattleBox(battle) {
           <div>
             <OrangePStyled>Waiting trainer to challenge back.</OrangePStyled>
             <HrStyled />
-            <p>
+            <PStyled>
               <b>Opponent:</b>
-              {' '}
+              &nbsp;
               {opponent}
-            </p>
+            </PStyled>
             <div>
               <b>My team:</b>
               <ul>
@@ -84,13 +88,11 @@ function OngoingBattleBox(battle) {
         )
         : (
           <div>
-            <p>
-              Trainer
-              {' '}
+            <PStyled>
+              Trainer&nbsp;
               <b>{trainer_creator_email}</b>
-              {' '}
-              challenge you.
-            </p>
+              &nbsp;challenge you.
+            </PStyled>
             <DetailLinkStyled to={Urls['battles:select_team']().concat(`?id=${id}`)}>
               Select your team to challenge back!
             </DetailLinkStyled>
@@ -114,17 +116,17 @@ function SettledBattleBox(battle) {
     <BattleItemStyled>
       <WinnerBattleStyled>
         <b>Winner:</b>
-        {' '}
+        &nbsp;
         {trainer_winner_email}
       </WinnerBattleStyled>
 
       <HrStyled />
 
-      <p>
+      <PStyled>
         <b>Opponent:</b>
-        {' '}
+        &nbsp;
         {opponent}
-      </p>
+      </PStyled>
       <div>
         <b>My team:</b>
         {is_trainer_creator

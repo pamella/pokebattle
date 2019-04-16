@@ -14,12 +14,10 @@ class DetailBattleEndpoint(generics.RetrieveAPIView):
 
 
 class ListBattleEndpoint(generics.ListAPIView):
-    queryset = Battle.objects.all()
     serializer_class = ListBattleSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        queryset = self.queryset
         user = self.request.user
         queryset = Battle.objects.filter(
             Q(trainer_creator=user) | Q(trainer_opponent=user)
