@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
-import actions from '../../../../actions';
+import { denormalize } from 'normalizr';
+import schemas from 'utils/schema';
+import actions from 'actions';
 import fist from '../../../../../images/icons/fist.png';
 import player from '../../../../../images/icons/player.png';
 import fight from '../../../../../images/icons/fight.png';
@@ -128,7 +130,8 @@ function Pokemon(props) {
 
 function Round(props) {
   const { round, index } = props;
-  const { creator_pokemon, opponent_pokemon } = round;
+  const creator_pokemon = round[0];
+  const opponent_pokemon = round[1];
   return (
     <div>
       <RoundHeader index={index} />
@@ -153,10 +156,10 @@ class BattleDetail extends React.Component {
   }
 
   render() {
-    const { battle } = this.props;
-    if (isEmpty(battle)) return null;
+    const { denormalizedBattle } = this.props;
+    if (isEmpty(denormalizedBattle)) return null;
 
-    const { rounds } = battle;
+    const { rounds } = denormalizedBattle;
 
     return (
       <div>
@@ -167,9 +170,9 @@ class BattleDetail extends React.Component {
           />
 
           <TrainerWinner
-            creator={battle.trainer_creator_email}
-            opponent={battle.trainer_opponent_email}
-            winner={battle.trainer_winner_email}
+            creator={denormalizedBattle.trainer_creator_email}
+            opponent={denormalizedBattle.trainer_opponent_email}
+            winner={denormalizedBattle.trainer_winner_email}
           />
         </StyledItem>
 
@@ -180,8 +183,8 @@ class BattleDetail extends React.Component {
           />
 
           <Trainers
-            creator={battle.trainer_creator_email}
-            opponent={battle.trainer_opponent_email}
+            creator={denormalizedBattle.trainer_creator_email}
+            opponent={denormalizedBattle.trainer_opponent_email}
           />
         </StyledItem>
 
@@ -192,7 +195,9 @@ class BattleDetail extends React.Component {
           />
 
           <StyledRoundItem>
-            {rounds.map((round, index) => <Round round={round} index={index} />)}
+            <Round round={rounds[0]} index={0} />
+            <Round round={rounds[1]} index={1} />
+            <Round round={rounds[2]} index={2} />
           </StyledRoundItem>
         </StyledItem>
       </div>
@@ -246,15 +251,23 @@ BattleDetail.propTypes = {
     }).isRequired,
   }).isRequired,
   fetchDetailBattle: PropTypes.func.isRequired,
-  battle: PropTypes.oneOfType([
+  denormalizedBattle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
   ]).isRequired,
 };
 
-const mapStateToProps = state => ({
-  battle: state.battle.payload,
-});
+const mapStateToProps = (state) => {
+  const { battle } = state;
+  if (isEmpty(battle)) return null;
+
+  const { payload } = battle;
+  const denormalizedBattle = denormalize(payload.result, schemas.battle, payload.entities);
+
+  return {
+    denormalizedBattle,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchDetailBattle: payload => dispatch(actions.fetchDetailBattle(payload)),

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
+import { denormalize } from 'normalizr';
+import schemas from 'utils/schema';
 import actions from 'actions';
 import Urls from 'utils/urls';
 
@@ -77,7 +79,9 @@ function OngoingBattleBox(battle) {
             <div>
               <b>My team:</b>
               <ul>
-                { rounds.map(pokemon => <li>{pokemon.creator_pokemon.name}</li>) }
+                <li>{rounds[0][0].name}</li>
+                <li>{rounds[1][0].name}</li>
+                <li>{rounds[2][0].name}</li>
               </ul>
             </div>
           </div>
@@ -125,12 +129,22 @@ function SettledBattleBox(battle) {
       </PStyled>
       <div>
         <b>My team:</b>
-        <ul>
-          {is_trainer_creator
-            ? rounds.map(pokemon => <li>{pokemon.creator_pokemon.name}</li>)
-            : rounds.map(pokemon => <li>{pokemon.opponent_pokemon.name}</li>)
-          }
-        </ul>
+        {is_trainer_creator
+          ? (
+            <ul>
+              <li>{rounds[0][0].name}</li>
+              <li>{rounds[1][0].name}</li>
+              <li>{rounds[2][0].name}</li>
+            </ul>
+          )
+          : (
+            <ul>
+              <li>{rounds[0][1].name}</li>
+              <li>{rounds[1][1].name}</li>
+              <li>{rounds[2][1].name}</li>
+            </ul>
+          )
+        }
       </div>
       <DetailLinkStyled to={Urls['battles:detail_battle'](id)}>
         Click to see this battle details.
@@ -172,11 +186,12 @@ class BattleList extends React.Component {
   }
 
   render() {
-    const { battles } = this.props;
-    if (isEmpty(battles)) return null;
+    const { denormalizedListBattles } = this.props;
+    if (isEmpty(denormalizedListBattles)) return null;
 
-    const ongoing = battles.filter(battle => battle.status === 'ON_GOING');
-    const settled = battles.filter(battle => battle.status === 'SETTLED');
+    const ongoing = denormalizedListBattles.filter(battle => battle.status === 'ON_GOING');
+    const settled = denormalizedListBattles.filter(battle => battle.status === 'SETTLED');
+
     return (
       <div>
         <OngoingBattles battles={ongoing} />
@@ -187,16 +202,25 @@ class BattleList extends React.Component {
 }
 
 BattleList.propTypes = {
-  battles: PropTypes.oneOfType([
-    PropTypes.object,
+  denormalizedListBattles: PropTypes.oneOfType([
     PropTypes.array,
   ]).isRequired,
   fetchListBattle: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  battles: state.battle.payload,
-});
+const mapStateToProps = (state) => {
+  const { battle } = state;
+  if (isEmpty(battle)) return null;
+
+  const { payload } = battle;
+  const denormalizedListBattles = denormalize(
+    payload.result, schemas.listBattles, payload.entities,
+  );
+
+  return {
+    denormalizedListBattles,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchListBattle: () => dispatch(actions.fetchListBattle()),
