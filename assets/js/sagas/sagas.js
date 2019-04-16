@@ -1,3 +1,4 @@
+import { normalize } from 'normalizr';
 import {
   call, put, takeLatest, all,
 } from 'redux-saga/effects';
@@ -10,6 +11,7 @@ import {
   FETCH_DETAIL_BATTLE_REQUEST_SUCCESS,
   FETCH_DETAIL_BATTLE_ERROR,
 } from '../constants';
+import schemas from '../utils/schema';
 
 
 function* loadListBattle() {
@@ -32,9 +34,10 @@ function* loadDetailBattle(action) {
   try {
     const url = `/api/battle/${action.payload}`;
     const battle = yield call(axios.get, url);
+    const normalizedBattle = normalize(battle.data, schemas.battle);
     yield put({
       type: FETCH_DETAIL_BATTLE_REQUEST_SUCCESS,
-      payload: battle.data,
+      payload: normalizedBattle,
     });
   } catch (error) {
     yield put({
