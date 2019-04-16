@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import actions from 'actions';
@@ -168,15 +167,8 @@ function SettledBattles(battles) {
 
 class BattleList extends React.Component {
   componentDidMount() {
-    const { setListBattle } = this.props;
-
-    axios.get('api/my_battles')
-      .then((response) => {
-        setListBattle(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const { fetchListBattle } = this.props;
+    fetchListBattle();
   }
 
   render() {
@@ -199,15 +191,16 @@ BattleList.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]).isRequired,
-  setListBattle: PropTypes.func.isRequired,
+  fetchListBattle: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  setListBattle: battle => dispatch(actions.setListBattle(battle)),
+const mapStateToProps = state => ({
+  battles: state.battle.payload,
 });
 
-const mapStateToProps = state => ({
-  battles: state.battle.listBattle,
+const mapDispatchToProps = dispatch => ({
+  fetchListBattle: () => dispatch(actions.fetchListBattle()),
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleList);

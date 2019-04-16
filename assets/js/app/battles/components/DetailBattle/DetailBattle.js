@@ -3,7 +3,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import actions from '../../../../actions';
@@ -148,25 +147,16 @@ function Round(props) {
 
 class BattleDetail extends React.Component {
   componentDidMount() {
-    const { setDetailBattle, match } = this.props;
-    const endpoint = `/api/battle/${match.params.pk}`;
-
-    axios.get(endpoint)
-      .then((response) => {
-        setDetailBattle(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const { fetchDetailBattle, match } = this.props;
+    const battleID = match.params.pk;
+    fetchDetailBattle(battleID);
   }
 
   render() {
     const { battle } = this.props;
-    const aux = battle.battle;
+    if (isEmpty(battle)) return null;
 
-    if (isEmpty(aux)) return null;
-
-    const { rounds } = aux;
+    const { rounds } = battle;
 
     return (
       <div>
@@ -177,9 +167,9 @@ class BattleDetail extends React.Component {
           />
 
           <TrainerWinner
-            creator={aux.trainer_creator_email}
-            opponent={aux.trainer_opponent_email}
-            winner={aux.trainer_winner_email}
+            creator={battle.trainer_creator_email}
+            opponent={battle.trainer_opponent_email}
+            winner={battle.trainer_winner_email}
           />
         </StyledItem>
 
@@ -190,8 +180,8 @@ class BattleDetail extends React.Component {
           />
 
           <Trainers
-            creator={aux.trainer_creator_email}
-            opponent={aux.trainer_opponent_email}
+            creator={battle.trainer_creator_email}
+            opponent={battle.trainer_opponent_email}
           />
         </StyledItem>
 
@@ -255,7 +245,7 @@ BattleDetail.propTypes = {
       pk: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  setDetailBattle: PropTypes.func.isRequired,
+  fetchDetailBattle: PropTypes.func.isRequired,
   battle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
@@ -263,11 +253,11 @@ BattleDetail.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  battle: state.battle,
+  battle: state.battle.payload,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDetailBattle: battle => dispatch(actions.setDetailBattle(battle)),
+  fetchDetailBattle: payload => dispatch(actions.fetchDetailBattle(payload)),
 });
 
 
