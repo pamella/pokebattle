@@ -18,9 +18,10 @@ function* loadListBattle() {
   try {
     const url = 'api/my_battles';
     const listBattles = yield call(axios.get, url);
+    const normalizedListBattles = normalize(listBattles.data, schemas.listBattles);
     yield put({
       type: FETCH_LIST_BATTLE_REQUEST_SUCCESS,
-      payload: listBattles.data,
+      payload: normalizedListBattles,
     });
   } catch (error) {
     yield put({
