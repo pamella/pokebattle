@@ -20,7 +20,8 @@ from pokemons.models import Pokemon
 
 class CreateBattleView(
         LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    template_name = 'battles/create_battle.html'
+    # template_name = 'battles/create_battle.html'
+    template_name = 'battles/create_battle_react.html'
     model = Battle
     form_class = CreateBattleForm
     success_url = '/success/'
