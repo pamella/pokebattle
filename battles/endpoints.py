@@ -4,7 +4,7 @@ from rest_framework import generics, permissions
 
 from battles.models import Battle
 from battles.permissions import IsTrainerInBattle
-from battles.serializers import BattleReadSerializer, ListBattleSerializer
+from battles.serializers import BattleReadSerializer, CreateBattleSerializer, ListBattleSerializer
 
 
 class DetailBattleEndpoint(generics.RetrieveAPIView):
@@ -23,3 +23,8 @@ class ListBattleEndpoint(generics.ListAPIView):
             Q(trainer_creator=user) | Q(trainer_opponent=user)
         )
         return queryset
+
+
+class CreateBattleEndpoint(generics.CreateAPIView):
+    serializer_class = CreateBattleSerializer
+    permission_classes = [permissions.IsAuthenticated]

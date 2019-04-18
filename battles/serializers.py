@@ -62,3 +62,17 @@ class ListBattleSerializer(BattleReadSerializer):
     def get_is_trainer_creator(self, obj):
         user = self.context['request'].user
         return user == obj.trainer_creator
+
+
+class CreateBattleSerializer(serializers.ModelSerializer):
+    trainer_creator = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Battle
+        fields = (
+            'trainer_creator', 'trainer_opponent',
+        )
+
+    def get_trainer_creator(self, obj): # noqa
+        user = self.context['request'].user
+        return user.id
