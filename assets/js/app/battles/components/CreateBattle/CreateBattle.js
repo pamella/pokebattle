@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withFormik, Form, Field } from 'formik';
+import actions from 'actions';
+// import apiPostWrapper from 'utils/api';
 
 const BattleCreate = withFormik({
   mapPropsToValues: () => ({
@@ -12,8 +15,11 @@ const BattleCreate = withFormik({
     order_3: 2,
   }),
 
-  handleSubmit: (values) => {
-    console.log(values);
+  handleSubmit: (values, { props }) => {
+    props.postCreateBattle(values);
+    // apiPostWrapper.post('/api/create_battle', values)
+    //   .then(response => response.data)
+    //   .catch(error => new Error(error));
   },
 });
 
@@ -58,4 +64,14 @@ const BattleCreateForm = () => (
   </Form>
 );
 
-export default BattleCreate(BattleCreateForm);
+const mapStateToProps = state => ({
+  // to add: get users and pokemons
+  test: state.battle,
+});
+
+const mapDispatchToProps = dispatch => ({
+  postCreateBattle: battle => dispatch(actions.postCreateBattle(battle)),
+});
+
+// export default BattleCreate(BattleCreateForm);
+export default connect(mapStateToProps, mapDispatchToProps)(BattleCreate(BattleCreateForm));
