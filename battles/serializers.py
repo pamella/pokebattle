@@ -67,11 +67,15 @@ class ListBattleSerializer(BattleReadSerializer):
 
 class CreateBattleSerializer(serializers.ModelSerializer):
     trainer_creator = serializers.SerializerMethodField()
+    pokemon_1 = serializers.CharField(max_length=56)
+    pokemon_2 = serializers.CharField(max_length=56)
+    pokemon_3 = serializers.CharField(max_length=56)
 
     class Meta:
         model = Battle
         fields = (
             'trainer_creator', 'trainer_opponent',
+            'pokemon_1', 'pokemon_2', 'pokemon_3',
         )
 
     def get_trainer_creator(self, obj): # noqa
@@ -80,9 +84,15 @@ class CreateBattleSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['trainer_creator'] = User.objects.get(id=self.data['trainer_creator'])
-        pokemon_1 = self.context['request'].data['pokemon_1']
-        pokemon_2= self.context['request'].data['pokemon_1']
-        pokemon_3 = self.context['request'].data['pokemon_1']
-        import ipdb; ipdb.set_trace()
-        # validated_data['pokemon_1'] = Pokemon.objects.get(name=self.data['pokemon_1'])
-        return super().create(validated_data)
+        pokemon_1 = validated_data.pop('pokemon_1')
+        pokemon_2 = validated_data.pop('pokemon_2')
+        pokemon_3 = validated_data.pop('pokemon_3')
+        battle = super().create(validated_data)
+        TrainerTeam.objects.create(
+            trainer=validated_data['trainer_creator'],
+            pokemon_1=Pokemon.objects.get(name=pokemon_1),
+            pokemon_2=Pokemon.objects.get(name=pokemon_2),
+            pokemon_3=Pokemon.objects.get(name=pokemon_3),
+            battle_related=battle,
+        )
+        return battle

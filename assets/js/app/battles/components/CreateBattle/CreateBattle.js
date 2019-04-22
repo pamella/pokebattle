@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withFormik, Form, Field } from 'formik';
 import actions from 'actions';
-import apiPostWrapper from 'utils/api';
+
 
 const BattleCreate = withFormik({
   mapPropsToValues: () => ({
@@ -17,9 +17,6 @@ const BattleCreate = withFormik({
 
   handleSubmit: (values, { props }) => {
     props.postCreateBattle(values);
-    // apiPostWrapper.post('/api/create_battle/', values)
-    //   .then(response => response.data)
-    //   .catch(error => new Error(error));
   },
 });
 
