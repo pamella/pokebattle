@@ -9,6 +9,4 @@ const apiPostWrapper = axios.create({
   headers: { 'X-CSRFToken': getCookieValue('csrftoken') },
 });
 
-export default {
-  apiPostWrapper,
-};
+export default apiPostWrapper;

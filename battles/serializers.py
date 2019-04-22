@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from battles.models import Battle
+from battles.models import Battle, TrainerTeam
+from pokemons.models import Pokemon
 from pokemons.serializers import PokemonSerializer
 from users.models import User
 
@@ -76,3 +77,12 @@ class CreateBattleSerializer(serializers.ModelSerializer):
     def get_trainer_creator(self, obj): # noqa
         user = self.context['request'].user
         return user.id
+
+    def create(self, validated_data):
+        validated_data['trainer_creator'] = User.objects.get(id=self.data['trainer_creator'])
+        pokemon_1 = self.context['request'].data['pokemon_1']
+        pokemon_2= self.context['request'].data['pokemon_1']
+        pokemon_3 = self.context['request'].data['pokemon_1']
+        import ipdb; ipdb.set_trace()
+        # validated_data['pokemon_1'] = Pokemon.objects.get(name=self.data['pokemon_1'])
+        return super().create(validated_data)
