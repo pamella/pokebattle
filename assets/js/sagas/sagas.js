@@ -54,11 +54,9 @@ function* loadDetailBattle(action) {
 
 function* createBattle(action) {
   try {
-    yield console.log('saga payload ', action.payload);
     const values = action.payload;
     const url = '/api/create_battle/';
     const battle = yield call(apiPostWrapper.post, url, values);
-    yield console.log('post call', battle);
     yield put({
       type: POST_CREATE_BATTLE_REQUEST_SUCCESS,
       payload: battle.status,
