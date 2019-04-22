@@ -73,5 +73,4 @@ const mapDispatchToProps = dispatch => ({
   postCreateBattle: battle => dispatch(actions.postCreateBattle(battle)),
 });
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(BattleCreate(BattleCreateForm));
