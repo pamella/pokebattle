@@ -14,6 +14,6 @@ export default function* rootSaga() {
     takeLatest(FETCH_LIST_BATTLE_REQUEST, battleSagas.loadListBattle),
     takeLatest(FETCH_DETAIL_BATTLE_REQUEST, battleSagas.loadDetailBattle),
     takeLatest(POST_CREATE_BATTLE_REQUEST, battleSagas.createBattle),
-    takeLatest(FETCH_LIST_USER_REQUEST, userSagas.loadListBattle),
+    takeLatest(FETCH_LIST_USER_REQUEST, userSagas.loadListUser),
   ]);
 }

@@ -8,11 +8,11 @@ import {
 } from '../constants/user';
 
 
-function* loadListBattle() {
+function* loadListUser() {
   try {
     const url = 'api/users';
     const listUsers = yield call(axios.get, url);
-    const normalizedListUsers = normalize(listUsers.data, schemas.user);
+    const normalizedListUsers = normalize(listUsers.data, schemas.listUsers);
     yield put({
       type: FETCH_LIST_USER_REQUEST_SUCCESS,
       payload: normalizedListUsers,
@@ -26,5 +26,5 @@ function* loadListBattle() {
 }
 
 export default {
-  loadListBattle,
+  loadListUser,
 };

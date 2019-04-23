@@ -1,6 +1,7 @@
 import { schema } from 'normalizr';
 
 const user = new schema.Entity('users');
+const listUsers = [user];
 const pokemon = new schema.Entity('pokemons');
 const round = new schema.Entity('rounds', {
   creator_pokemon: [pokemon],
@@ -17,6 +18,7 @@ const listBattles = [battle];
 
 export default {
   user,
+  listUsers,
   battle,
   listBattles,
 };
