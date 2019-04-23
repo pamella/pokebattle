@@ -16,7 +16,9 @@ urlpatterns = [
 
     url(r'social/', include('social_django.urls', namespace='social')),
     url(r'^api-auth/', include('rest_framework.urls')),
+
     url(r'api/', include('battles.endpoints_urls', namespace='api_battles')),
+    url(r'api/', include('pokemons.endpoints_urls', namespace='api_pokemon')),
 
 ]
 
