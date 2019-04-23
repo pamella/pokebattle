@@ -1,18 +1,13 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
-import {
-  call, put, takeLatest, all,
-} from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import schemas from 'utils/schema';
 import apiPostWrapper from 'utils/api';
 import {
-  FETCH_LIST_BATTLE_REQUEST,
   FETCH_LIST_BATTLE_REQUEST_SUCCESS,
   FETCH_LIST_BATTLE_ERROR,
-  FETCH_DETAIL_BATTLE_REQUEST,
   FETCH_DETAIL_BATTLE_REQUEST_SUCCESS,
   FETCH_DETAIL_BATTLE_ERROR,
-  POST_CREATE_BATTLE_REQUEST,
   POST_CREATE_BATTLE_REQUEST_SUCCESS,
   POST_CREATE_BATTLE_ERROR,
 } from '../constants/battle';
@@ -70,10 +65,8 @@ function* createBattle(action) {
   }
 }
 
-export default function* rootSaga() {
-  yield all([
-    takeLatest(FETCH_LIST_BATTLE_REQUEST, loadListBattle),
-    takeLatest(FETCH_DETAIL_BATTLE_REQUEST, loadDetailBattle),
-    takeLatest(POST_CREATE_BATTLE_REQUEST, createBattle),
-  ]);
-}
+export default {
+  loadListBattle,
+  loadDetailBattle,
+  createBattle,
+};
