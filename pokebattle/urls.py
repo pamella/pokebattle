@@ -19,6 +19,7 @@ urlpatterns = [
 
     url(r'api/', include('battles.endpoints_urls', namespace='api_battles')),
     url(r'api/', include('pokemons.endpoints_urls', namespace='api_pokemon')),
+    url(r'api/', include('users.endpoints_urls', namespace='api_user')),
 
 ]
 
