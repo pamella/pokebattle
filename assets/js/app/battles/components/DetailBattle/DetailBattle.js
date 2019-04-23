@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import { denormalize } from 'normalizr';
 import schemas from 'utils/schema';
-import actions from 'actions';
+import actions from 'actions/battle';
 import fist from '../../../../../images/icons/fist.png';
 import player from '../../../../../images/icons/player.png';
 import fight from '../../../../../images/icons/fight.png';

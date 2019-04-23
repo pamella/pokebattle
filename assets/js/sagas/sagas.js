@@ -15,7 +15,7 @@ import {
   POST_CREATE_BATTLE_REQUEST,
   POST_CREATE_BATTLE_REQUEST_SUCCESS,
   POST_CREATE_BATTLE_ERROR,
-} from '../constants';
+} from '../constants/battle';
 
 
 function* loadListBattle() {

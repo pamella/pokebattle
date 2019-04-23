@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { isEmpty } from 'lodash';
 import { denormalize } from 'normalizr';
 import schemas from 'utils/schema';
-import actions from 'actions';
+import actions from 'actions/battle';
 import Urls from 'utils/urls';
 
 

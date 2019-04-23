@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withFormik, Form, Field } from 'formik';
-import actions from 'actions';
+import actions from 'actions/battle';
 import Urls from 'utils/urls';
-import { STATUS_201 } from '../../../../constants';
+import { STATUS_201 } from '../../../../constants/request_status';
 
 
 const CreateBattleContainerStyled = styled.div`

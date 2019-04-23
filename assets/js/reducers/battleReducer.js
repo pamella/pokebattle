@@ -5,7 +5,7 @@ import {
   FETCH_LIST_BATTLE_ERROR,
   POST_CREATE_BATTLE_REQUEST_SUCCESS,
   POST_CREATE_BATTLE_ERROR,
-} from '../constants';
+} from '../constants/battle';
 
 const battle = (state = [], action) => {
   switch (action.type) {
