@@ -9,6 +9,7 @@ import { denormalize } from 'normalizr';
 import schemas from 'utils/schema';
 import battleActions from 'actions/battle';
 import userActions from 'actions/user';
+import pokemonActions from 'actions/pokemon';
 import Urls from 'utils/urls';
 import { STATUS_201 } from '../../../../constants/request_status';
 
@@ -38,8 +39,9 @@ const BattleCreate = withFormik({
 
 class BattleCreateForm extends React.Component {
   componentDidMount() {
-    const { fetchListUser } = this.props;
+    const { fetchListUser, fetchListPokemon } = this.props;
     fetchListUser();
+    fetchListPokemon();
   }
 
   render() {
@@ -106,6 +108,7 @@ class BattleCreateForm extends React.Component {
 
 BattleCreateForm.propTypes = {
   fetchListUser: PropTypes.func.isRequired,
+  fetchListPokemon: PropTypes.func.isRequired,
   denormalizedUsers: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
@@ -118,23 +121,27 @@ BattleCreateForm.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  // to add: load pokemons
-  const { battle, user } = state;
+  const { battle, user, pokemon } = state;
   const submitStatus = battle.payload;
 
-  if (isEmpty(user)) return null;
+  if (isEmpty(user) || isEmpty(pokemon)) return null;
   const denormalizedUsers = denormalize(
     user.payload.result, schemas.listUsers, user.payload.entities,
+  );
+  const denormalizedPokemons = denormalize(
+    pokemon.payload.result, schemas.listPokemons, pokemon.payload.entities,
   );
 
   return {
     submitStatus,
     denormalizedUsers,
+    denormalizedPokemons,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   fetchListUser: () => dispatch(userActions.fetchListUser()),
+  fetchListPokemon: () => dispatch(pokemonActions.fetchListPokemon()),
   postCreateBattle: battle => dispatch(battleActions.postCreateBattle(battle)),
 });
 
