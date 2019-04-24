@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import Select from 'react-select';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -21,6 +22,13 @@ const CreateBattleContainerStyled = styled.div`
   margin: auto;
 `;
 
+const CustomOption = ({ innerRef, innerProps, data }) => (
+  <div ref={innerRef} {...innerProps}>
+    <img src={data.sprite} alt="pokemon" />
+    <span>{data.name}</span>
+  </div>
+);
+
 const BattleCreate = withFormik({
   mapPropsToValues: () => ({
     trainer_opponent: '',
@@ -37,7 +45,19 @@ const BattleCreate = withFormik({
   },
 });
 
+function handleChange(selectedOption) {
+  this.setState({ selectedOption });
+  console.log('Option selected:', selectedOption);
+}
+
 class BattleCreateForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedOption: null,
+    };
+  }
+
   componentDidMount() {
     const { fetchListUser, fetchListPokemon } = this.props;
     fetchListUser();
@@ -45,59 +65,78 @@ class BattleCreateForm extends React.Component {
   }
 
   render() {
-    const { denormalizedUsers } = this.props;
-    if (isEmpty(denormalizedUsers)) return null;
+    const { denormalizedUsers, denormalizedPokemons, submitStatus } = this.props;
+    const { selectedOption } = this.state;
+
+    if (isEmpty(denormalizedUsers) || isEmpty(denormalizedPokemons)) return null;
+    console.log('props ', this.props);
 
     // Redirect after form submit
-    const { submitStatus } = this.props;
     if (submitStatus === STATUS_201) {
       return <Redirect to={Urls['battles:list_battle']()} />;
     }
-    console.log('props ', this.props);
 
     return (
       <CreateBattleContainerStyled>
         <h2>Select your opponent and your team to battle!</h2>
 
         <Form>
-          <p>
+          <div>
             Opponent:
             <Field component="select" name="trainer_opponent">
               {denormalizedUsers.map(user => (
                 <option value={{ user }.user.id}>{{ user }.user.email}</option>
               ))}
             </Field>
-          </p>
-          <p>
+          </div>
+          <div>
             Pokemon:
-            <Field type="text" name="pokemon_1" />
+            <Select
+              name="pokemon_1"
+              value={selectedOption}
+              onChange={handleChange}
+              options={denormalizedPokemons}
+              components={{ Option: CustomOption }}
+            />
             Round:
             <Field component="select" name="order_1">
               <option value="0">First</option>
               <option value="1">Second</option>
               <option value="2">Third</option>
             </Field>
-          </p>
-          <p>
+          </div>
+          <div>
             Pokemon:
-            <Field type="text" name="pokemon_2" />
+            <Select
+              name="pokemon_2"
+              value={selectedOption}
+              onChange={handleChange}
+              options={denormalizedPokemons}
+              components={{ Option: CustomOption }}
+            />
             Round:
             <Field component="select" name="order_2">
               <option value="0">First</option>
               <option value="1">Second</option>
               <option value="2">Third</option>
             </Field>
-          </p>
-          <p>
+          </div>
+          <div>
             Pokemon:
-            <Field type="text" name="pokemon_3" />
+            <Select
+              name="pokemon_3"
+              value={selectedOption}
+              onChange={handleChange}
+              options={denormalizedPokemons}
+              components={{ Option: CustomOption }}
+            />
             Round:
             <Field component="select" name="order_3">
               <option value="0">First</option>
               <option value="1">Second</option>
               <option value="2">Third</option>
             </Field>
-          </p>
+          </div>
 
           <Field type="submit" value="Challenge now" />
         </Form>
@@ -106,18 +145,36 @@ class BattleCreateForm extends React.Component {
   }
 }
 
+CustomOption.propTypes = {
+  innerRef: PropTypes.func.isRequired,
+  innerProps: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
+  data: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
+};
+
 BattleCreateForm.propTypes = {
   fetchListUser: PropTypes.func.isRequired,
   fetchListPokemon: PropTypes.func.isRequired,
   denormalizedUsers: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
-  ]).isRequired,
+  ]),
+  denormalizedPokemons: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
   submitStatus: PropTypes.number,
 };
 
 BattleCreateForm.defaultProps = {
   submitStatus: 0,
+  denormalizedUsers: [],
+  denormalizedPokemons: [],
 };
 
 const mapStateToProps = (state) => {
