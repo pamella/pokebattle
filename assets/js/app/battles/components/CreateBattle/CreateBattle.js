@@ -1,5 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -47,7 +49,8 @@ const CreateBattleRowStyled = styled.div`
 
 const BattleCreateInnerForm = (props) => {
   const {
-    denormalizedUsers, denormalizedPokemons, setFieldValue,
+    denormalizedUsers, denormalizedPokemons,
+    values, setFieldValue,
   } = props;
 
   const handleChangePokemon = (selectedPokemon, fieldName) => {
@@ -61,11 +64,39 @@ const BattleCreateInnerForm = (props) => {
     </div>
   );
 
+  const SortableItem = SortableElement(({ value }) => (
+    <CreateBattleRowStyled>
+      Pokemon:
+      <Select
+        name={`pokemon_${value + 1}`}
+        onChange={handleChangePokemon}
+        options={denormalizedPokemons}
+        components={{ Option: CustomOption }}
+      />
+      <ErrorMessage name={`pokemon_${value + 1}`} />
+    </CreateBattleRowStyled>
+  ));
+
+  const SortableList = SortableContainer(({ items }) => (
+    <div>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} />
+      ))}
+    </div>
+  ));
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setFieldValue('rounds', arrayMove(values.rounds, oldIndex, newIndex));
+    console.log(values.rounds)
+  };
+
   return (
     <CreateBattleContainerStyled>
       <h2>Select your opponent and your team to battle!</h2>
 
       <Form>
+        <SortableList pressDelay={100} items={values.rounds} onSortEnd={onSortEnd} />
+
         <CreateBattleRowStyled>
           Opponent:
           <Field component="select" name="trainer_opponent">
@@ -131,6 +162,7 @@ const BattleCreateForm = withFormik({
     order_2: 1,
     pokemon_3: '',
     order_3: 2,
+    rounds: [0, 1, 2],
   }),
 
   validationSchema: battleCreateFormSchema,
