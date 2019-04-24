@@ -23,12 +23,12 @@ const CreateBattleContainerStyled = styled.div`
 `;
 
 const BattleCreateInnerForm = (props) => {
-  const { denormalizedUsers, denormalizedPokemons } = props;
-  const selectedOption = 'mudar aq';
-  console.log('props ', props);
+  const {
+    denormalizedUsers, denormalizedPokemons, setFieldValue,
+  } = props;
 
-  const handleChange = () => {
-    console.log('Option selected:', selectedOption);
+  const handleChangePokemon = (selectedPokemon, fieldName) => {
+    setFieldValue(fieldName.name, selectedPokemon.name);
   };
 
   const CustomOption = ({ innerRef, innerProps, data }) => (
@@ -55,8 +55,7 @@ const BattleCreateInnerForm = (props) => {
           Pokemon:
           <Select
             name="pokemon_1"
-            value={selectedOption}
-            onChange={handleChange}
+            onChange={handleChangePokemon}
             options={denormalizedPokemons}
             components={{ Option: CustomOption }}
           />
@@ -71,8 +70,7 @@ const BattleCreateInnerForm = (props) => {
           Pokemon:
           <Select
             name="pokemon_2"
-            value={selectedOption}
-            onChange={handleChange}
+            onChange={handleChangePokemon}
             options={denormalizedPokemons}
             components={{ Option: CustomOption }}
           />
@@ -87,8 +85,7 @@ const BattleCreateInnerForm = (props) => {
           Pokemon:
           <Select
             name="pokemon_3"
-            value={selectedOption}
-            onChange={handleChange}
+            onChange={handleChangePokemon}
             options={denormalizedPokemons}
             components={{ Option: CustomOption }}
           />
@@ -140,13 +137,10 @@ class BattleCreate extends React.Component {
     }
 
     return (
-      <div>
-        <h2>Select your opponent and your team to battle!</h2>
-        <BattleCreateForm
-          denormalizedUsers={denormalizedUsers}
-          denormalizedPokemons={denormalizedPokemons}
-        />
-      </div>
+      <BattleCreateForm
+        denormalizedUsers={denormalizedUsers}
+        denormalizedPokemons={denormalizedPokemons}
+      />
     );
   }
 }
@@ -160,11 +154,17 @@ BattleCreateInnerForm.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
+  values: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+  setFieldValue: PropTypes.func.isRequired,
 };
 
 BattleCreateInnerForm.defaultProps = {
   denormalizedUsers: [],
   denormalizedPokemons: [],
+  values: [],
 };
 
 BattleCreate.propTypes = {
