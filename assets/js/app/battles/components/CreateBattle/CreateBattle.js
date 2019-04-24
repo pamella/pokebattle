@@ -116,7 +116,7 @@ const BattleCreateInnerForm = (props) => {
 };
 
 const battleCreateFormSchema = Yup.object().shape({
-  trainer_opponent: Yup.string().required('Select an opponent to challenge.'),
+  trainer_opponent: Yup.number().required('Select an opponent to challenge.'),
   pokemon_1: Yup.string().required('Select a pokemon for your team.'),
   pokemon_2: Yup.string().required('Select a pokemon for your team.'),
   pokemon_3: Yup.string().required('Select a pokemon for your team.'),
@@ -136,7 +136,7 @@ const BattleCreateForm = withFormik({
   validationSchema: battleCreateFormSchema,
 
   handleSubmit: (values, { props }) => {
-    props.postCreateBattle(values);
+    props.submitHandler(values);
   },
 })(BattleCreateInnerForm);
 
@@ -148,7 +148,9 @@ class BattleCreate extends React.Component {
   }
 
   render() {
-    const { denormalizedUsers, denormalizedPokemons, submitStatus } = this.props;
+    const {
+      denormalizedUsers, denormalizedPokemons, submitStatus, postCreateBattle,
+    } = this.props;
 
     if (isEmpty(denormalizedUsers) || isEmpty(denormalizedPokemons)) return null;
 
@@ -161,6 +163,7 @@ class BattleCreate extends React.Component {
       <BattleCreateForm
         denormalizedUsers={denormalizedUsers}
         denormalizedPokemons={denormalizedPokemons}
+        submitHandler={postCreateBattle}
       />
     );
   }
@@ -183,9 +186,14 @@ BattleCreateInnerForm.defaultProps = {
   denormalizedPokemons: [],
 };
 
+BattleCreateForm.propTypes = {
+  submitHandler: PropTypes.func.isRequired,
+};
+
 BattleCreate.propTypes = {
   fetchListUser: PropTypes.func.isRequired,
   fetchListPokemon: PropTypes.func.isRequired,
+  postCreateBattle: PropTypes.func.isRequired,
   denormalizedUsers: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
