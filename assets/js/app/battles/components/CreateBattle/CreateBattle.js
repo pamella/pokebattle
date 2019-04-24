@@ -22,14 +22,91 @@ const CreateBattleContainerStyled = styled.div`
   margin: auto;
 `;
 
-const CustomOption = ({ innerRef, innerProps, data }) => (
-  <div ref={innerRef} {...innerProps}>
-    <img src={data.sprite} alt="pokemon" />
-    <span>{data.name}</span>
-  </div>
-);
+const BattleCreateInnerForm = (props) => {
+  const { denormalizedUsers, denormalizedPokemons } = props;
+  const selectedOption = 'mudar aq';
+  console.log('props ', props);
 
-const BattleCreate = withFormik({
+  const handleChange = () => {
+    console.log('Option selected:', selectedOption);
+  };
+
+  const CustomOption = ({ innerRef, innerProps, data }) => (
+    <div ref={innerRef} {...innerProps}>
+      <img src={data.sprite} alt="pokemon" />
+      <span>{data.name}</span>
+    </div>
+  );
+
+  return (
+    <CreateBattleContainerStyled>
+      <h2>Select your opponent and your team to battle!</h2>
+
+      <Form>
+        <div>
+          Opponent:
+          <Field component="select" name="trainer_opponent">
+            {denormalizedUsers.map(user => (
+              <option value={{ user }.user.id}>{{ user }.user.email}</option>
+            ))}
+          </Field>
+        </div>
+        <div>
+          Pokemon:
+          <Select
+            name="pokemon_1"
+            value={selectedOption}
+            onChange={handleChange}
+            options={denormalizedPokemons}
+            components={{ Option: CustomOption }}
+          />
+          Round:
+          <Field component="select" name="order_1">
+            <option value="0">First</option>
+            <option value="1">Second</option>
+            <option value="2">Third</option>
+          </Field>
+        </div>
+        <div>
+          Pokemon:
+          <Select
+            name="pokemon_2"
+            value={selectedOption}
+            onChange={handleChange}
+            options={denormalizedPokemons}
+            components={{ Option: CustomOption }}
+          />
+          Round:
+          <Field component="select" name="order_2">
+            <option value="0">First</option>
+            <option value="1">Second</option>
+            <option value="2">Third</option>
+          </Field>
+        </div>
+        <div>
+          Pokemon:
+          <Select
+            name="pokemon_3"
+            value={selectedOption}
+            onChange={handleChange}
+            options={denormalizedPokemons}
+            components={{ Option: CustomOption }}
+          />
+          Round:
+          <Field component="select" name="order_3">
+            <option value="0">First</option>
+            <option value="1">Second</option>
+            <option value="2">Third</option>
+          </Field>
+        </div>
+
+        <Field type="submit" value="Challenge now" />
+      </Form>
+    </CreateBattleContainerStyled>
+  );
+};
+
+const BattleCreateForm = withFormik({
   mapPropsToValues: () => ({
     trainer_opponent: '',
     pokemon_1: '',
@@ -43,21 +120,9 @@ const BattleCreate = withFormik({
   handleSubmit: (values, { props }) => {
     props.postCreateBattle(values);
   },
-});
+})(BattleCreateInnerForm);
 
-function handleChange(selectedOption) {
-  this.setState({ selectedOption });
-  console.log('Option selected:', selectedOption);
-}
-
-class BattleCreateForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedOption: null,
-    };
-  }
-
+class BattleCreate extends React.Component {
   componentDidMount() {
     const { fetchListUser, fetchListPokemon } = this.props;
     fetchListUser();
@@ -66,10 +131,8 @@ class BattleCreateForm extends React.Component {
 
   render() {
     const { denormalizedUsers, denormalizedPokemons, submitStatus } = this.props;
-    const { selectedOption } = this.state;
 
     if (isEmpty(denormalizedUsers) || isEmpty(denormalizedPokemons)) return null;
-    console.log('props ', this.props);
 
     // Redirect after form submit
     if (submitStatus === STATUS_201) {
@@ -77,87 +140,34 @@ class BattleCreateForm extends React.Component {
     }
 
     return (
-      <CreateBattleContainerStyled>
+      <div>
         <h2>Select your opponent and your team to battle!</h2>
-
-        <Form>
-          <div>
-            Opponent:
-            <Field component="select" name="trainer_opponent">
-              {denormalizedUsers.map(user => (
-                <option value={{ user }.user.id}>{{ user }.user.email}</option>
-              ))}
-            </Field>
-          </div>
-          <div>
-            Pokemon:
-            <Select
-              name="pokemon_1"
-              value={selectedOption}
-              onChange={handleChange}
-              options={denormalizedPokemons}
-              components={{ Option: CustomOption }}
-            />
-            Round:
-            <Field component="select" name="order_1">
-              <option value="0">First</option>
-              <option value="1">Second</option>
-              <option value="2">Third</option>
-            </Field>
-          </div>
-          <div>
-            Pokemon:
-            <Select
-              name="pokemon_2"
-              value={selectedOption}
-              onChange={handleChange}
-              options={denormalizedPokemons}
-              components={{ Option: CustomOption }}
-            />
-            Round:
-            <Field component="select" name="order_2">
-              <option value="0">First</option>
-              <option value="1">Second</option>
-              <option value="2">Third</option>
-            </Field>
-          </div>
-          <div>
-            Pokemon:
-            <Select
-              name="pokemon_3"
-              value={selectedOption}
-              onChange={handleChange}
-              options={denormalizedPokemons}
-              components={{ Option: CustomOption }}
-            />
-            Round:
-            <Field component="select" name="order_3">
-              <option value="0">First</option>
-              <option value="1">Second</option>
-              <option value="2">Third</option>
-            </Field>
-          </div>
-
-          <Field type="submit" value="Challenge now" />
-        </Form>
-      </CreateBattleContainerStyled>
+        <BattleCreateForm
+          denormalizedUsers={denormalizedUsers}
+          denormalizedPokemons={denormalizedPokemons}
+        />
+      </div>
     );
   }
 }
 
-CustomOption.propTypes = {
-  innerRef: PropTypes.func.isRequired,
-  innerProps: PropTypes.oneOfType([
+BattleCreateInnerForm.propTypes = {
+  denormalizedUsers: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
-  ]).isRequired,
-  data: PropTypes.oneOfType([
+  ]),
+  denormalizedPokemons: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
-  ]).isRequired,
+  ]),
 };
 
-BattleCreateForm.propTypes = {
+BattleCreateInnerForm.defaultProps = {
+  denormalizedUsers: [],
+  denormalizedPokemons: [],
+};
+
+BattleCreate.propTypes = {
   fetchListUser: PropTypes.func.isRequired,
   fetchListPokemon: PropTypes.func.isRequired,
   denormalizedUsers: PropTypes.oneOfType([
@@ -171,7 +181,7 @@ BattleCreateForm.propTypes = {
   submitStatus: PropTypes.number,
 };
 
-BattleCreateForm.defaultProps = {
+BattleCreate.defaultProps = {
   submitStatus: 0,
   denormalizedUsers: [],
   denormalizedPokemons: [],
@@ -202,5 +212,4 @@ const mapDispatchToProps = dispatch => ({
   postCreateBattle: battle => dispatch(battleActions.postCreateBattle(battle)),
 });
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(BattleCreate(BattleCreateForm));
+export default connect(mapStateToProps, mapDispatchToProps)(BattleCreate);
