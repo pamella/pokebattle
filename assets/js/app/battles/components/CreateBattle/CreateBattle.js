@@ -4,7 +4,10 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { withFormik, Form, Field } from 'formik';
+import {
+  withFormik, Form, Field, ErrorMessage,
+} from 'formik';
+import * as Yup from 'yup';
 import { isEmpty } from 'lodash';
 import { denormalize } from 'normalizr';
 import schemas from 'utils/schema';
@@ -19,7 +22,27 @@ const CreateBattleContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   margin: auto;
+
+  Form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+  }
+`;
+
+const CreateBattleRowStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 15px auto;
+
+  .css-1pcexqc-container {
+    width: 70%;
+  }
 `;
 
 const BattleCreateInnerForm = (props) => {
@@ -31,10 +54,10 @@ const BattleCreateInnerForm = (props) => {
     setFieldValue(fieldName.name, selectedPokemon.name);
   };
 
-  const CustomOption = ({ innerRef, innerProps, data }) => (
-    <div ref={innerRef} {...innerProps}>
-      <img src={data.sprite} alt="pokemon" />
-      <span>{data.name}</span>
+  const CustomOption = option => (
+    <div ref={option.innerRef} {...option.innerProps}>
+      <img src={option.data.sprite} alt="pokemon" />
+      <span>{option.data.name}</span>
     </div>
   );
 
@@ -43,15 +66,17 @@ const BattleCreateInnerForm = (props) => {
       <h2>Select your opponent and your team to battle!</h2>
 
       <Form>
-        <div>
+        <CreateBattleRowStyled>
           Opponent:
           <Field component="select" name="trainer_opponent">
             {denormalizedUsers.map(user => (
               <option value={{ user }.user.id}>{{ user }.user.email}</option>
             ))}
           </Field>
-        </div>
-        <div>
+          <ErrorMessage name="trainer_opponent" />
+        </CreateBattleRowStyled>
+
+        <CreateBattleRowStyled>
           Pokemon:
           <Select
             name="pokemon_1"
@@ -59,14 +84,10 @@ const BattleCreateInnerForm = (props) => {
             options={denormalizedPokemons}
             components={{ Option: CustomOption }}
           />
-          Round:
-          <Field component="select" name="order_1">
-            <option value="0">First</option>
-            <option value="1">Second</option>
-            <option value="2">Third</option>
-          </Field>
-        </div>
-        <div>
+          <ErrorMessage name="pokemon_1" />
+        </CreateBattleRowStyled>
+
+        <CreateBattleRowStyled>
           Pokemon:
           <Select
             name="pokemon_2"
@@ -74,14 +95,10 @@ const BattleCreateInnerForm = (props) => {
             options={denormalizedPokemons}
             components={{ Option: CustomOption }}
           />
-          Round:
-          <Field component="select" name="order_2">
-            <option value="0">First</option>
-            <option value="1">Second</option>
-            <option value="2">Third</option>
-          </Field>
-        </div>
-        <div>
+          <ErrorMessage name="pokemon_2" />
+        </CreateBattleRowStyled>
+
+        <CreateBattleRowStyled>
           Pokemon:
           <Select
             name="pokemon_3"
@@ -89,19 +106,21 @@ const BattleCreateInnerForm = (props) => {
             options={denormalizedPokemons}
             components={{ Option: CustomOption }}
           />
-          Round:
-          <Field component="select" name="order_3">
-            <option value="0">First</option>
-            <option value="1">Second</option>
-            <option value="2">Third</option>
-          </Field>
-        </div>
+          <ErrorMessage name="pokemon_3" />
+        </CreateBattleRowStyled>
 
         <Field type="submit" value="Challenge now" />
       </Form>
     </CreateBattleContainerStyled>
   );
 };
+
+const battleCreateFormSchema = Yup.object().shape({
+  trainer_opponent: Yup.string().required('Select an opponent to challenge.'),
+  pokemon_1: Yup.string().required('Select a pokemon for your team.'),
+  pokemon_2: Yup.string().required('Select a pokemon for your team.'),
+  pokemon_3: Yup.string().required('Select a pokemon for your team.'),
+});
 
 const BattleCreateForm = withFormik({
   mapPropsToValues: () => ({
@@ -113,6 +132,8 @@ const BattleCreateForm = withFormik({
     pokemon_3: '',
     order_3: 2,
   }),
+
+  validationSchema: battleCreateFormSchema,
 
   handleSubmit: (values, { props }) => {
     props.postCreateBattle(values);
@@ -154,17 +175,12 @@ BattleCreateInnerForm.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
-  values: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]),
   setFieldValue: PropTypes.func.isRequired,
 };
 
 BattleCreateInnerForm.defaultProps = {
   denormalizedUsers: [],
   denormalizedPokemons: [],
-  values: [],
 };
 
 BattleCreate.propTypes = {
