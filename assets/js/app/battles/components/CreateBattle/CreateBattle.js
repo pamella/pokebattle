@@ -89,7 +89,9 @@ const BattleCreateInnerForm = (props) => {
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     setFieldValue('rounds', arrayMove(values.rounds, oldIndex, newIndex));
-    console.log('sortend', values);
+    setFieldValue('order_1', values.rounds[0]);
+    setFieldValue('order_2', values.rounds[1]);
+    setFieldValue('order_3', values.rounds[2]);
   };
 
   return (
@@ -138,6 +140,7 @@ const BattleCreateForm = withFormik({
   validationSchema: battleCreateFormSchema,
 
   handleSubmit: (values, { props }) => {
+    // console.log(values)
     props.submitHandler(values);
   },
 })(BattleCreateInnerForm);
