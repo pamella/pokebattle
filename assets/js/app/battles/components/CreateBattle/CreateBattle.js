@@ -41,6 +41,7 @@ const CreateBattleRowStyled = styled.div`
   align-items: center;
   width: 100%;
   margin: 15px auto;
+  cursor: pointer;
 
   .css-1pcexqc-container {
     width: 70%;
@@ -55,10 +56,11 @@ const BattleCreateInnerForm = (props) => {
 
   const handleChangePokemon = (selectedPokemon, fieldName) => {
     setFieldValue(fieldName.name, selectedPokemon.name);
+    console.log('handlechange', fieldName.name, values);
   };
 
   const CustomOption = option => (
-    <div ref={option.innerRef} {...option.innerProps}>
+    <div ref={option.innerRef} {...option.innerProps} {...option}>
       <img src={option.data.sprite} alt="pokemon" />
       <span>{option.data.name}</span>
     </div>
@@ -66,7 +68,6 @@ const BattleCreateInnerForm = (props) => {
 
   const SortableItem = SortableElement(({ value }) => (
     <CreateBattleRowStyled>
-      Pokemon:
       <Select
         name={`pokemon_${value + 1}`}
         onChange={handleChangePokemon}
@@ -80,6 +81,7 @@ const BattleCreateInnerForm = (props) => {
   const SortableList = SortableContainer(({ items }) => (
     <div>
       {items.map((value, index) => (
+        // eslint-disable-next-line react/no-array-index-key
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
     </div>
@@ -87,7 +89,7 @@ const BattleCreateInnerForm = (props) => {
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     setFieldValue('rounds', arrayMove(values.rounds, oldIndex, newIndex));
-    console.log(values.rounds)
+    console.log('sortend', values);
   };
 
   return (
@@ -95,8 +97,6 @@ const BattleCreateInnerForm = (props) => {
       <h2>Select your opponent and your team to battle!</h2>
 
       <Form>
-        <SortableList pressDelay={100} items={values.rounds} onSortEnd={onSortEnd} />
-
         <CreateBattleRowStyled>
           Opponent:
           <Field component="select" name="trainer_opponent">
@@ -107,38 +107,8 @@ const BattleCreateInnerForm = (props) => {
           <ErrorMessage name="trainer_opponent" />
         </CreateBattleRowStyled>
 
-        <CreateBattleRowStyled>
-          Pokemon:
-          <Select
-            name="pokemon_1"
-            onChange={handleChangePokemon}
-            options={denormalizedPokemons}
-            components={{ Option: CustomOption }}
-          />
-          <ErrorMessage name="pokemon_1" />
-        </CreateBattleRowStyled>
-
-        <CreateBattleRowStyled>
-          Pokemon:
-          <Select
-            name="pokemon_2"
-            onChange={handleChangePokemon}
-            options={denormalizedPokemons}
-            components={{ Option: CustomOption }}
-          />
-          <ErrorMessage name="pokemon_2" />
-        </CreateBattleRowStyled>
-
-        <CreateBattleRowStyled>
-          Pokemon:
-          <Select
-            name="pokemon_3"
-            onChange={handleChangePokemon}
-            options={denormalizedPokemons}
-            components={{ Option: CustomOption }}
-          />
-          <ErrorMessage name="pokemon_3" />
-        </CreateBattleRowStyled>
+        Pokemons:
+        <SortableList pressDelay={100} items={values.rounds} onSortEnd={onSortEnd} />
 
         <Field type="submit" value="Challenge now" />
       </Form>
@@ -210,6 +180,10 @@ BattleCreateInnerForm.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
+  values: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
   setFieldValue: PropTypes.func.isRequired,
 };
 
