@@ -54,8 +54,17 @@ const BattleCreateInnerForm = (props) => {
     values, setFieldValue,
   } = props;
 
-  const handleChangePokemon = (selectedPokemon, fieldName) => {
-    setFieldValue(fieldName.name, selectedPokemon.name);
+  const handlePokemonChange = (newPokemon, index) => {
+    const pokemonList = values.pokemons;
+    pokemonList[index] = newPokemon.name;
+    setFieldValue('pokemons', pokemonList);
+    console.log('handlePokemonChange: ', values);
+  };
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const newPokemons = arrayMove(values.pokemons, oldIndex, newIndex);
+    setFieldValue('pokemons', newPokemons);
+    console.log('sortend: ', values);
   };
 
   const CustomOption = option => (
@@ -65,39 +74,33 @@ const BattleCreateInnerForm = (props) => {
     </div>
   );
 
-  const SortableItem = SortableElement(({ selectedPokemon }) => (
+  const SortableItem = SortableElement(({ selectedPokemon, onPokemonChange }) => (
     <CreateBattleRowStyled>
+      {/* {console.log(selectedPokemon, values.pokemons)} */}
       <Select
-        name={`pokemon_${selectedPokemon + 1}`}
         placeholder="Search pokemon..."
         components={{ Option: CustomOption }}
         options={denormalizedPokemons}
+        onChange={onPokemonChange}
       />
-      <ErrorMessage name={`pokemon_${selectedPokemon + 1}`} />
+      <ErrorMessage name={`pokemon_${selectedPokemon}`} />
     </CreateBattleRowStyled>
   ));
 
-  const SortableList = SortableContainer(({ items }) => (
+  const SortableList = SortableContainer(({ items, onPokemonChange }) => (
     <div>
       {items.map((value, index) => (
         <SortableItem
           // index required by SortableElement HOC
           // eslint-disable-next-line react/no-array-index-key
-          key={`item-${value}-${index}`}
+          key={`item-${index}`}
           index={index}
           selectedPokemon={value}
-          onChange={handleChangePokemon}
+          onPokemonChange={newPokemon => onPokemonChange(newPokemon, index)}
         />
       ))}
     </div>
   ));
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    setFieldValue('rounds', arrayMove(values.rounds, oldIndex, newIndex));
-    setFieldValue('order_1', values.rounds[0]);
-    setFieldValue('order_2', values.rounds[1]);
-    setFieldValue('order_3', values.rounds[2]);
-  };
 
   return (
     <CreateBattleContainerStyled>
@@ -118,8 +121,9 @@ const BattleCreateInnerForm = (props) => {
         <SortableList
           distance={10}
           transitionDuration={200}
-          items={values.rounds}
+          items={values.pokemons}
           onSortEnd={onSortEnd}
+          onPokemonChange={(newPokemon, index) => handlePokemonChange(newPokemon, index)}
         />
 
         <Field type="submit" value="Challenge now" />
@@ -138,13 +142,7 @@ const battleCreateFormSchema = Yup.object().shape({
 const BattleCreateForm = withFormik({
   mapPropsToValues: () => ({
     trainer_opponent: '',
-    pokemon_1: '',
-    order_1: 0,
-    pokemon_2: '',
-    order_2: 1,
-    pokemon_3: '',
-    order_3: 2,
-    rounds: [0, 1, 2],
+    pokemons: [null, null, null],
   }),
 
   validationSchema: battleCreateFormSchema,
