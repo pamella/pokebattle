@@ -56,15 +56,16 @@ const BattleCreateInnerForm = (props) => {
 
   const handlePokemonChange = (newPokemon, index) => {
     const pokemonList = values.pokemons;
-    pokemonList[index] = newPokemon.name;
+    pokemonList[index] = {
+      value: newPokemon.value,
+      label: newPokemon.label,
+    };
     setFieldValue('pokemons', pokemonList);
-    console.log('handlePokemonChange: ', values);
   };
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     const newPokemons = arrayMove(values.pokemons, oldIndex, newIndex);
     setFieldValue('pokemons', newPokemons);
-    console.log('sortend: ', values);
   };
 
   const CustomOption = option => (
@@ -76,26 +77,25 @@ const BattleCreateInnerForm = (props) => {
 
   const SortableItem = SortableElement(({ selectedPokemon, onPokemonChange }) => (
     <CreateBattleRowStyled>
-      {/* {console.log(selectedPokemon, values.pokemons)} */}
       <Select
         placeholder="Search pokemon..."
         components={{ Option: CustomOption }}
         options={denormalizedPokemons}
+        value={selectedPokemon}
         onChange={onPokemonChange}
       />
-      <ErrorMessage name={`pokemon_${selectedPokemon}`} />
     </CreateBattleRowStyled>
   ));
 
   const SortableList = SortableContainer(({ items, onPokemonChange }) => (
     <div>
-      {items.map((value, index) => (
+      {items.map((pokemon, index) => (
         <SortableItem
           // index required by SortableElement HOC
           // eslint-disable-next-line react/no-array-index-key
           key={`item-${index}`}
           index={index}
-          selectedPokemon={value}
+          selectedPokemon={pokemon}
           onPokemonChange={newPokemon => onPokemonChange(newPokemon, index)}
         />
       ))}
