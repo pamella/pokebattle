@@ -40,7 +40,7 @@ const CreateBattleRowStyled = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 15px auto;
+  margin: 30px auto;
   cursor: pointer;
 
   .css-1pcexqc-container {
@@ -56,7 +56,6 @@ const BattleCreateInnerForm = (props) => {
 
   const handleChangePokemon = (selectedPokemon, fieldName) => {
     setFieldValue(fieldName.name, selectedPokemon.name);
-    console.log('handlechange', fieldName.name, values);
   };
 
   const CustomOption = option => (
@@ -66,23 +65,29 @@ const BattleCreateInnerForm = (props) => {
     </div>
   );
 
-  const SortableItem = SortableElement(({ value }) => (
+  const SortableItem = SortableElement(({ selectedPokemon }) => (
     <CreateBattleRowStyled>
       <Select
-        name={`pokemon_${value + 1}`}
-        onChange={handleChangePokemon}
-        options={denormalizedPokemons}
+        name={`pokemon_${selectedPokemon + 1}`}
+        placeholder="Search pokemon..."
         components={{ Option: CustomOption }}
+        options={denormalizedPokemons}
       />
-      <ErrorMessage name={`pokemon_${value + 1}`} />
+      <ErrorMessage name={`pokemon_${selectedPokemon + 1}`} />
     </CreateBattleRowStyled>
   ));
 
   const SortableList = SortableContainer(({ items }) => (
     <div>
       {items.map((value, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <SortableItem key={`item-${index}`} index={index} value={value} />
+        <SortableItem
+          // index required by SortableElement HOC
+          // eslint-disable-next-line react/no-array-index-key
+          key={`item-${value}-${index}`}
+          index={index}
+          selectedPokemon={value}
+          onChange={handleChangePokemon}
+        />
       ))}
     </div>
   ));
@@ -110,7 +115,12 @@ const BattleCreateInnerForm = (props) => {
         </CreateBattleRowStyled>
 
         Pokemons:
-        <SortableList pressDelay={100} items={values.rounds} onSortEnd={onSortEnd} />
+        <SortableList
+          distance={10}
+          transitionDuration={200}
+          items={values.rounds}
+          onSortEnd={onSortEnd}
+        />
 
         <Field type="submit" value="Challenge now" />
       </Form>
@@ -140,7 +150,6 @@ const BattleCreateForm = withFormik({
   validationSchema: battleCreateFormSchema,
 
   handleSubmit: (values, { props }) => {
-    // console.log(values)
     props.submitHandler(values);
   },
 })(BattleCreateInnerForm);
