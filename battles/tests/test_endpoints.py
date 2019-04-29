@@ -53,7 +53,9 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
                         "sprite": trainer_team_creator.pokemon_1.sprite,
                         "attack": trainer_team_creator.pokemon_1.attack,
                         "defense": trainer_team_creator.pokemon_1.defense,
-                        "hitpoints": trainer_team_creator.pokemon_1.hitpoints
+                        "hitpoints": trainer_team_creator.pokemon_1.hitpoints,
+                        "value": trainer_team_creator.pokemon_1.id,
+                        "label": trainer_team_creator.pokemon_1.name,
                     },
                     "opponent_pokemon": {
                         "id": trainer_team_opponent.pokemon_1.id,
@@ -62,7 +64,9 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
                         "sprite": trainer_team_opponent.pokemon_1.sprite,
                         "attack": trainer_team_opponent.pokemon_1.attack,
                         "defense": trainer_team_opponent.pokemon_1.defense,
-                        "hitpoints": trainer_team_opponent.pokemon_1.hitpoints
+                        "hitpoints": trainer_team_opponent.pokemon_1.hitpoints,
+                        "value": trainer_team_opponent.pokemon_1.id,
+                        "label": trainer_team_opponent.pokemon_1.name,
                     }
                 },
                 {
@@ -73,7 +77,9 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
                         "sprite": trainer_team_creator.pokemon_2.sprite,
                         "attack": trainer_team_creator.pokemon_2.attack,
                         "defense": trainer_team_creator.pokemon_2.defense,
-                        "hitpoints": trainer_team_creator.pokemon_2.hitpoints
+                        "hitpoints": trainer_team_creator.pokemon_2.hitpoints,
+                        "value": trainer_team_creator.pokemon_2.id,
+                        "label": trainer_team_creator.pokemon_2.name,
                     },
                     "opponent_pokemon": {
                         "id": trainer_team_opponent.pokemon_2.id,
@@ -82,7 +88,9 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
                         "sprite": trainer_team_opponent.pokemon_2.sprite,
                         "attack": trainer_team_opponent.pokemon_2.attack,
                         "defense": trainer_team_opponent.pokemon_2.defense,
-                        "hitpoints": trainer_team_opponent.pokemon_2.hitpoints
+                        "hitpoints": trainer_team_opponent.pokemon_2.hitpoints,
+                        "value": trainer_team_opponent.pokemon_2.id,
+                        "label": trainer_team_opponent.pokemon_2.name,
                     }
                 },
                 {
@@ -93,7 +101,9 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
                         "sprite": trainer_team_creator.pokemon_3.sprite,
                         "attack": trainer_team_creator.pokemon_3.attack,
                         "defense": trainer_team_creator.pokemon_3.defense,
-                        "hitpoints": trainer_team_creator.pokemon_3.hitpoints
+                        "hitpoints": trainer_team_creator.pokemon_3.hitpoints,
+                        "value": trainer_team_creator.pokemon_3.id,
+                        "label": trainer_team_creator.pokemon_3.name,
                     },
                     "opponent_pokemon": {
                         "id": trainer_team_opponent.pokemon_3.id,
@@ -102,7 +112,9 @@ class DetailBattleEndpointTest(PokeBattleAPITestCase):
                         "sprite": trainer_team_opponent.pokemon_3.sprite,
                         "attack": trainer_team_opponent.pokemon_3.attack,
                         "defense": trainer_team_opponent.pokemon_3.defense,
-                        "hitpoints": trainer_team_opponent.pokemon_3.hitpoints
+                        "hitpoints": trainer_team_opponent.pokemon_3.hitpoints,
+                        "value": trainer_team_opponent.pokemon_3.id,
+                        "label": trainer_team_opponent.pokemon_3.name,
                     }
                 }
             ]
