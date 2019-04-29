@@ -17,7 +17,7 @@ class Battle(models.Model):
         User, on_delete=models.CASCADE,
         related_name="battles_opponent"
     )
-    status = models.CharField(max_length=56, default=1)
+    status = models.CharField(max_length=56, default='ON_GOING')
     trainer_winner = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name="+",

@@ -20,6 +20,7 @@ import Urls from 'utils/urls';
 import { STATUS_201 } from '../../../../constants/request_status';
 
 
+// Styled
 const CreateBattleContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,6 +40,7 @@ const CreateBattleRowStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
   margin: 30px auto;
   cursor: pointer;
@@ -48,6 +50,12 @@ const CreateBattleRowStyled = styled.div`
   }
 `;
 
+const ErrorMessageDivStyled = styled.div`
+  color: red;
+`;
+
+
+// Components
 const BattleCreateInnerForm = (props) => {
   const {
     denormalizedUsers, denormalizedPokemons,
@@ -56,10 +64,7 @@ const BattleCreateInnerForm = (props) => {
 
   const handlePokemonChange = (newPokemon, index) => {
     const pokemonList = values.pokemons;
-    pokemonList[index] = {
-      value: newPokemon.value,
-      label: newPokemon.label,
-    };
+    pokemonList[index] = newPokemon;
     setFieldValue('pokemons', pokemonList);
   };
 
@@ -110,11 +115,15 @@ const BattleCreateInnerForm = (props) => {
         <CreateBattleRowStyled>
           Opponent:
           <Field component="select" name="trainer_opponent">
+            <option value="" disabled>Select an opponent</option>
             {denormalizedUsers.map(user => (
               <option value={{ user }.user.id}>{{ user }.user.email}</option>
             ))}
           </Field>
-          <ErrorMessage name="trainer_opponent" />
+          <ErrorMessage
+            name="trainer_opponent"
+            render={msg => <ErrorMessageDivStyled>{msg}</ErrorMessageDivStyled>}
+          />
         </CreateBattleRowStyled>
 
         Pokemons:
@@ -125,6 +134,10 @@ const BattleCreateInnerForm = (props) => {
           onSortEnd={onSortEnd}
           onPokemonChange={(newPokemon, index) => handlePokemonChange(newPokemon, index)}
         />
+        <ErrorMessage
+          name="pokemons"
+          render={msg => <ErrorMessageDivStyled>{msg}</ErrorMessageDivStyled>}
+        />
 
         <Field type="submit" value="Challenge now" />
       </Form>
@@ -134,9 +147,31 @@ const BattleCreateInnerForm = (props) => {
 
 const battleCreateFormSchema = Yup.object().shape({
   trainer_opponent: Yup.number().required('Select an opponent to challenge.'),
-  pokemon_1: Yup.string().required('Select a pokemon for your team.'),
-  pokemon_2: Yup.string().required('Select a pokemon for your team.'),
-  pokemon_3: Yup.string().required('Select a pokemon for your team.'),
+  pokemons: Yup.array().of(
+    Yup.object().shape({
+      api_id: Yup.number()
+        .positive()
+        .integer(),
+      attack: Yup.number()
+        .positive()
+        .integer(),
+      defense: Yup.number()
+        .positive()
+        .integer(),
+      hitpoints: Yup.number()
+        .positive()
+        .integer(),
+      id: Yup.number()
+        .positive()
+        .integer(),
+      label: Yup.string(),
+      name: Yup.string(),
+      sprite: Yup.string().url(),
+      value: Yup.number()
+        .positive()
+        .integer(),
+    }).nullable().required('Select a pokemon for your team.'),
+  ).required(''),
 });
 
 const BattleCreateForm = withFormik({
