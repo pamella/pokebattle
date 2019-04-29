@@ -59,7 +59,7 @@ const ErrorMessageDivStyled = styled.div`
 const BattleCreateInnerForm = (props) => {
   const {
     denormalizedUsers, denormalizedPokemons,
-    values, setFieldValue,
+    values, setFieldValue, errors,
   } = props;
 
   const handlePokemonChange = (newPokemon, index) => {
@@ -138,6 +138,10 @@ const BattleCreateInnerForm = (props) => {
           name="pokemons"
           render={msg => <ErrorMessageDivStyled>{msg}</ErrorMessageDivStyled>}
         />
+        {errors.pokemons
+          ? <ErrorMessageDivStyled>{errors.pokemons}</ErrorMessageDivStyled>
+          : null
+        }
 
         <Field type="submit" value="Challenge now" />
       </Form>
@@ -181,6 +185,24 @@ const BattleCreateForm = withFormik({
   }),
 
   validationSchema: battleCreateFormSchema,
+
+  validate: (values) => {
+    const { pokemons } = values;
+    const errors = {};
+    if (pokemons.length === 3) {
+      let sum = 0;
+      pokemons.map((p) => {
+        sum += p.attack;
+        sum += p.defense;
+        sum += p.hitpoints;
+        return sum;
+      });
+      if (sum > 600) {
+        errors.pokemons = 'Trainer, your pokemon team stats can not sum more than 600 points.';
+      }
+    }
+    return errors;
+  },
 
   handleSubmit: (values, { props }) => {
     props.submitHandler(values);
@@ -230,6 +252,9 @@ BattleCreateInnerForm.propTypes = {
     PropTypes.array,
   ]).isRequired,
   setFieldValue: PropTypes.func.isRequired,
+  errors: PropTypes.oneOfType([
+    PropTypes.object,
+  ]).isRequired,
 };
 
 BattleCreateInnerForm.defaultProps = {
