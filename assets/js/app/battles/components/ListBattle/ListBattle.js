@@ -154,7 +154,7 @@ function SettledBattleBox(battle) {
 }
 
 function OngoingBattles(battles) {
-  if (isEmpty(battles)) return null;
+  if (isEmpty(battles) || (battles.battles.length === 0)) return null;
   const listItem = battles.battles.map(battle => <OngoingBattleBox battle={battle} />);
   return (
     <div>
@@ -167,7 +167,7 @@ function OngoingBattles(battles) {
 }
 
 function SettledBattles(battles) {
-  if (isEmpty(battles)) return null;
+  if (isEmpty(battles) || (battles.battles.length === 0)) return null;
   const listItem = battles.battles.map(battle => <SettledBattleBox battle={battle} />);
   return (
     <div>
